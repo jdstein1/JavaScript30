@@ -3,134 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock (Digital)</title>
+  <link rel="stylesheet" href="digital.css">
 </head>
 <body>
 
   <div class="wrapper">
 
-    <div class="clock">
-      <div class="time time-hrs"></div>
-      <div class="time time-min"></div>
-      <div class="time time-sec"></div>
-    </div>
+    <form action="" class="form">
+      <label for="time">count[<span class="down">down</span.>|<span class="up">up</span>] [<span class="down">from</span.>|<span class="up">until</span>]:
+        <input type="datetime-local" id="time" value="" step="1000">
+      </label>
+    </form>
+
+    <div class="result"></div>
+
+    <ul class="clock">
+      <!-- <li class="count count-day"> -->
+      <li class="count count-yrs">
+      <li class="count count-mon">
+      <li class="count count-dat">
+      <li class="count count-hrs">
+      <li class="count count-min">
+      <li class="count count-sec">
+    </ul>
 
   </div>
 
-  <style>
-
-    *, *:before, *:after {padding:0; margin:0;}
-
-    html {
-      background-color:#999;
-      background-size:cover;
-      font-family:"Andale Mono", "Lucida Console", Monaco, monospace;
-      text-align:center;
-      font-size:10px;
-    }
-
-    body {
-      font-size:2rem;
-      min-height:100vh;
-    }
-
-    .wrapper {
-      margin:0 auto;
-      display:flex;
-      align-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .clock {
-      position:relative;
-      padding:1rem;
-      margin:1% auto;
-      width:auto;
-      height:auto;
-      /*float:left;*/
-      background:rgba(0,0,0,0.5);
-    }
-
-    .time {
-      position:relative;
-      float:left;
-      font-size:10rem;
-      background:rgba(0,0,0,0.5);
-      color:rgb(204,51,51);
-      padding:1rem;
-      margin:0;
-    }
-
-    .time-hrs {}
-    .time-min {}
-    .time-sec {}
-
-    .time-min, .time-sec {
-      padding-left: 5rem;
-    }
-
-    .time-min:before, .time-sec:before {
-      content:":";
-      /*padding:-1rem 0 0;*/
-      /*margin:-1rem 0 0;*/
-      font-size:7.5rem;
-      /*background:rgba(0,0,0,0.5);*/
-      position: absolute;
-      top:0;
-      left:0;
-      bottom:0;
-      line-height: 1.5;
-    }
-
-  </style>
-
+  <script src="utils.js"></script>
   <script>
 
-    function pad(n, width, z) {
-      z = z || '0';
-      n = n + '';
-      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
+    // let then = new Date("2012-02-10T13:19:00Z");
+    let then = "2012-02-10T13:19:43";
+    // console.log('then.toJSON(): ', then.toJSON());
 
-    const hrsBasic = document.querySelector(".time-hrs");
-    const minBasic = document.querySelector(".time-min");
-    const secBasic = document.querySelector(".time-sec");
+    let dayType = "number";
+    let monthType = "number";
+
+    const result = document.querySelector(".result");
+
+    const input = document.querySelector("input#time");
+    // console.log('input: ', input);
+    input.value = then;
+
+    input.addEventListener("change", function(){
+      // console.log('input: ', input.value);
+      // calculate(input.value);
+      then = input.value;
+      result.innerHTML = then;
+    });
+
+    // const day = document.querySelector(".count-day");
+    // day.style.fontWeight = bold;
+    const yrs = document.querySelector(".count-yrs");
+    const mon = document.querySelector(".count-mon");
+    const dat = document.querySelector(".count-dat");
+    const hrs = document.querySelector(".count-hrs");
+    const min = document.querySelector(".count-min");
+    const sec = document.querySelector(".count-sec");
 
     function updateTime(type) {
 
-      let now = new Date();
-      switch(type) {
-        case "down":
-          now = new Date(10000000000000);
-          break;
-        case "up":
-          now = new Date(1);
+      const now = new Date();
+      console.log('now: ', now);
+      const nowTime = now.getTime();
+      console.log('nowTime: ', nowTime);
+
+      // console.log('then.toString(): ', then.toString());
+      // let thenTime = then.getTime();
+      // console.log('thenTime: ', thenTime);
+
+      // const nowDay = days[dayType][now.getDay()];
+      // // console.log('nowDay: ', nowDay);
+      // switch(dayType) {
+      //   case 'number':
+      //     day.innerHTML = pad(nowDay, 2);
+      //     break;
+      //   default:
+      //     day.innerHTML = nowDay;
+      //     break;
+      // }
+
+      const nowYrs = now.getFullYear();
+      // console.log('nowYrs: ', nowYrs);
+      yrs.innerHTML = nowYrs;
+
+      const nowMon = months[monthType][now.getMonth()];
+      // console.log('nowMon: ', nowMon);
+      switch(monthType) {
+        case 'number':
+          mon.innerHTML = pad(nowMon, 2);
           break;
         default:
+          mon.innerHTML = nowMon;
           break;
       }
 
-      console.log('now: ', now);
+      const nowDat = now.getDate();
+      // console.log('nowDat: ', nowDat);
+      dat.innerHTML = pad(nowDat, 2);
+
+      const nowHrs = now.getHours();
+      // console.log('nowHrs: ', nowHrs);
+      hrs.innerHTML = pad(nowHrs, 2);
+
+      const nowMin = now.getMinutes();
+      // console.log('nowMin: ', nowMin);
+      min.innerHTML = pad(nowMin, 2);
 
       const nowSec = now.getSeconds();
       // console.log('nowSec: ', nowSec);
-      const nowMin = now.getMinutes();
-      // console.log('nowMin: ', nowMin);
-      const nowHrs = now.getHours();
-      // console.log('nowHrs: ', nowHrs);
-
-      hrsBasic.innerHTML = pad(nowHrs, 2);
-      // scale(0.7, 1.5)
-      minBasic.innerHTML = pad(nowMin, 2);
-      // scale(0.9, 1)
-      secBasic.innerHTML = pad(nowSec, 2);
-      // scale(0.8, 0.8)
+      sec.innerHTML = pad(nowSec, 2);
 
     };
 
-    setInterval(function(){
-      updateTime()
-    }, 1000);
+    setInterval(updateTime, 1000);
 
   </script>
 </body>
