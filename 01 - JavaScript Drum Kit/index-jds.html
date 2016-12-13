@@ -58,19 +58,16 @@
 
 <script>
 
-const audios = document.getElementsByTagName("audio");
-// console.log('audios: ', audios);
+const keys = document.querySelectorAll('.key'); // cache key elements
+const audios = document.getElementsByTagName("audio"); // cache audio elements
+const codes = []; // array of codes
 
-const codes = [];
+/* push each code into codes array */
 for (let i = 0; i < audios.length; i++) {
   codes.push(parseInt(audios[i].dataset.key));
 }
-// console.log('codes: ', codes);
 
-// const keys = document.getElementsByClassName("key");
-const keys = document.querySelectorAll('.key');
-// console.log('keys: ', keys);
-
+/* get index of key with specific code */
 function isMyKey(arr,key,val) {
   for (let i = 0; i < arr.length; i++) {
     const myCode = parseInt(arr[i].dataset[key]);
@@ -81,48 +78,35 @@ function isMyKey(arr,key,val) {
   }
 }
 
+/* play audio associated w key and start CSS transition */
 function playAudio(e) {
-  console.group('START playAudio');
-
+  // console.group('START playAudio');
   const myKey = e.keyCode;
   const myIndex = isMyKey(audios,"key",myKey);
-
+  console.log('audio played: ', keys[myIndex].children[1].innerHTML);
   audios[myIndex].currentTime = 0;
   audios[myIndex].play().then(function(){
     keys[myIndex].classList.add("playing");
   });
-  console.groupEnd();
+  // console.groupEnd();
 }
 
+/* undo the CSS transition */
 function undoTransition(e) {
-  console.log('START undoTransition');
-
-  // const myKey = e.keyCode;
-  // const myIndex = isMyKey(audios,"key",myKey);
-
-  // console.log('e: ', e);
   if (e.propertyName !== 'transform') return; // skip it if it's not a transform
-  // console.log('this: ', this);
-
-  console.log('FINISH undoTransition');
-  // keys[myIndex].classList.remove("playing");
   this.classList.remove("playing");
 }
 
+/* listen for key down event */
 document.addEventListener("keydown", function(){
-  if (codes.indexOf(event.keyCode) > -1) {
-    playAudio(event);
-  }
+  console.log('key pressed: ', event.key);
+  // play audio only if it is one of our key codes
+  if (codes.indexOf(event.keyCode) < 0) return;
+  playAudio(event);
 });
 
+/* listen for transition event */
 keys.forEach(key => key.addEventListener('transitionend', undoTransition));
-
-// document.addEventListener("keyup", function(e){
-//   console.log('e: ', e);
-//   if (codes.indexOf(event.keyCode) > -1) {
-//     undoTransition(this);
-//   }
-// });
 
 </script>
 
