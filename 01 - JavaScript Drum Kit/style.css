@@ -3,10 +3,10 @@ html {
   background:url(http://i.imgur.com/b9r5sEL.jpg) bottom center;
   background-size: cover;
 }
-body,html {
+body,html,kbd {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Helvetica",sans-serif;
 }
 
 .keys {
@@ -20,19 +20,19 @@ body,html {
 .key {
   border:4px solid black;
   border-radius:5px;
-  margin:1rem;
-  font-size: 1.5rem;
+  margin:0.5rem;
+  font-size: 1.6rem;
   padding:1rem .5rem;
-  transition:all .07s;
+  transition:all 0.1s;
   width:100px;
   text-align: center;
   color:white;
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.8);
   text-shadow:0 0 5px black;
 }
 
 .playing {
-  transform:scale(1.1);
+  transform:scale(1.2);
   border-color:#ffc600;
   box-shadow: 0 0 10px #ffc600;
 }
@@ -44,7 +44,7 @@ kbd {
 
 .sound {
   font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  /*text-transform: uppercase;*/
+  letter-spacing: 0.2rem;
   color:#ffc600;
 }

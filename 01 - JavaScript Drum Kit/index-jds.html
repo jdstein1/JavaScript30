@@ -7,7 +7,6 @@
 </head>
 <body>
 
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -59,23 +58,71 @@
 
 <script>
 
+const audios = document.getElementsByTagName("audio");
+// console.log('audios: ', audios);
 
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    if (!audio) return; // stop the function from running all together
-    audio.currentTime = 0; // rewind to the start
-    audio.play();
-    key.classList.add('playing');
-  }
-  function removeTransition(e) {
-    if (e.propertyName !== 'transform') return; // skip it if it's not a transform
-    this.classList.remove('playing');
-  }
+const codes = [];
+for (let i = 0; i < audios.length; i++) {
+  codes.push(parseInt(audios[i].dataset.key));
+}
+// console.log('codes: ', codes);
 
-  const keys = document.querySelectorAll('.key');
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
+// const keys = document.getElementsByClassName("key");
+const keys = document.querySelectorAll('.key');
+// console.log('keys: ', keys);
+
+function isMyKey(arr,key,val) {
+  for (let i = 0; i < arr.length; i++) {
+    const myCode = parseInt(arr[i].dataset[key]);
+    if (myCode === val) {
+      const index = i;
+      return index;
+    }
+  }
+}
+
+function playAudio(e) {
+  console.group('START playAudio');
+
+  const myKey = e.keyCode;
+  const myIndex = isMyKey(audios,"key",myKey);
+
+  audios[myIndex].currentTime = 0;
+  audios[myIndex].play().then(function(){
+    keys[myIndex].classList.add("playing");
+  });
+  console.groupEnd();
+}
+
+function undoTransition(e) {
+  console.log('START undoTransition');
+
+  // const myKey = e.keyCode;
+  // const myIndex = isMyKey(audios,"key",myKey);
+
+  // console.log('e: ', e);
+  if (e.propertyName !== 'transform') return; // skip it if it's not a transform
+  // console.log('this: ', this);
+
+  console.log('FINISH undoTransition');
+  // keys[myIndex].classList.remove("playing");
+  this.classList.remove("playing");
+}
+
+document.addEventListener("keydown", function(){
+  if (codes.indexOf(event.keyCode) > -1) {
+    playAudio(event);
+  }
+});
+
+keys.forEach(key => key.addEventListener('transitionend', undoTransition));
+
+// document.addEventListener("keyup", function(e){
+//   console.log('e: ', e);
+//   if (codes.indexOf(event.keyCode) > -1) {
+//     undoTransition(this);
+//   }
+// });
 
 </script>
 
