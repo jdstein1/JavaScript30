@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="disc hour-disc"></div>
+      <div class="hand min-hand"></div>
+      <div class="disc min-disc"></div>
+      <div class="hand second-hand"></div>
+      <div class="disc second-disc"></div>
+    </div>
+  </div>
+
+  <style>
+
+    *, *:before, *:after {padding:0; margin:0;}
+
+    html {
+      background-color:#999;
+      background-size:cover;
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      position: relative;
+      width: 30rem;
+      height: 30rem;
+      border:3rem solid #333;
+      border-radius:50%;
+      margin:50px auto;
+      position: relative;
+      padding:0;
+      box-shadow:
+        0 0 2rem 0.25rem rgba(0,0,0,0.25),
+        inset 0 0.5rem 0 0rem rgba(255,255,255,0.75),
+        inset 0 -1rem 2.5rem 0rem rgba(0,0,0,0.75),
+        0 1rem 1rem rgba(0,0,0,0.125);
+    }
+
+    .clock-face {
+      position: relative;
+      border-radius:50%;
+      background: rgba(255,255,255,0.5);
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width:50%;
+      height:6px;
+      background:black;
+      position: absolute;
+      top:calc(50% - 3px);
+      transform-origin:100% 3px;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0, 1.5, 1, 2);
+    }
+
+    .hour-hand {
+      /*transform: scale(0.7, 1.5);*/
+    } /* move 6° every 720,000ms. */
+
+    .min-hand {
+      /*transform: scale(0.9, 1);*/
+      background:white;
+    } /* move 6° every 60,000ms. */
+
+    .second-hand {
+      /*transform: scale(0.8, 0.8);*/
+      background:rgb(204,51,51);
+    } /* move 6° every 1000ms. */
+
+    .disc {
+      width:1em; 
+      height:1em; 
+      background:black;
+      border-radius: 1em;
+      position: absolute;
+      top:calc(50% - 0.5em);
+      left:calc(50% - 0.5em);
+      transform-origin:50% 50%;
+    }
+
+    .hour-disc {transform: scale(1.25);}
+
+    .min-disc {background:white;}
+
+    .second-disc {
+      background:rgb(204,51,51);
+      transform: scale(0.8);
+    }
+
+  </style>
+
+  <script>
+
+    const hourHand = document.querySelector(".hour-hand");
+    // console.log('hourHand: ', hourHand);
+    const minHand = document.querySelector(".min-hand");
+    // console.log('minHand: ', minHand);
+    const secondHand = document.querySelector(".second-hand");
+    // console.log('secondHand: ', secondHand);
+
+    const now = new Date();
+    // console.log('now: ', now);
+
+    const nowSec = now.getSeconds();
+    // console.log('nowSec: ', nowSec);
+    const nowMin = now.getMinutes();
+    // console.log('nowMin: ', nowMin);
+    const nowHrs = now.getHours();
+    // console.log('nowHrs: ', nowHrs);
+
+    /* how many degrees second hand travels per 1000ms */
+    const incrementSec = 6;
+    /* how many degrees minute hand travels per 1000ms */
+    const incrementMin = (6/60); // 0.1
+    /* how many degrees hour hand travels per 1000ms */
+    const incrementHour = (6/720); // 0.0083333333
+
+    /* starting point (degrees) for hour hand */
+    let startHour = 90+((nowHrs-12)*30)+(nowMin*incrementHour*60);
+    // console.log('startHour: ', startHour);
+
+    /* starting point (degrees) for minute hand */
+    let startMin = 90+(nowMin*6)+(nowSec*incrementMin);
+    // console.log('startMin: ', startMin);
+
+    /* starting point (degrees) for second hand */
+    let startSec = 90+(nowSec*6);
+    // console.log('startSec: ', startSec);
+
+    function updateTime() {
+
+      startSec = startSec + incrementSec;
+      // console.log('startSec: ', startSec);
+      startMin = startMin + incrementMin;
+      // console.log('startMin: ', startMin);
+      startHour = startHour + incrementHour;
+      // console.log('startHour: ', startHour);
+
+      hourHand.style.transform = `rotate(${ startHour }deg) scale(0.7, 1.5)`;
+      // scale(0.7, 1.5)
+      minHand.style.transform = `rotate(${ startMin }deg) scale(0.9, 1)`;
+      // scale(0.9, 1)
+      secondHand.style.transform = `rotate(${ startSec }deg) scale(0.8, 0.8)`;
+      // scale(0.8, 0.8)
+
+    };
+
+    setInterval(updateTime, 1000);
+
+  </script>
+</body>
+</html>
