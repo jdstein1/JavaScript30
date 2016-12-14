@@ -1,79 +1,86 @@
-    *, *:before, *:after {padding:0; margin:0;}
+*, *:before, *:after {padding:0; margin:0;}
 
-    html {
-      background-color:#999;
-      background-size:cover;
-      font-family:"Andale Mono", "Lucida Console", Monaco, monospace;
-      text-align:center;
-      font-size:10px;
-    }
+html {
+  background-color:#999;
+  background-size:cover;
+  font-family:"Andale Mono", "Lucida Console", Monaco, monospace;
+  text-align:center;
+  font-size:10px;
+}
 
-    body {
-      font-size:2rem;
-      min-height:100vh;
-    }
+body {
+  font-size:2rem;
+  min-height:100vh;
+}
 
-    ul, ol, dl {list-style-type: none;}
-    li, dt, dd {text-align: left;}
+ul, ol, dl {list-style-type: none;}
+li, dt, dd {text-align: left;}
 
-    .wrapper {
-      min-height:100vh;
-      margin:0 auto;
-      display:flex;
-      flex-direction: column;
-      align-content: center;
-      align-items: center;
-      justify-content: center;
-    }
+.wrapper {
+  min-height:100vh;
+  margin:0 auto;
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
 
-    .form {padding: 1rem;}
+form, fieldset, legend, label, input, button, textarea, select, option {font-size: 2rem; text-align: center; display:block;}
+fieldset, legend, label, input, button, textarea, select {padding: 0.5rem; margin: 0.5rem auto;}
+.form {padding: 1rem; color:#666;}
 
-    .clock {
-      padding:1rem;
-      white-space: normal;
-      background:#000;
-      border:3rem solid #333;
-      box-shadow:
-        0 0 2rem 0.25rem rgba(0,0,0,0.25),
-        inset 0 0.5rem 0 0 rgba(255,255,255,0.75),
-        inset 0 -1rem 2.5rem 0 rgba(0,0,0,0.75),
-        0 1rem 1rem rgba(0,0,0,0.125);
-    }
+.clock {
+  padding:1rem;
+  white-space: normal;
+  background:#000;
+  border:3rem solid #333;
+  box-shadow:
+    0 0 2rem 0.25rem rgba(0,0,0,0.25),
+    inset 0 0.5rem 0 0 rgba(255,255,255,0.75),
+    inset 0 -1rem 2.5rem 0 rgba(0,0,0,0.75),
+    0 1rem 1rem rgba(0,0,0,0.125);
+}
 
-    .time, .count {
-      /*position:relative;*/
-      /*float:left;*/
-      display: inline;
-      font-size:5rem;
-      /*width:2em;*/
-      /*min-width:2em;*/
-      color:rgb(204,51,51);
-    }
-    .count {display: block;}
+.time, .count {
+  /*position:relative;*/
+  /*float:left;*/
+  display: inline;
+  font-size:6rem;
+  /*width:2em;*/
+  /*min-width:2em;*/
+  color:rgb(204,51,51);
+}
+.count {display: block;}
 
-    .time-day {font-size: 2.5rem;}
-    .time-yrs {}
-    .time-mon {}
-    .time-dat {}
-    .time-hrs, 
-    .time-min, 
-    .time-sec {font-size: 7.5rem;}
+.time-day {font-size: 2.5rem;}
+.time-yrs {}
+.time-mon {}
+.time-dat {}
+.time-hrs, 
+.time-min, 
+.time-sec {font-size: 7.5rem;}
 
-    .time:before, .time:after, 
-    .count:before, .count:after {color:#808080;}
+.time:before, .time:after, 
+.count:before, .count:after {color:#808080;}
 
-    .count:before, .count:after {font-size:2.5rem; padding-right:1em; vertical-align: middle; line-height: 1;}
-    .count:first-of-type:before, .count:last-of-type:after {padding: 0;}
+.count:before, .count:after {font-size:2.5rem; padding-right:1em; vertical-align: middle; line-height: 1;}
+.count:first-of-type:before, .count:last-of-type:after {padding: 0;}
 
-    .time-yrs:after, .time-mon:after {content:"-";}
-    .time-day:after, .time-dat:after {content:"\a";white-space:pre;}
-    .time-hrs:before {content:"T";}
-    .time-min:before, .time-sec:before {content:":";}
+.time-yrs:after, .time-mon:after {content:"-";}
+.time-day:after, .time-dat:after {content:"\a";white-space:pre;}
+.time-hrs:before {content:"T";}
+.time-min:before, .time-sec:before {content:":";}
 
-    .count-yrs:after {content:"Years";}
-    .count-mon:after {content:"Months";}
-    .count-dat:after {content:"Days";}
-    .count-hrs:after {content:"Hours";}
-    .count-min:after {content:"Minutes";}
-    .count-sec:after {content:"Seconds";}
+.count-yrs:after {content:"Years";}
+.count-mon:after {content:"Months";}
+.count-dat:after {content:"Days";}
+.count-hrs:after {content:"Hours";}
+.count-min:after {content:"Minutes";}
+.count-sec:after {content:"Seconds";}
 
+.hi {
+  color:#000;
+  font-weight: 900;
+  /*text-decoration: underline;*/
+}

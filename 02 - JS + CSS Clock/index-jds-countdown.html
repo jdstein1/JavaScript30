@@ -10,12 +10,14 @@
   <div class="wrapper">
 
     <form action="" class="form">
-      <label for="time">count[<span class="future">up</span.>|<span class="past">down</span>] [<span class="future">since</span.>|<span class="past">until</span>]:
+      <legend id="now"></legend>
+      <label for="time">
+        <span class="hi">count</span> [<span class="future">up</span.>|<span class="past">down</span>] [<span class="future">since</span.>|<span class="past">until</span>]
         <input type="datetime-local" id="time" value="" step="1000">
       </label>
+      <legend id="result"></legend>
     </form>
 
-    <div id="result"></div>
 
     <ul class="clock">
       <!-- <li class="count count-day"> -->
@@ -41,7 +43,8 @@
     const msgFuture = document.querySelectorAll(".future");
     const msgPast = document.querySelectorAll(".past");
     const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-dat");
-    const result = document.querySelector("#result");
+    const elNow = document.querySelector("#now");
+    const elResult = document.querySelector("#result");
     const input = document.querySelector("input#time");
 
     input.value = defaultTime;
@@ -50,6 +53,7 @@
     // console.log('now: ', now);
 
     let then = new Date(defaultTime);
+    elResult.innerHTML = then;
     // console.log('then: ', then);
     // console.log('then.toDateString(): ', then.toDateString());
     // console.log('then.toGMTString(): ', then.toGMTString());
@@ -69,7 +73,7 @@
       console.log('input: ', input.value);
       // calculate(input.value);
       then = new Date(input.value);
-      result.innerHTML = then;
+      elResult.innerHTML = then;
       updateTime();
     });
 
@@ -90,6 +94,7 @@
 
       const now = new Date();
       // console.log('now: ', now);
+      elNow.innerHTML = now;
       const nowTime = now.getTime();
       // console.log('nowTime: ', nowTime);
 
@@ -105,23 +110,22 @@
         // the "then" date is in the future
         console.log('future');
         flagState = 'future';
-        msgPast.forEach(msg => msg.style.fontWeight = '900');
-        msgFuture.forEach(msg => msg.style.fontWeight = '100');
+        msgPast.forEach(msg => msg.classList.add('hi'));
+        msgFuture.forEach(msg => msg.classList.remove('hi'));
       } else if (milliseconds < 0) {
         // the "then" date is in the past
         console.log('past');
         flagState = 'past';
-        msgFuture.forEach(msg => msg.style.fontWeight = '900');
-        msgPast.forEach(msg => msg.style.fontWeight = '100');
+        msgFuture.forEach(msg => msg.classList.add('hi'));
+        msgPast.forEach(msg => msg.classList.remove('hi'));
       } else {
         // the "then" date is in the present
         console.log('present');
         flagState = 'present';
-        msgFuture.forEach(msg => msg.style.fontWeight = '100');
-        msgPast.forEach(msg => msg.style.fontWeight = '100');
+        msgFuture.forEach(msg => msg.classList.remove('hi'));
+        msgPast.forEach(msg => msg.classList.remove('hi'));
       }
 
-      // printDifference(now, then, flagState);
       printDifferenceMs(milliseconds);
 
     };
@@ -167,72 +171,11 @@
       // }
       // return 'less than a second'; //'just now' //or other string you like;
 
-
-      // var numYears = Math.floor(seconds / 31536000);
-      // var numMonths = Math.floor((seconds % 31536000) / (86400*30.4167));
-      // var numDays = Math.floor((seconds % 31536000) % (86400*30.4167) / 86400); 
-      // var numHours = Math.floor(((seconds % 31536000) % 86400) / 3600);
-      // var numMinutes = Math.floor(((((seconds % 31536000) % 86400) % 30.4167) % 3600) / 60);
-      // var numSeconds = ((((seconds % 31536000) % 86400) % 30.4167) % 3600) % 60;
-
       counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
+
       console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
 
     };
-
-    function printDifference (now, then, state) {
-
-      let newNow = now;
-      let newThen = then;
-
-      switch(state) {
-        case 'future':
-          newNow = then;
-          newThen = now;
-          break;
-        default:
-          break;
-      }
-
-      console.log('newNow: ', newNow);
-
-      const nowYrs = newNow.getFullYear();
-      // console.log('nowYrs: ', nowYrs);
-      const thenYrs = newThen.getFullYear();
-      // console.log('thenYrs: ', thenYrs);
-      yrs.innerHTML = pad(Math.abs(thenYrs - nowYrs), 2);
-
-      const nowMon = newNow.getMonth();
-      // console.log('nowMon: ', nowMon);
-      const thenMon = newThen.getMonth();
-      // console.log('thenMon: ', thenMon);
-      mon.innerHTML = pad(Math.abs(thenMon - nowMon), 2);
-
-      const nowDat = newNow.getDate();
-      // console.log('nowDat: ', nowDat);
-      const thenDat = newThen.getDate();
-      // console.log('thenDat: ', thenDat);
-      dat.innerHTML = pad(Math.abs(thenDat - nowDat)+1, 2);
-
-      const nowHrs = newNow.getHours();
-      // console.log('nowHrs: ', nowHrs);
-      const thenHrs = newThen.getHours();
-      // console.log('thenHrs: ', thenHrs);
-      hrs.innerHTML = pad(Math.abs(thenHrs - nowHrs), 2);
-
-      const nowMin = newNow.getMinutes();
-      // console.log('nowMin: ', nowMin);
-      const thenMin = newThen.getMinutes();
-      // console.log('thenMin: ', thenMin);
-      min.innerHTML = pad(Math.abs(thenMin - nowMin), 2);
-
-      const nowSec = newNow.getSeconds();
-      // console.log('nowSec: ', nowSec);
-      const thenSec = newThen.getSeconds();
-      // console.log('thenSec: ', thenSec);
-      sec.innerHTML = pad(Math.abs(thenSec - nowSec), 2);
-
-    }
 
     setInterval(updateTime, 1000);
 
