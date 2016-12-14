@@ -13,6 +13,9 @@
       min-height:100vh;
     }
 
+    ul, ol, dl {list-style-type: none;}
+    li, dt, dd {text-align: left;}
+
     .wrapper {
       min-height:100vh;
       margin:0 auto;
@@ -27,6 +30,7 @@
 
     .clock {
       padding:1rem;
+      white-space: normal;
       background:#000;
       border:3rem solid #333;
       box-shadow:
@@ -37,35 +41,39 @@
     }
 
     .time, .count {
-      position:relative;
+      /*position:relative;*/
       /*float:left;*/
       display: inline;
       font-size:5rem;
+      /*width:2em;*/
+      /*min-width:2em;*/
       color:rgb(204,51,51);
     }
+    .count {display: block;}
 
     .time-day {font-size: 2.5rem;}
     .time-yrs {}
     .time-mon {}
     .time-dat {}
-    .time-hrs {}
-    .time-min {}
-    .time-sec {}
+    .time-hrs, 
+    .time-min, 
+    .time-sec {font-size: 7.5rem;}
 
     .time:before, .time:after, 
     .count:before, .count:after {color:#808080;}
-    .count:before {font-size:2.5rem; padding: 0 0 0 2rem;}
-    .count:first-of-type:before {padding: 0;}
+
+    .count:before, .count:after {font-size:2.5rem; padding-right:1em; vertical-align: middle; line-height: 1;}
+    .count:first-of-type:before, .count:last-of-type:after {padding: 0;}
 
     .time-yrs:after, .time-mon:after {content:"-";}
     .time-day:after, .time-dat:after {content:"\a";white-space:pre;}
     .time-hrs:before {content:"T";}
     .time-min:before, .time-sec:before {content:":";}
 
-    .count-yrs:before {content:"Y:";}
-    .count-mon:before {content:"M:";}
-    .count-dat:before {content:"D:";}
-    .count-hrs:before {content:"h:";}
-    .count-min:before {content:"m:";}
-    .count-sec:before {content:"s:";}
+    .count-yrs:after {content:"Years";}
+    .count-mon:after {content:"Months";}
+    .count-dat:after {content:"Days";}
+    .count-hrs:after {content:"Hours";}
+    .count-min:after {content:"Minutes";}
+    .count-sec:after {content:"Seconds";}
 

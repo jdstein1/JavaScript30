@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS + CSS Clock (Digital)</title>
+  <title>JS + CSS Clock (Countdown)</title>
   <link rel="stylesheet" href="digital.css">
 </head>
 <body>
@@ -10,12 +10,12 @@
   <div class="wrapper">
 
     <form action="" class="form">
-      <label for="time">count[<span class="down">down</span.>|<span class="up">up</span>] [<span class="down">from</span.>|<span class="up">until</span>]:
+      <label for="time">count[<span class="future">up</span.>|<span class="past">down</span>] [<span class="future">since</span.>|<span class="past">until</span>]:
         <input type="datetime-local" id="time" value="" step="1000">
       </label>
     </form>
 
-    <div class="result"></div>
+    <div id="result"></div>
 
     <ul class="clock">
       <!-- <li class="count count-day"> -->
@@ -32,24 +32,45 @@
   <script src="utils.js"></script>
   <script>
 
-    // let then = new Date("2012-02-10T13:19:00Z");
-    let then = "2012-02-10T13:19:43";
-    // console.log('then.toJSON(): ', then.toJSON());
+    const defaultTime = "2017-01-01T06:00:00";
+    /* the above is the only format that input[type="datetime-local"] accepts */
 
-    let dayType = "number";
+    let flagState = '';
+
+    /* cache dome objs */
+    const msgFuture = document.querySelectorAll(".future");
+    const msgPast = document.querySelectorAll(".past");
+    const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-dat");
+    const result = document.querySelector("#result");
+    const input = document.querySelector("input#time");
+
+    input.value = defaultTime;
+
+    // let now = new Date();
+    // console.log('now: ', now);
+
+    let then = new Date(defaultTime);
+    // console.log('then: ', then);
+    // console.log('then.toDateString(): ', then.toDateString());
+    // console.log('then.toGMTString(): ', then.toGMTString());
+    // console.log('then.toISOString(): ', then.toISOString());
+    // console.log('then.toJSON(): ', then.toJSON());
+    // console.log('then.toLocaleDateString(): ', then.toLocaleDateString());
+    // console.log('then.toLocaleString(): ', then.toLocaleString());
+    // console.log('then.toLocaleTimeString(): ', then.toLocaleTimeString());
+    // console.log('then.toString(): ', then.toString());
+    // console.log('then.toTimeString(): ', then.toTimeString());
+    // console.log('then.toUTCString(): ', then.toUTCString());
+
     let monthType = "number";
 
-    const result = document.querySelector(".result");
-
-    const input = document.querySelector("input#time");
-    // console.log('input: ', input);
-    input.value = then;
 
     input.addEventListener("change", function(){
-      // console.log('input: ', input.value);
+      console.log('input: ', input.value);
       // calculate(input.value);
-      then = input.value;
+      then = new Date(input.value);
       result.innerHTML = then;
+      updateTime();
     });
 
     // const day = document.querySelector(".count-day");
@@ -61,60 +82,157 @@
     const min = document.querySelector(".count-min");
     const sec = document.querySelector(".count-sec");
 
-    function updateTime(type) {
+    /**
+     * get current time ("now") and find difference between "now" and "then"
+     * @return {[type]}      [description]
+     */
+    function updateTime() {
 
       const now = new Date();
-      console.log('now: ', now);
+      // console.log('now: ', now);
       const nowTime = now.getTime();
-      console.log('nowTime: ', nowTime);
+      // console.log('nowTime: ', nowTime);
 
+      // console.log('then: ', then);
       // console.log('then.toString(): ', then.toString());
-      // let thenTime = then.getTime();
+      const thenTime = then.getTime();
       // console.log('thenTime: ', thenTime);
 
-      // const nowDay = days[dayType][now.getDay()];
-      // // console.log('nowDay: ', nowDay);
-      // switch(dayType) {
-      //   case 'number':
-      //     day.innerHTML = pad(nowDay, 2);
-      //     break;
-      //   default:
-      //     day.innerHTML = nowDay;
-      //     break;
+      const milliseconds = thenTime - nowTime;
+      // console.log('milliseconds: ', milliseconds);
+
+      if (milliseconds > 0) {
+        // the "then" date is in the future
+        console.log('future');
+        flagState = 'future';
+        msgPast.forEach(msg => msg.style.fontWeight = '900');
+        msgFuture.forEach(msg => msg.style.fontWeight = '100');
+      } else if (milliseconds < 0) {
+        // the "then" date is in the past
+        console.log('past');
+        flagState = 'past';
+        msgFuture.forEach(msg => msg.style.fontWeight = '900');
+        msgPast.forEach(msg => msg.style.fontWeight = '100');
+      } else {
+        // the "then" date is in the present
+        console.log('present');
+        flagState = 'present';
+        msgFuture.forEach(msg => msg.style.fontWeight = '100');
+        msgPast.forEach(msg => msg.style.fontWeight = '100');
+      }
+
+      // printDifference(now, then, flagState);
+      printDifferenceMs(milliseconds);
+
+    };
+
+    function printDifferenceMs (time) {
+
+      seconds = Math.abs(time)/1000;
+      function numberEnding (number) {
+          return (number > 1) ? 's' : '';
+      }
+
+      var temp = Math.floor(seconds);
+      var numYears = Math.floor(temp / units.years);
+      console.log('numYears: ', numYears);
+      // if (numYears) {
+        yrs.innerHTML = pad(numYears, 2);
       // }
+      //TODO: Months! Maybe weeks? 
+      var numMonths = Math.floor((temp %= units.years) / (units.months));
+      console.log('numMonths: ', numMonths);
+      // if (numMonths) {
+        mon.innerHTML = pad(numMonths, 2);
+      // }
+      var numDays = Math.floor((temp %= (units.months)) / units.days);
+      console.log('numDays: ', numDays);
+      // if (numDays) {
+        dat.innerHTML = pad(numDays, 2);
+      // }
+      var numHours = Math.floor((temp %= units.days) / units.hours);
+      console.log('numHours: ', numHours);
+      // if (numHours) {
+        hrs.innerHTML = pad(numHours, 2);
+      // }
+      var numMinutes = Math.floor((temp %= units.hours) / units.minutes);
+      console.log('numMinutes: ', numMinutes);
+      // if (numMinutes) {
+        min.innerHTML = pad(numMinutes, 2);
+      // }
+      var numSeconds = Math.floor(temp % units.minutes);
+      console.log('numSeconds: ', numSeconds);
+      // if (numSeconds) {
+        sec.innerHTML = pad(numSeconds, 2);
+      // }
+      // return 'less than a second'; //'just now' //or other string you like;
 
-      const nowYrs = now.getFullYear();
-      // console.log('nowYrs: ', nowYrs);
-      yrs.innerHTML = nowYrs;
 
-      const nowMon = months[monthType][now.getMonth()];
-      // console.log('nowMon: ', nowMon);
-      switch(monthType) {
-        case 'number':
-          mon.innerHTML = pad(nowMon, 2);
+      // var numYears = Math.floor(seconds / 31536000);
+      // var numMonths = Math.floor((seconds % 31536000) / (86400*30.4167));
+      // var numDays = Math.floor((seconds % 31536000) % (86400*30.4167) / 86400); 
+      // var numHours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+      // var numMinutes = Math.floor(((((seconds % 31536000) % 86400) % 30.4167) % 3600) / 60);
+      // var numSeconds = ((((seconds % 31536000) % 86400) % 30.4167) % 3600) % 60;
+
+      counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
+      console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
+
+    };
+
+    function printDifference (now, then, state) {
+
+      let newNow = now;
+      let newThen = then;
+
+      switch(state) {
+        case 'future':
+          newNow = then;
+          newThen = now;
           break;
         default:
-          mon.innerHTML = nowMon;
           break;
       }
 
-      const nowDat = now.getDate();
+      console.log('newNow: ', newNow);
+
+      const nowYrs = newNow.getFullYear();
+      // console.log('nowYrs: ', nowYrs);
+      const thenYrs = newThen.getFullYear();
+      // console.log('thenYrs: ', thenYrs);
+      yrs.innerHTML = pad(Math.abs(thenYrs - nowYrs), 2);
+
+      const nowMon = newNow.getMonth();
+      // console.log('nowMon: ', nowMon);
+      const thenMon = newThen.getMonth();
+      // console.log('thenMon: ', thenMon);
+      mon.innerHTML = pad(Math.abs(thenMon - nowMon), 2);
+
+      const nowDat = newNow.getDate();
       // console.log('nowDat: ', nowDat);
-      dat.innerHTML = pad(nowDat, 2);
+      const thenDat = newThen.getDate();
+      // console.log('thenDat: ', thenDat);
+      dat.innerHTML = pad(Math.abs(thenDat - nowDat)+1, 2);
 
-      const nowHrs = now.getHours();
+      const nowHrs = newNow.getHours();
       // console.log('nowHrs: ', nowHrs);
-      hrs.innerHTML = pad(nowHrs, 2);
+      const thenHrs = newThen.getHours();
+      // console.log('thenHrs: ', thenHrs);
+      hrs.innerHTML = pad(Math.abs(thenHrs - nowHrs), 2);
 
-      const nowMin = now.getMinutes();
+      const nowMin = newNow.getMinutes();
       // console.log('nowMin: ', nowMin);
-      min.innerHTML = pad(nowMin, 2);
+      const thenMin = newThen.getMinutes();
+      // console.log('thenMin: ', thenMin);
+      min.innerHTML = pad(Math.abs(thenMin - nowMin), 2);
 
-      const nowSec = now.getSeconds();
+      const nowSec = newNow.getSeconds();
       // console.log('nowSec: ', nowSec);
-      sec.innerHTML = pad(nowSec, 2);
+      const thenSec = newThen.getSeconds();
+      // console.log('thenSec: ', thenSec);
+      sec.innerHTML = pad(Math.abs(thenSec - nowSec), 2);
 
-    };
+    }
 
     setInterval(updateTime, 1000);
 
