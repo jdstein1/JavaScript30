@@ -1,0 +1,21 @@
+/*style.css*/
+
+body {
+  text-align: center;
+}
+
+body {
+  background: #193549;
+  color: white;
+  font-family: 'helvetica neue', sans-serif;
+  /*font-weight: 100;*/
+  font-size: 1.5rem;
+}
+
+.controls {
+  margin: 0 0 1.5rem;
+}
+
+input {
+  width:100px;
+}
