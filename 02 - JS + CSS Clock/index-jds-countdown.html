@@ -4,37 +4,50 @@
   <meta charset="UTF-8">
   <title>JS + CSS Clock (Countdown)</title>
   <link rel="stylesheet" href="digital.css">
+  <link rel="stylesheet" href="grid.css">
 </head>
 <body>
 
   <div class="wrapper">
 
     <form action="" class="form">
-      <legend id="now"></legend>
+      <!-- <label id="now">NOW:
+        <textarea name="" id="" cols="100%" rows="1"></textarea>
+      </label> -->
       <label for="time">
-        <span class="hi">count</span> [<span class="future">up</span.>|<span class="past">down</span>] [<span class="future">since</span.>|<span class="past">until</span>]
+        <span class="hi">count</span> [<span class="future">up</span>|<span class="past">down</span>] [<span class="future">since</span>|<span class="past">until</span>]
         <input type="datetime-local" id="time" value="" step="1000">
       </label>
-      <legend id="result"></legend>
+      <!-- <label id="then">THEN:
+        <textarea name="" id="" cols="100%" rows="1"></textarea>
+      </label> -->
     </form>
 
+    <table class="grid clock">
+      <tr><th></th><th>Now</th><th>Then</th><th>Delta</th></tr>
+      <tr><th>Year</th><td class="count" id="now-yrs"></td><td class="count" id="then-yrs"></td><td class="count" id="delta-yrs"></td></tr>
+      <tr><th>Month</th><td class="count" id="now-mon"></td><td class="count" id="then-mon"></td><td class="count" id="delta-mon"></td></tr>
+      <tr><th>Day</th><td class="count" id="now-day"></td><td class="count" id="then-day"></td><td class="count" id="delta-day"></td></tr>
+      <tr><th>Hour</th><td class="count" id="now-hrs"></td><td class="count" id="then-hrs"></td><td class="count" id="delta-hrs"></td></tr>
+      <tr><th>Minute</th><td class="count" id="now-min"></td><td class="count" id="then-min"></td><td class="count" id="delta-min"></td></tr>
+      <tr><th>Second</th><td class="count" id="now-sec"></td><td class="count" id="then-sec"></td><td class="count" id="delta-sec"></td></tr>
+    </table>
 
-    <ul class="clock">
-      <!-- <li class="count count-day"> -->
-      <li class="count count-yrs">
-      <li class="count count-mon">
-      <li class="count count-dat">
-      <li class="count count-hrs">
-      <li class="count count-min">
-      <li class="count count-sec">
-    </ul>
+    <!-- <ul class="clock">
+      <li class="count" id="count-yrs">
+      <li class="count" id="count-mon">
+      <li class="count" id="count-day">
+      <li class="count" id="count-hrs">
+      <li class="count" id="count-min">
+      <li class="count" id="count-sec">
+    </ul> -->
 
   </div>
 
   <script src="utils.js"></script>
   <script>
 
-    const defaultTime = "2017-01-01T06:00:00";
+    const defaultTime = "2018-01-01T06:00:00";
     /* the above is the only format that input[type="datetime-local"] accepts */
 
     let flagState = '';
@@ -42,9 +55,9 @@
     /* cache dome objs */
     const msgFuture = document.querySelectorAll(".future");
     const msgPast = document.querySelectorAll(".past");
-    const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-dat");
-    const elNow = document.querySelector("#now");
-    const elResult = document.querySelector("#result");
+    const counts = document.querySelectorAll("#count-yrs, #count-mon, #count-day");
+    // const elNow = document.querySelector("#now textarea");
+    // const elThen = document.querySelector("#then textarea");
     const input = document.querySelector("input#time");
 
     input.value = defaultTime;
@@ -53,8 +66,8 @@
     // console.log('now: ', now);
 
     let then = new Date(defaultTime);
-    elResult.innerHTML = then;
-    // console.log('then: ', then);
+    // elThen.innerHTML = then.toISOString();
+    console.log('then: ', then);
     // console.log('then.toDateString(): ', then.toDateString());
     // console.log('then.toGMTString(): ', then.toGMTString());
     // console.log('then.toISOString(): ', then.toISOString());
@@ -73,28 +86,26 @@
       console.log('input: ', input.value);
       // calculate(input.value);
       then = new Date(input.value);
-      elResult.innerHTML = then;
-      updateTime();
+      // elThen.innerHTML = then;
+      timeUpdate();
     });
 
-    // const day = document.querySelector(".count-day");
-    // day.style.fontWeight = bold;
-    const yrs = document.querySelector(".count-yrs");
-    const mon = document.querySelector(".count-mon");
-    const dat = document.querySelector(".count-dat");
-    const hrs = document.querySelector(".count-hrs");
-    const min = document.querySelector(".count-min");
-    const sec = document.querySelector(".count-sec");
+    const yrs = document.querySelector("#count-yrs");
+    const mon = document.querySelector("#count-mon");
+    const day = document.querySelector("#count-day");
+    const hrs = document.querySelector("#count-hrs");
+    const min = document.querySelector("#count-min");
+    const sec = document.querySelector("#count-sec");
 
     /**
      * get current time ("now") and find difference between "now" and "then"
      * @return {[type]}      [description]
      */
-    function updateTime() {
+    function timeUpdate() {
 
       const now = new Date();
       // console.log('now: ', now);
-      elNow.innerHTML = now;
+      // elNow.innerHTML = now.toISOString();
       const nowTime = now.getTime();
       // console.log('nowTime: ', nowTime);
 
@@ -106,6 +117,11 @@
       const milliseconds = thenTime - nowTime;
       // console.log('milliseconds: ', milliseconds);
 
+      timePrint(thenTime,nowTime);
+
+      msgFuture.forEach(msg => msg.classList.remove('hi'));
+      msgPast.forEach(msg => msg.classList.remove('hi'));
+
       if (milliseconds > 0) {
         // the "then" date is in the future
         console.log('future');
@@ -116,60 +132,111 @@
         // the "then" date is in the past
         console.log('past');
         flagState = 'past';
-        msgFuture.forEach(msg => msg.classList.add('hi'));
         msgPast.forEach(msg => msg.classList.remove('hi'));
+        msgFuture.forEach(msg => msg.classList.add('hi'));
       } else {
         // the "then" date is in the present
         console.log('present');
         flagState = 'present';
-        msgFuture.forEach(msg => msg.classList.remove('hi'));
-        msgPast.forEach(msg => msg.classList.remove('hi'));
       }
 
-      printDifferenceMs(milliseconds);
+      // timeDiff(milliseconds);
 
     };
 
-    function printDifferenceMs (time) {
+    function timePrint (then,now) {
+      console.group('START timePrint');
 
-      seconds = Math.abs(time)/1000;
-      function numberEnding (number) {
-          return (number > 1) ? 's' : '';
+      const seconds = Math.abs(then-now)/1000;
+      console.log('seconds: ', seconds);
+
+      let temp = Math.floor(seconds);
+      console.log('temp: ', temp);
+
+      // units.forEach(unit => console.log('JDS -- unit: ', unit));
+
+      for (var i = 0; i < Object.keys(units).length; i++) {
+      // for (var i = Object.keys(units).length - 1; i >= 0; i--) {
+        console.group('JDS -- Object.keys(units)[i]: ', Object.keys(units)[i]);
+
+        var r = i-1;
+        let result = 0;
+        const iKey = Object.keys(units)[i];
+        console.log('iKey el: ',document.querySelector('.count-'+iKey));
+        const rKey = Object.keys(units)[r];
+
+        if (iKey==='yrs') {
+          console.log('JDS -- YEARS // temp: ', temp);
+          // console.log('JDS -- years // units[iKey]: ', units[iKey]);
+          result = Math.floor(temp / units[iKey]);
+        } else if (iKey==='sec') {
+          console.log('JDS -- SECONDS // temp: ', temp);
+          // console.log('JDS -- seconds // units[iKey]: ', units[iKey]);
+          result = Math.floor(temp % units[rKey]);
+        } else {
+          console.log('JDS -- '+iKey+' // temp: ', temp);
+          // console.log('JDS -- '+iKey+' // units[iKey]: ', units[iKey]);
+          result = Math.floor((temp %= units[rKey]) / (units[iKey]));
+        }
+        let method = dateFunctions[iKey];
+        console.log('test', new Date()[method]());
+
+        if (method==='getMonth') {
+          document.querySelector('#now-'+iKey).innerHTML = pad(new Date(now)[method]()+1, 2);
+          document.querySelector('#then-'+iKey).innerHTML = pad(new Date(then)[method]()+1, 2);
+        } else {
+          document.querySelector('#now-'+iKey).innerHTML = pad(new Date(now)[method](), 2);
+          document.querySelector('#then-'+iKey).innerHTML = pad(new Date(then)[method](), 2);
+        }
+
+        // document.querySelector('#count-'+iKey).innerHTML = pad(result, 2);
+        document.querySelector('#delta-'+iKey).innerHTML = pad(result, 2);
+        console.log('JDS -- result: ', result+' '+iKey);
+        console.groupEnd();
       }
 
+      counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
+
+      console.groupEnd();
+
+    };
+
+    function timeDiff (time) {
+
+      var seconds = Math.abs(time)/1000;
+      console.log('seconds: ', seconds);
+
+      // function numberEnding (number) {
+      //     return (number > 1) ? 's' : '';
+      // }
+
       var temp = Math.floor(seconds);
+      // console.log('temp: ', temp);
+
       var numYears = Math.floor(temp / units.years);
-      console.log('numYears: ', numYears);
-      // if (numYears) {
-        yrs.innerHTML = pad(numYears, 2);
-      // }
+      // console.log('numYears: ', numYears);
+      yrs.innerHTML = pad(numYears, 2);
+
       //TODO: Months! Maybe weeks? 
-      var numMonths = Math.floor((temp %= units.years) / (units.months));
-      console.log('numMonths: ', numMonths);
-      // if (numMonths) {
-        mon.innerHTML = pad(numMonths, 2);
-      // }
-      var numDays = Math.floor((temp %= (units.months)) / units.days);
-      console.log('numDays: ', numDays);
-      // if (numDays) {
-        dat.innerHTML = pad(numDays, 2);
-      // }
+      var numMonths = Math.floor((temp %= units.years) / units.months);
+      // console.log('numMonths: ', numMonths);
+      mon.innerHTML = pad(numMonths, 2);
+
+      var numDays = Math.floor((temp %= units.months) / units.days);
+      // console.log('numDays: ', numDays);
+      day.innerHTML = pad(numDays, 2);
+
       var numHours = Math.floor((temp %= units.days) / units.hours);
-      console.log('numHours: ', numHours);
-      // if (numHours) {
-        hrs.innerHTML = pad(numHours, 2);
-      // }
+      // console.log('numHours: ', numHours);
+      hrs.innerHTML = pad(numHours, 2);
+
       var numMinutes = Math.floor((temp %= units.hours) / units.minutes);
-      console.log('numMinutes: ', numMinutes);
-      // if (numMinutes) {
-        min.innerHTML = pad(numMinutes, 2);
-      // }
+      // console.log('numMinutes: ', numMinutes);
+      min.innerHTML = pad(numMinutes, 2);
+
       var numSeconds = Math.floor(temp % units.minutes);
-      console.log('numSeconds: ', numSeconds);
-      // if (numSeconds) {
-        sec.innerHTML = pad(numSeconds, 2);
-      // }
-      // return 'less than a second'; //'just now' //or other string you like;
+      // console.log('numSeconds: ', numSeconds);
+      sec.innerHTML = pad(numSeconds, 2);
 
       counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
 
@@ -177,7 +244,8 @@
 
     };
 
-    setInterval(updateTime, 1000);
+    timeUpdate();
+    setInterval(timeUpdate, 1000);
 
   </script>
 </body>

@@ -26,12 +26,37 @@ time.forEach(function(e){
   e.innerHTML = "--"
 });
 
+/**
+ * Lengths of units of time in seconds.
+ * 
+ * Notes:
+ * 
+ * - An average year is 365.24225 days (adjusting for leap years/
+ * days).
+ * 
+ * - Therefore an average month is (365.24225/12) or 30.4368541667 
+ * days long.
+ * 
+ * - Using these averages will introduce more margin of error when 
+ * comparing dates in the middles of months than dates at the 
+ * beginnings or ends of months.
+ * 
+ */
 const units = {
-  "years":31536000,
-  // "months":(31536000/12),
-  "months":(86400*30.4167),
-  "days":86400,
-  "hours":3600,
-  "minutes":60,
-  "seconds":1
-}
+  // "years":(31536000),
+  "yrs":(86400*365.24225),
+  "mon":(86400*30.4368541667),
+  "day":86400,
+  "hrs":3600,
+  "min":60,
+  "sec":1
+};
+
+const dateFunctions = {
+  "yrs":"getFullYear",
+  "mon":"getMonth",
+  "day":"getDate",
+  "hrs":"getHours",
+  "min":"getMinutes",
+  "sec":"getSeconds"
+};

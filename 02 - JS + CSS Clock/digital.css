@@ -51,7 +51,10 @@ fieldset, legend, label, input, button, textarea, select {padding: 0.5rem; margi
   /*min-width:2em;*/
   color:rgb(204,51,51);
 }
-.count {display: block;}
+.count {
+  display: block;
+  display: table-cell;
+}
 
 .time-day {font-size: 2.5rem;}
 .time-yrs {}
@@ -72,12 +75,12 @@ fieldset, legend, label, input, button, textarea, select {padding: 0.5rem; margi
 .time-hrs:before {content:"T";}
 .time-min:before, .time-sec:before {content:":";}
 
-.count-yrs:after {content:"Years";}
-.count-mon:after {content:"Months";}
-.count-dat:after {content:"Days";}
-.count-hrs:after {content:"Hours";}
-.count-min:after {content:"Minutes";}
-.count-sec:after {content:"Seconds";}
+#count-yrs:after {content:"Years";}
+#count-mon:after {content:"Months";}
+#count-day:after {content:"Days";}
+#count-hrs:after {content:"Hours";}
+#count-min:after {content:"Minutes";}
+#count-sec:after {content:"Seconds";}
 
 .hi {
   color:#000;
