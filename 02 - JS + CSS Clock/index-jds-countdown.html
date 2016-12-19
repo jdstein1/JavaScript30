@@ -10,66 +10,130 @@
 
   <div class="wrapper">
 
-    <form action="" class="form">
-      <!-- <label id="now">NOW:
-        <textarea name="" id="" cols="100%" rows="1"></textarea>
-      </label> -->
-      <label for="time">
-        <span class="hi">count</span> [<span class="future">up</span>|<span class="past">down</span>] [<span class="future">since</span>|<span class="past">until</span>]
-        <input type="datetime-local" id="time" value="" step="1000">
-      </label>
-      <!-- <label id="then">THEN:
-        <textarea name="" id="" cols="100%" rows="1"></textarea>
-      </label> -->
-    </form>
-
     <table class="grid clock">
-      <tr><th></th><th>Now</th><th>Then</th><th>Delta</th></tr>
-      <tr><th>Year</th><td class="count" id="now-yrs"></td><td class="count" id="then-yrs"></td><td class="count" id="delta-yrs"></td></tr>
-      <tr><th>Month</th><td class="count" id="now-mon"></td><td class="count" id="then-mon"></td><td class="count" id="delta-mon"></td></tr>
-      <tr><th>Day</th><td class="count" id="now-day"></td><td class="count" id="then-day"></td><td class="count" id="delta-day"></td></tr>
-      <tr><th>Hour</th><td class="count" id="now-hrs"></td><td class="count" id="then-hrs"></td><td class="count" id="delta-hrs"></td></tr>
-      <tr><th>Minute</th><td class="count" id="now-min"></td><td class="count" id="then-min"></td><td class="count" id="delta-min"></td></tr>
-      <tr><th>Second</th><td class="count" id="now-sec"></td><td class="count" id="then-sec"></td><td class="count" id="delta-sec"></td></tr>
+      <tr>
+        <td></td>
+        <th>Now</th>
+        <th>Then</th>
+        <th>Delta</th>
+      </tr>
+      <tr>
+        <th>Year</th>
+        <td class="count now-yrs"></td>
+        <td class="count then-yrs"></td>
+        <td class="count delta-yrs"></td>
+      </tr>
+      <tr>
+        <th>Month</th>
+        <td class="count now-mon"></td>
+        <td class="count then-mon"></td>
+        <td class="count delta-mon"></td>
+      </tr>
+      <tr>
+        <th>Day</th>
+        <td class="count now-day"></td>
+        <td class="count then-day"></td>
+        <td class="count delta-day"></td>
+      </tr>
+      <tr>
+        <th>Hour</th>
+        <td class="count now-hrs"></td>
+        <td class="count then-hrs"></td>
+        <td class="count delta-hrs"></td>
+      </tr>
+      <tr>
+        <th>Minute</th>
+        <td class="count now-min"></td>
+        <td class="count then-min"></td>
+        <td class="count delta-min"></td>
+      </tr>
+      <tr>
+        <th>Second</th>
+        <td class="count now-sec"></td>
+        <td class="count then-sec"></td>
+        <td class="count delta-sec"></td>
+      </tr>
     </table>
 
-    <!-- <ul class="clock">
-      <li class="count" id="count-yrs">
-      <li class="count" id="count-mon">
-      <li class="count" id="count-day">
-      <li class="count" id="count-hrs">
-      <li class="count" id="count-min">
-      <li class="count" id="count-sec">
-    </ul> -->
+    <form action="" class="form">
+      <fieldset class="module">
+        <!-- <legend for="datetime">
+          <span class="hi">now</span>
+        </legend> -->
+        <label for="now">now</label>
+        <input class="clock" type="datetime-local" id="now" name="now" step="1000" disabled><input class="clock timezone" type="text" id="nowOffset" name="nowOffset" value="" disabled>
+      </fieldset>
+      <fieldset class="module">
+        <label for="then">then</label>
+        <input class="clock" type="datetime-local" id="then" name="then" value="" step="1000"><input class="clock timezone" type="text" id="thenOffset" name="thenOffset" value="" disabled>
+      </fieldset>
+      <!-- <fieldset class="module">
+        <label for="then-date2">date
+          <input class="clock" type="date" id="then-date2" name="then-date2" value="">
+        </label>
+        <label for="then-time2">time
+          <input class="clock" type="time" id="then-time2" name="then-time2" value="" step="1000">
+        </label>
+      </fieldset> -->
+      <fieldset class="module">
+        <legend>[<span class="future">time elapsed</span>|<span class="past">countdown</span>] [<span class="future">since</span>|<span class="past">until</span>]</legend>
+        <label for="">delta</label>
+        <ul class="clock">
+          <li class="count count-yrs">
+          <li class="count count-mon">
+          <li class="count count-day">
+          <li class="count count-hrs">
+          <li class="count count-min">
+          <li class="count count-sec">
+        </ul>
+      </fieldset>
+    </form>
+
 
   </div>
 
   <script src="utils.js"></script>
   <script>
 
-    const defaultTime = "2018-01-01T06:00:00";
-    /* the above is the only format that input[type="datetime-local"] accepts */
+    /* the below is the only format (date.toISOString()) that input[type="datetime-local"] accepts */
+    const defTime = "2018-01-01T06:00:00";
+    const defTimeArr = defTime.split("T");
+    // console.log('defTimeArr: ', defTimeArr);
 
     let flagState = '';
 
     /* cache dome objs */
+    const grids = document.querySelectorAll(".grid");
     const msgFuture = document.querySelectorAll(".future");
     const msgPast = document.querySelectorAll(".past");
-    const counts = document.querySelectorAll("#count-yrs, #count-mon, #count-day");
-    // const elNow = document.querySelector("#now textarea");
-    // const elThen = document.querySelector("#then textarea");
-    const input = document.querySelector("input#time");
 
-    input.value = defaultTime;
+    const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-day");
+
+    const elNow = document.querySelector("input#now");
+    const elNowOffset = document.querySelector("input#nowOffset");
+
+    const elThen = document.querySelector("input#then");
+    const elThenOffset = document.querySelector("input#thenOffset");
+
+    const elThenDate2 = document.querySelector("input#then-date2");
+    const elThenTime2 = document.querySelector("input#then-time2");
+
+    elThen.value = defTime;
+    // elThenDate2.value = defTimeArr[0];
+    // elThenTime2.value = defTimeArr[1];
 
     // let now = new Date();
     // console.log('now: ', now);
 
-    let then = new Date(defaultTime);
-    // elThen.innerHTML = then.toISOString();
+    let then = new Date(defTime);
     console.log('then: ', then);
+
+    timezoneOffset(then, elThenOffset);
+
     // console.log('then.toDateString(): ', then.toDateString());
-    // console.log('then.toGMTString(): ', then.toGMTString());
+    console.log('Date.UTC(then): ', Date.UTC(then));
+    console.log('then.toUTCString(): ', then.toUTCString());
+    console.log('then.toGMTString(): ', then.toGMTString());
     // console.log('then.toISOString(): ', then.toISOString());
     // console.log('then.toJSON(): ', then.toJSON());
     // console.log('then.toLocaleDateString(): ', then.toLocaleDateString());
@@ -77,25 +141,22 @@
     // console.log('then.toLocaleTimeString(): ', then.toLocaleTimeString());
     // console.log('then.toString(): ', then.toString());
     // console.log('then.toTimeString(): ', then.toTimeString());
-    // console.log('then.toUTCString(): ', then.toUTCString());
+    // elThen.innerHTML = then.toISOString();
 
-    let monthType = "number";
-
-
-    input.addEventListener("change", function(){
-      console.log('input: ', input.value);
-      // calculate(input.value);
-      then = new Date(input.value);
+    elThen.addEventListener("change", function(){
+      console.log('elThen: ', elThen.value);
+      // calculate(elThen.value);
+      then = new Date(elThen.value);
       // elThen.innerHTML = then;
       timeUpdate();
     });
 
-    const yrs = document.querySelector("#count-yrs");
-    const mon = document.querySelector("#count-mon");
-    const day = document.querySelector("#count-day");
-    const hrs = document.querySelector("#count-hrs");
-    const min = document.querySelector("#count-min");
-    const sec = document.querySelector("#count-sec");
+    const yrs = document.querySelector(".count-yrs");
+    const mon = document.querySelector(".count-mon");
+    const day = document.querySelector(".count-day");
+    const hrs = document.querySelector(".count-hrs");
+    const min = document.querySelector(".count-min");
+    const sec = document.querySelector(".count-sec");
 
     /**
      * get current time ("now") and find difference between "now" and "then"
@@ -105,7 +166,9 @@
 
       const now = new Date();
       // console.log('now: ', now);
-      // elNow.innerHTML = now.toISOString();
+      elNow.value = now.toISOString().slice(0, -5);
+      // console.log('now: ', now.toISOString().slice(0, -5));
+      timezoneOffset(now, elNowOffset);
       const nowTime = now.getTime();
       // console.log('nowTime: ', nowTime);
 
@@ -182,20 +245,21 @@
         console.log('test', new Date()[method]());
 
         if (method==='getMonth') {
-          document.querySelector('#now-'+iKey).innerHTML = pad(new Date(now)[method]()+1, 2);
-          document.querySelector('#then-'+iKey).innerHTML = pad(new Date(then)[method]()+1, 2);
+          document.querySelector('.now-'+iKey).innerHTML = pad(new Date(now)[method]()+1, 2);
+          document.querySelector('.then-'+iKey).innerHTML = pad(new Date(then)[method]()+1, 2);
         } else {
-          document.querySelector('#now-'+iKey).innerHTML = pad(new Date(now)[method](), 2);
-          document.querySelector('#then-'+iKey).innerHTML = pad(new Date(then)[method](), 2);
+          document.querySelector('.now-'+iKey).innerHTML = pad(new Date(now)[method](), 2);
+          document.querySelector('.then-'+iKey).innerHTML = pad(new Date(then)[method](), 2);
         }
 
-        // document.querySelector('#count-'+iKey).innerHTML = pad(result, 2);
-        document.querySelector('#delta-'+iKey).innerHTML = pad(result, 2);
+        // document.querySelector('.count-'+iKey).innerHTML = pad(result, 2);
+        document.querySelector('.delta-'+iKey).innerHTML = pad(result, 2);
+        document.querySelector('.count-'+iKey).innerHTML = pad(result, 2);
         console.log('JDS -- result: ', result+' '+iKey);
         console.groupEnd();
       }
 
-      counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
+      hideZeroes(counts);
 
       console.groupEnd();
 
@@ -238,14 +302,34 @@
       // console.log('numSeconds: ', numSeconds);
       sec.innerHTML = pad(numSeconds, 2);
 
-      counts.forEach(count => {if (count.innerHTML === '00') {count.style.display = 'none'} else {count.style.display = 'block'}});
+      hideZeroes(counts);
 
-      console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
+      // console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
 
     };
 
+    function hideZeroes (things) {
+      things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'table-cell'}});
+    }
+    function timezoneOffset (time, el) {
+      const offset = time.getTimezoneOffset()/60;
+      // const el = time;
+      let string = '';
+      if (offset > 0) {
+        string = 'UTC+'+offset;
+      } else if (offset < 0) {
+        string = 'UTC-'+offset;
+      } else {
+        string = 'UTC';
+      }
+      el.value = string;
+
+    }
+
     timeUpdate();
     setInterval(timeUpdate, 1000);
+
+    grids.forEach(grid => grid.style.display = 'none');
 
   </script>
 </body>
