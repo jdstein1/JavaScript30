@@ -55,30 +55,34 @@
       </tr>
     </table>
 
-    <form action="" class="form">
-      <fieldset class="module">
-        <!-- <legend for="datetime">
-          <span class="hi">now</span>
-        </legend> -->
+    <!-- <form action="" class="form"> -->
+      <fieldset class="module clock-now">
+        <!-- <legend><span class="hi">now</span></legend> -->
+        <span class="timezone" id="nowOffset"></span>
         <label for="now">now</label>
-        <input class="clock" type="datetime-local" id="now" name="now" step="1000" disabled><input class="clock timezone" type="text" id="nowOffset" name="nowOffset" value="" disabled>
+        <input class="clock display" type="datetime-local" id="now" name="now" step="1000" disabled>
+        <!-- <input class="clock timezone" type="text" id="nowOffset" name="nowOffset" value="" disabled> -->
       </fieldset>
-      <fieldset class="module">
-        <label for="then">then</label>
-        <input class="clock" type="datetime-local" id="then" name="then" value="" step="1000"><input class="clock timezone" type="text" id="thenOffset" name="thenOffset" value="" disabled>
+      <fieldset class="module clock-then">
+        <!-- <legend><span class="hi">then</span></legend> -->
+        <span class="timezone" id="thenOffset"></span>
+        <label for="then">then <small><a id="link-edit" href="#">edit</a></small></label>
+        <input class="clock display" type="datetime-local" id="then" name="then" value="" step="1000">
+        <!-- <input class="clock timezone" type="text" id="thenOffset" name="thenOffset" value="" disabled> -->
       </fieldset>
       <!-- <fieldset class="module">
         <label for="then-date2">date
-          <input class="clock" type="date" id="then-date2" name="then-date2" value="">
+          <input class="clock display" type="date" id="then-date2" name="then-date2" value="">
         </label>
         <label for="then-time2">time
-          <input class="clock" type="time" id="then-time2" name="then-time2" value="" step="1000">
+          <input class="clock display" type="time" id="then-time2" name="then-time2" value="" step="1000">
         </label>
       </fieldset> -->
-      <fieldset class="module">
-        <legend>[<span class="future">time elapsed</span>|<span class="past">countdown</span>] [<span class="future">since</span>|<span class="past">until</span>]</legend>
-        <label for="">delta</label>
-        <ul class="clock">
+      <fieldset class="module clock-delta">
+        <legend>time <span class="future">elapsed</span><span class="past">left</span> between <strong>now</strong> and <em>then</em></legend>
+        <!-- <label for="">time</label> -->
+        <!-- <label for=""><span class="hi">time</span> <span class="future">elapsed</span><span class="past">left</span> <span class="future">since</span><span class="past">until</span></label> -->
+        <ul class="clock display">
           <li class="count count-yrs">
           <li class="count count-mon">
           <li class="count count-day">
@@ -87,250 +91,12 @@
           <li class="count count-sec">
         </ul>
       </fieldset>
-    </form>
-
+    <!-- </form> -->
 
   </div>
 
   <script src="utils.js"></script>
-  <script>
+  <script src="countdown.js"></script>
 
-    /* the below is the only format (date.toISOString()) that input[type="datetime-local"] accepts */
-    const defTime = "2018-01-01T06:00:00";
-    const defTimeArr = defTime.split("T");
-    // console.log('defTimeArr: ', defTimeArr);
-
-    let flagState = '';
-
-    /* cache dome objs */
-    const grids = document.querySelectorAll(".grid");
-    const msgFuture = document.querySelectorAll(".future");
-    const msgPast = document.querySelectorAll(".past");
-
-    const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-day");
-
-    const elNow = document.querySelector("input#now");
-    const elNowOffset = document.querySelector("input#nowOffset");
-
-    const elThen = document.querySelector("input#then");
-    const elThenOffset = document.querySelector("input#thenOffset");
-
-    const elThenDate2 = document.querySelector("input#then-date2");
-    const elThenTime2 = document.querySelector("input#then-time2");
-
-    elThen.value = defTime;
-    // elThenDate2.value = defTimeArr[0];
-    // elThenTime2.value = defTimeArr[1];
-
-    // let now = new Date();
-    // console.log('now: ', now);
-
-    let then = new Date(defTime);
-    console.log('then: ', then);
-
-    timezoneOffset(then, elThenOffset);
-
-    // console.log('then.toDateString(): ', then.toDateString());
-    console.log('Date.UTC(then): ', Date.UTC(then));
-    console.log('then.toUTCString(): ', then.toUTCString());
-    console.log('then.toGMTString(): ', then.toGMTString());
-    // console.log('then.toISOString(): ', then.toISOString());
-    // console.log('then.toJSON(): ', then.toJSON());
-    // console.log('then.toLocaleDateString(): ', then.toLocaleDateString());
-    // console.log('then.toLocaleString(): ', then.toLocaleString());
-    // console.log('then.toLocaleTimeString(): ', then.toLocaleTimeString());
-    // console.log('then.toString(): ', then.toString());
-    // console.log('then.toTimeString(): ', then.toTimeString());
-    // elThen.innerHTML = then.toISOString();
-
-    elThen.addEventListener("change", function(){
-      console.log('elThen: ', elThen.value);
-      // calculate(elThen.value);
-      then = new Date(elThen.value);
-      // elThen.innerHTML = then;
-      timeUpdate();
-    });
-
-    const yrs = document.querySelector(".count-yrs");
-    const mon = document.querySelector(".count-mon");
-    const day = document.querySelector(".count-day");
-    const hrs = document.querySelector(".count-hrs");
-    const min = document.querySelector(".count-min");
-    const sec = document.querySelector(".count-sec");
-
-    /**
-     * get current time ("now") and find difference between "now" and "then"
-     * @return {[type]}      [description]
-     */
-    function timeUpdate() {
-
-      const now = new Date();
-      // console.log('now: ', now);
-      elNow.value = now.toISOString().slice(0, -5);
-      // console.log('now: ', now.toISOString().slice(0, -5));
-      timezoneOffset(now, elNowOffset);
-      const nowTime = now.getTime();
-      // console.log('nowTime: ', nowTime);
-
-      // console.log('then: ', then);
-      // console.log('then.toString(): ', then.toString());
-      const thenTime = then.getTime();
-      // console.log('thenTime: ', thenTime);
-
-      const milliseconds = thenTime - nowTime;
-      // console.log('milliseconds: ', milliseconds);
-
-      timePrint(thenTime,nowTime);
-
-      msgFuture.forEach(msg => msg.classList.remove('hi'));
-      msgPast.forEach(msg => msg.classList.remove('hi'));
-
-      if (milliseconds > 0) {
-        // the "then" date is in the future
-        console.log('future');
-        flagState = 'future';
-        msgPast.forEach(msg => msg.classList.add('hi'));
-        msgFuture.forEach(msg => msg.classList.remove('hi'));
-      } else if (milliseconds < 0) {
-        // the "then" date is in the past
-        console.log('past');
-        flagState = 'past';
-        msgPast.forEach(msg => msg.classList.remove('hi'));
-        msgFuture.forEach(msg => msg.classList.add('hi'));
-      } else {
-        // the "then" date is in the present
-        console.log('present');
-        flagState = 'present';
-      }
-
-      // timeDiff(milliseconds);
-
-    };
-
-    function timePrint (then,now) {
-      console.group('START timePrint');
-
-      const seconds = Math.abs(then-now)/1000;
-      console.log('seconds: ', seconds);
-
-      let temp = Math.floor(seconds);
-      console.log('temp: ', temp);
-
-      // units.forEach(unit => console.log('JDS -- unit: ', unit));
-
-      for (var i = 0; i < Object.keys(units).length; i++) {
-      // for (var i = Object.keys(units).length - 1; i >= 0; i--) {
-        console.group('JDS -- Object.keys(units)[i]: ', Object.keys(units)[i]);
-
-        var r = i-1;
-        let result = 0;
-        const iKey = Object.keys(units)[i];
-        console.log('iKey el: ',document.querySelector('.count-'+iKey));
-        const rKey = Object.keys(units)[r];
-
-        if (iKey==='yrs') {
-          console.log('JDS -- YEARS // temp: ', temp);
-          // console.log('JDS -- years // units[iKey]: ', units[iKey]);
-          result = Math.floor(temp / units[iKey]);
-        } else if (iKey==='sec') {
-          console.log('JDS -- SECONDS // temp: ', temp);
-          // console.log('JDS -- seconds // units[iKey]: ', units[iKey]);
-          result = Math.floor(temp % units[rKey]);
-        } else {
-          console.log('JDS -- '+iKey+' // temp: ', temp);
-          // console.log('JDS -- '+iKey+' // units[iKey]: ', units[iKey]);
-          result = Math.floor((temp %= units[rKey]) / (units[iKey]));
-        }
-        let method = dateFunctions[iKey];
-        console.log('test', new Date()[method]());
-
-        if (method==='getMonth') {
-          document.querySelector('.now-'+iKey).innerHTML = pad(new Date(now)[method]()+1, 2);
-          document.querySelector('.then-'+iKey).innerHTML = pad(new Date(then)[method]()+1, 2);
-        } else {
-          document.querySelector('.now-'+iKey).innerHTML = pad(new Date(now)[method](), 2);
-          document.querySelector('.then-'+iKey).innerHTML = pad(new Date(then)[method](), 2);
-        }
-
-        // document.querySelector('.count-'+iKey).innerHTML = pad(result, 2);
-        document.querySelector('.delta-'+iKey).innerHTML = pad(result, 2);
-        document.querySelector('.count-'+iKey).innerHTML = pad(result, 2);
-        console.log('JDS -- result: ', result+' '+iKey);
-        console.groupEnd();
-      }
-
-      hideZeroes(counts);
-
-      console.groupEnd();
-
-    };
-
-    function timeDiff (time) {
-
-      var seconds = Math.abs(time)/1000;
-      console.log('seconds: ', seconds);
-
-      // function numberEnding (number) {
-      //     return (number > 1) ? 's' : '';
-      // }
-
-      var temp = Math.floor(seconds);
-      // console.log('temp: ', temp);
-
-      var numYears = Math.floor(temp / units.years);
-      // console.log('numYears: ', numYears);
-      yrs.innerHTML = pad(numYears, 2);
-
-      //TODO: Months! Maybe weeks? 
-      var numMonths = Math.floor((temp %= units.years) / units.months);
-      // console.log('numMonths: ', numMonths);
-      mon.innerHTML = pad(numMonths, 2);
-
-      var numDays = Math.floor((temp %= units.months) / units.days);
-      // console.log('numDays: ', numDays);
-      day.innerHTML = pad(numDays, 2);
-
-      var numHours = Math.floor((temp %= units.days) / units.hours);
-      // console.log('numHours: ', numHours);
-      hrs.innerHTML = pad(numHours, 2);
-
-      var numMinutes = Math.floor((temp %= units.hours) / units.minutes);
-      // console.log('numMinutes: ', numMinutes);
-      min.innerHTML = pad(numMinutes, 2);
-
-      var numSeconds = Math.floor(temp % units.minutes);
-      // console.log('numSeconds: ', numSeconds);
-      sec.innerHTML = pad(numSeconds, 2);
-
-      hideZeroes(counts);
-
-      // console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
-
-    };
-
-    function hideZeroes (things) {
-      things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'table-cell'}});
-    }
-    function timezoneOffset (time, el) {
-      const offset = time.getTimezoneOffset()/60;
-      // const el = time;
-      let string = '';
-      if (offset > 0) {
-        string = 'UTC+'+offset;
-      } else if (offset < 0) {
-        string = 'UTC-'+offset;
-      } else {
-        string = 'UTC';
-      }
-      el.value = string;
-
-    }
-
-    timeUpdate();
-    setInterval(timeUpdate, 1000);
-
-    grids.forEach(grid => grid.style.display = 'none');
-
-  </script>
 </body>
 </html>
