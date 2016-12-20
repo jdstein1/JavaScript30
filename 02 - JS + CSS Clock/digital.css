@@ -13,6 +13,8 @@ html, body {
   text-align:center;
 }
 
+p {margin: 1em 0;}
+
 ul, ol, dl {list-style-type:none;}
 li, dt, dd {text-align:left;}
 
@@ -38,12 +40,13 @@ a, a:link, a:hover, a:visited, a:active {text-decoration: none; border-bottom: 2
   box-shadow: 
     0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25),
     0 0 0.75rem 0 rgba(0, 0, 0, 0.125);
-  margin: 1rem 0;
+  margin: 1rem 0 0;
+  padding:0.25rem;
 }
 
 .clock {
-  padding:0.5rem 0;
-  margin:0.5rem 0;
+  padding:0.5rem 0 0;
+  margin:0.5rem 0 0;
   font-size:2rem;
   white-space:normal;
   background-color:#111;
@@ -62,21 +65,20 @@ form, fieldset, legend, label, input, button, textarea, select, option {
   text-align:center;
   /*display:inline-block;*/
   /*width: auto;*/
-  padding:0.25rem 0;
-  margin:0.25rem 0;
+  padding:0;
+  margin:0;
   border:none;
   color:#333;
 }
 
 fieldset {
-  margin:0.5rem 0;
   position: relative;
 }
 legend, label {
   font-size: 1.5rem;
   font-weight:900;
   width: 100%;
-  margin: 0 auto -0.75rem;
+  margin: 0.25em auto -0.5rem;
   padding: 0.5em 0;
 }
 .module, legend, label {
@@ -84,8 +86,8 @@ legend, label {
   background-color:rgb(204,204,204);
 }
 legend {
-  padding-top: 0.75em;
-  margin-bottom: -1rem;
+  padding: 0.75em 0.25rem 0.25em;
+  /* margin-bottom: -1rem; */
 }
 input, button, textarea, select {
   min-height: 3rem;
