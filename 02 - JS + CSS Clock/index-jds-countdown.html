@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>JS + CSS Clock (Countdown)</title>
   <link rel="stylesheet" href="digital.css">
+  <link rel="stylesheet" href="countdown.css">
   <link rel="stylesheet" href="grid.css">
 </head>
 <body>
@@ -57,31 +58,17 @@
 
     <!-- <form action="" class="form"> -->
       <fieldset class="module clock-now">
-        <!-- <legend><span class="hi">now</span></legend> -->
         <span class="timezone" id="nowOffset"></span>
-        <label for="now">now</label>
-        <input class="clock display" type="datetime-local" id="now" name="now" step="1000" disabled>
-        <!-- <input class="clock timezone" type="text" id="nowOffset" name="nowOffset" value="" disabled> -->
+        <label for="now"><span class="now hi">now</span></label>
+        <input class="clock display" type="datetime-local" id="now" name="now" step="1000" readonly>
       </fieldset>
       <fieldset class="module clock-then">
-        <!-- <legend><span class="hi">then</span></legend> -->
         <span class="timezone" id="thenOffset"></span>
-        <label for="then">then <small><a id="link-edit" href="#">edit</a></small></label>
+        <label for="then"><span class="then hi">then</span> <!-- <small><a id="link-edit" href="#">edit</a></small> --></label>
         <input class="clock display" type="datetime-local" id="then" name="then" value="" step="1000">
-        <!-- <input class="clock timezone" type="text" id="thenOffset" name="thenOffset" value="" disabled> -->
       </fieldset>
-      <!-- <fieldset class="module">
-        <label for="then-date2">date
-          <input class="clock display" type="date" id="then-date2" name="then-date2" value="">
-        </label>
-        <label for="then-time2">time
-          <input class="clock display" type="time" id="then-time2" name="then-time2" value="" step="1000">
-        </label>
-      </fieldset> -->
       <fieldset class="module clock-delta">
-        <legend>time <span class="future">elapsed</span><span class="past">left</span> between <strong>now</strong> and <em>then</em></legend>
-        <!-- <label for="">time</label> -->
-        <!-- <label for=""><span class="hi">time</span> <span class="future">elapsed</span><span class="past">left</span> <span class="future">since</span><span class="past">until</span></label> -->
+        <label>time <span class="delta future">elapsed</span><span class="delta past">left</span> between <span class="now">now</span> and <span class="then">then</span></label>
         <ul class="clock display">
           <li class="count count-yrs">
           <li class="count count-mon">

@@ -57,6 +57,7 @@
     // console.log('then.toTimeString(): ', then.toTimeString());
     // elThen.innerHTML = then.toISOString();
 
+if (elThen) {
     elThen.addEventListener("change", function(){
       console.log('elThen: ', elThen.value);
       // calculate(elThen.value);
@@ -64,11 +65,14 @@
       // elThen.innerHTML = then;
       timeUpdate();
     });
+}
 
+if (linkEdit) {
     linkEdit.addEventListener("click", function(){
       console.log('linkEdit: ', linkEdit);
       elThen.focus();
     });
+}
 
     /**
      * get current time ("now") and find difference between "now" and "then"
@@ -221,30 +225,7 @@
     };
 
     function hideZeroes (things) {
-      things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'table-cell'}});
-    }
-
-    function timezoneOffset (time, el) {
-      console.log('el: ', el.tagName);
-      const offset = time.getTimezoneOffset()/60;
-      // const el = time;
-      let string = '';
-      if (offset > 0) {
-        string = 'UTC+'+offset;
-      } else if (offset < 0) {
-        string = 'UTC-'+offset;
-      } else {
-        string = 'UTC';
-      }
-      if (el.tagName) {
-        if (el.tagName === 'INPUT') {
-          el.value = string;
-        } else {
-          el.innerHTML = string;
-        }
-      } else {
-        console.log('el.tagName error!');
-      }
+      things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'inline'}});
     }
 
     timeUpdate();

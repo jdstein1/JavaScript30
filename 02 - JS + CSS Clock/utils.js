@@ -60,3 +60,26 @@ const dateFunctions = {
   "min":"getMinutes",
   "sec":"getSeconds"
 };
+
+function timezoneOffset (time, el) {
+  console.log('el: ', el.tagName);
+  const offset = time.getTimezoneOffset()/60;
+  // const el = time;
+  let string = '';
+  if (offset > 0) {
+    string = 'UTC+'+offset;
+  } else if (offset < 0) {
+    string = 'UTC-'+offset;
+  } else {
+    string = 'UTC';
+  }
+  if (el.tagName) {
+    if (el.tagName === 'INPUT') {
+      el.value = string;
+    } else {
+      el.innerHTML = string;
+    }
+  } else {
+    console.log('el.tagName error!');
+  }
+}

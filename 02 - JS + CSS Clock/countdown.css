@@ -1,0 +1,34 @@
+/* countdown.css */
+
+.count {
+  display:inline-block;
+}
+.count, li.count, td.count {
+  /* display:table-cell; */
+  /* width: auto; */
+}
+
+.count:before, .count:after, th {
+  font-size:0.6em;
+  padding-right:1em;
+  vertical-align:baseline;
+}
+.count:first-of-type:before, .count:last-of-type:after {padding:0;}
+
+.count-yrs:after {content:"Years";}
+.count-mon:after {content:"Months";}
+.count-day:after {content:"Days";}
+.count-hrs:after {content:"Hours";}
+.count-min:after {content:"Minutes";}
+.count-sec:after {content:"Seconds";}
+
+.future, .past {
+  border:none;
+  display:none;
+}
+
+#disclaimer {
+  position:absolute;
+  top:auto;
+  bottom:0;
+}
