@@ -83,3 +83,7 @@ function timezoneOffset (time, el) {
     console.log('el.tagName error!');
   }
 }
+
+function hideZeroes (things) {
+  things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'inline'}});
+}

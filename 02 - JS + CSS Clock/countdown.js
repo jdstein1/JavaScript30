@@ -5,13 +5,12 @@
     const defTimeArr = defTime.split("T");
     // console.log('defTimeArr: ', defTimeArr);
 
-    let flagState = '';
+    // let flagState = '';
 
     /* cache dome objs */
     const grids = document.querySelectorAll(".grid");
     const msgFuture = document.querySelectorAll(".future");
     const msgPast = document.querySelectorAll(".past");
-
     const counts = document.querySelectorAll(".count-yrs, .count-mon, .count-day");
 
     const yrs = document.querySelector(".count-yrs");
@@ -29,8 +28,8 @@
     const elThen = document.querySelector("#then");
     const elThenOffset = document.querySelector("#thenOffset");
 
-    const elThenDate2 = document.querySelector("#then-date2");
-    const elThenTime2 = document.querySelector("#then-time2");
+    // const elThenDate2 = document.querySelector("#then-date2");
+    // const elThenTime2 = document.querySelector("#then-time2");
 
     elThen.value = defTime;
     // elThenDate2.value = defTimeArr[0];
@@ -103,23 +102,21 @@ if (linkEdit) {
 
       if (milliseconds > 0) {
         // the "then" date is in the future
-        console.log('future');
-        flagState = 'future';
+        // console.log('future');
+        // flagState = 'future';
         msgPast.forEach(msg => msg.classList.add('hi'));
         msgFuture.forEach(msg => msg.classList.remove('hi'));
       } else if (milliseconds < 0) {
         // the "then" date is in the past
-        console.log('past');
-        flagState = 'past';
+        // console.log('past');
+        // flagState = 'past';
         msgPast.forEach(msg => msg.classList.remove('hi'));
         msgFuture.forEach(msg => msg.classList.add('hi'));
       } else {
         // the "then" date is in the present
-        console.log('present');
-        flagState = 'present';
+        // console.log('present');
+        // flagState = 'present';
       }
-
-      // timeDiff(milliseconds);
 
     };
 
@@ -180,53 +177,6 @@ if (linkEdit) {
       console.groupEnd();
 
     };
-
-    function timeDiff (time) {
-
-      var seconds = Math.abs(time)/1000;
-      console.log('seconds: ', seconds);
-
-      // function numberEnding (number) {
-      //     return (number > 1) ? 's' : '';
-      // }
-
-      var temp = Math.floor(seconds);
-      // console.log('temp: ', temp);
-
-      var numYears = Math.floor(temp / units.years);
-      // console.log('numYears: ', numYears);
-      yrs.innerHTML = pad(numYears, 2);
-
-      //TODO: Months! Maybe weeks? 
-      var numMonths = Math.floor((temp %= units.years) / units.months);
-      // console.log('numMonths: ', numMonths);
-      mon.innerHTML = pad(numMonths, 2);
-
-      var numDays = Math.floor((temp %= units.months) / units.days);
-      // console.log('numDays: ', numDays);
-      day.innerHTML = pad(numDays, 2);
-
-      var numHours = Math.floor((temp %= units.days) / units.hours);
-      // console.log('numHours: ', numHours);
-      hrs.innerHTML = pad(numHours, 2);
-
-      var numMinutes = Math.floor((temp %= units.hours) / units.minutes);
-      // console.log('numMinutes: ', numMinutes);
-      min.innerHTML = pad(numMinutes, 2);
-
-      var numSeconds = Math.floor(temp % units.minutes);
-      // console.log('numSeconds: ', numSeconds);
-      sec.innerHTML = pad(numSeconds, 2);
-
-      hideZeroes(counts);
-
-      // console.log( numYears + " years " + numMonths + " Months " + numDays + " days " + numHours + " hours " + numMinutes + " minutes " + numSeconds + " seconds" );
-
-    };
-
-    function hideZeroes (things) {
-      things.forEach(thing => {if (thing.innerHTML === '00') {thing.style.display = 'none'} else {thing.style.display = 'inline'}});
-    }
 
     timeUpdate();
     setInterval(timeUpdate, 1000);
