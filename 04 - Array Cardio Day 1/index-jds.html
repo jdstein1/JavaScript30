@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Array Cardio 💪</title>
+  <style>
+    .mw-category {display: none;}
+  </style>
 </head>
 <body>
   <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
@@ -74,7 +77,7 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
     const inventorsC16 = inventors.filter(obj => (obj.year > 1499 && obj.year < 1600));
-    console.group('inventorsC16');
+    console.group('1. Array.prototype.filter()');
     console.table(inventorsC16);
     console.groupEnd();
 
@@ -82,7 +85,9 @@
     // 2. Give us an array of the inventors' first and last names
     // const inventorsNames = inventors.map(obj => obj.first +' '+ obj.last);
     const inventorsNames = inventors.map(obj => `${obj.first} ${obj.last}`);
-    console.log('inventorsNames: ', inventorsNames);
+    console.group('2. Array.prototype.map()');
+    console.log(inventorsNames);
+    console.groupEnd();
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
@@ -94,7 +99,7 @@
     //   }
     // });
     const inventorsBornFirst = inventors.sort((a,b) => a.year > b.year ? 1 : -1);
-    console.group('inventorsBornFirst');
+    console.group('3. Array.prototype.sort()');
     console.table(inventorsBornFirst);
     console.groupEnd();
 
@@ -103,7 +108,9 @@
     const inventorsLifespan = inventors.reduce((total, inventor) => {
       return total + (inventor.passed - inventor.year);
     }, 0);
-    console.log('inventorsLifespan: ', inventorsLifespan);
+    console.group('4. Array.prototype.reduce()');
+    console.log(inventorsLifespan);
+    console.groupEnd();
 
     // 5. Sort the inventors by years lived
     const inventorsSeniority = inventors.sort((a,b) => {
@@ -111,7 +118,7 @@
       const nextOne = b.passed - b.year;
       return lastOne > nextOne ? -1 : 1;
     });
-    console.group('inventorsSeniority');
+    console.group('5. inventorsSeniority');
     console.table(inventorsSeniority);
     console.groupEnd();
 
@@ -120,6 +127,7 @@
     const city = document.querySelector('.mw-category');
     // const streets = [].slice.call(city.querySelectorAll('a'));
     const streets = Array.from(city.querySelectorAll('a'));
+    console.group('6. Boulevards in Paris');
     console.log(streets);
     // const deStreets = streets.filter(obj => obj.innerHTML.indexOf('de') > -1);
     const deStreets = streets
@@ -127,6 +135,7 @@
       // .filter(obj => obj.indexOf('de') > -1);
       .filter(obj => obj.includes('de'));
     console.log(deStreets);
+    console.groupEnd();
 
 
     // 7. sort Exercise
@@ -138,7 +147,9 @@
       // console.log(bLast, bFirst);
       return aLast > bLast ? 1 : -1;
     });
+    console.group('7. Sort Exercise');
     console.log(pplSorted);
+    console.groupEnd();
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
@@ -151,7 +162,9 @@
       obj[item]++;
       return obj;
     }, {});
+    console.group('8. Reduce Exercise');
     console.log(instances);
+    console.groupEnd();
 
   </script>
 </body>
