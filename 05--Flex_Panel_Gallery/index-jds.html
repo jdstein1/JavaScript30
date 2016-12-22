@@ -40,8 +40,8 @@
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
       transition:
-        font-size 0.125s cubic-bezier(.08,-0.21,.5,1.39),
-        flex 0.25s cubic-bezier(.08,-0.21,.5,1.39);
+        font-size 0.25s cubic-bezier(.46,.94,.63,.97),
+        flex 0.5s cubic-bezier(.46,.94,.63,.97);
       background-size:cover;
       background-position:center;
       flex:auto;
@@ -74,9 +74,9 @@
       /* border: 1px red solid; */
     }
     .panel > *:first-child {transform:translateY(-100%);}
-    .panel.active > *:first-child {transform:translateY(0);}
+    .panel.slide > *:first-child {transform:translateY(0);}
     .panel > *:last-child {transform:translateY(100%);}
-    .panel.active > *:last-child {transform:translateY(0);}
+    .panel.slide > *:last-child {transform:translateY(0);}
 
     .panel p {
       /* text-transform: uppercase; */
@@ -87,7 +87,7 @@
         0 0 0.25em rgba(0, 0, 0, 0.5), 
         0 0.25em 1em rgba(0, 0, 0, 0.75);
       font-size: 2em;
-      padding: 0 1rem;
+      /* padding: 0 1rem; */
     }
     .panel p:nth-child(2) {
       font-size: 3em;
@@ -103,29 +103,29 @@
 
   <div class="panels">
     <div class="panel panel1">
-      <p>don't</p>
-      <p>you</p>
-      <p>wait</p>
+      <p>the</p>
+      <p>over</p>
+      <p>quick</p>
     </div>
     <div class="panel panel2">
-      <p>come</p>
-      <p>get</p>
-      <p>free</p>
-    </div>
-    <div class="panel panel3 open active">
-      <p>take</p>
+      <p>quick</p>
       <p>the</p>
-      <p>time</p>
+      <p>brown</p>
+    </div>
+    <div class="panel panel3">
+      <p>brown</p>
+      <p>lazy</p>
+      <p>fox</p>
     </div>
     <div class="panel panel4">
-      <p>your</p>
-      <p>day</p>
-      <p>goes</p>
+      <p>fox</p>
+      <p>dog</p>
+      <p>jumps</p>
     </div>
     <div class="panel panel5">
-      <p>shot</p>
-      <p>off</p>
-      <p>runs</p>
+      <p>jumps</p>
+      <p>the</p>
+      <p>over</p>
     </div>
   </div>
 
@@ -150,7 +150,7 @@
     // console.log(e.propertyName);
     if (e.propertyName.includes('flex')) {
       // console.log('transitionend');
-      this.classList.toggle('active')
+      this.classList.toggle('slide')
     }
   }
   panels.forEach(panel => panel.addEventListener('click', toggleOpen));
