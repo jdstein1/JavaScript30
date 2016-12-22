@@ -51,8 +51,7 @@ body {
   top:calc(50% - 3px);
   transform-origin:100% 3px;
   transform: rotate(90deg);
-  transition: all 0.05s;
-  transition-timing-function: cubic-bezier(0, 1.5, 1, 2);
+  transition: all 0.05s cubic-bezier(0, 1.5, 1, 2);
 }
 
 .hour-hand {

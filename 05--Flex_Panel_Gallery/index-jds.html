@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <title>Flex Panels 💪</title>
   <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:100" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Modak" rel="stylesheet">
 </head>
 <body>
   <style>
     html {
       box-sizing: border-box;
       background:#ffc600;
-      font-family:'helvetica neue';
-      font-size: 20px;
+      font-family:'helvetica neue',sans-serif;
+      font-size: 100%;
       font-weight: 200;
     }
     body {
@@ -25,28 +27,34 @@
       min-height:100vh;
       overflow: hidden;
       display: flex;
-      justify-content: space-between;
-      align-items: stretch;
     }
 
     .panel {
       background:#6B0F9C;
-      box-shadow:inset 0 0 0 5px rgba(255,255,255,0.1);
+      box-shadow:
+        inset -2em 0 4em -2em rgba(255,255,255,0.5),
+        inset 2em 0 4em -2em rgba(0,0,0,0.5);
       color:white;
       text-align: center;
       align-items:center;
-      flex:1;
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
       transition:
-        font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
-        flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
-        background 0.2s;
-      font-size: 20px;
+        font-size 0.125s cubic-bezier(.08,-0.21,.5,1.39),
+        flex 0.25s cubic-bezier(.08,-0.21,.5,1.39);
       background-size:cover;
       background-position:center;
+      flex:auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
     }
 
+    .panel.open {
+      flex:4;
+      font-size:2em;
+    }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
     .panel2 { background-image:url(https://source.unsplash.com/1CD3fd8kHnE/1500x1500); }
@@ -57,21 +65,32 @@
     .panel > * {
       margin:0;
       width: 100%;
-      transition:transform 0.5s;
+      transition:transform 0.25s;
+      display: flex;
+      flex-direction: column;
+      flex:1;
+      align-items: center; 
+      justify-content: center;
+      /* border: 1px red solid; */
     }
+    .panel > *:first-child {transform:translateY(-100%);}
+    .panel.active > *:first-child {transform:translateY(0);}
+    .panel > *:last-child {transform:translateY(100%);}
+    .panel.active > *:last-child {transform:translateY(0);}
 
     .panel p {
-      text-transform: uppercase;
+      /* text-transform: uppercase; */
+      font-family: 'Arima Madurai', cursive;
       font-family: 'Amatic SC', cursive;
-      text-shadow:0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+      font-family: 'Modak', cursive;
+      text-shadow:
+        0 0 0.25em rgba(0, 0, 0, 0.5), 
+        0 0.25em 1em rgba(0, 0, 0, 0.75);
       font-size: 2em;
+      padding: 0 1rem;
     }
     .panel p:nth-child(2) {
-      font-size: 4em;
-    }
-
-    .panel.open {
-      font-size:40px;
+      font-size: 3em;
     }
 
     .cta {
@@ -84,33 +103,58 @@
 
   <div class="panels">
     <div class="panel panel1">
-      <p>Hey</p>
-      <p>Let's</p>
-      <p>Dance</p>
+      <p>don't</p>
+      <p>you</p>
+      <p>wait</p>
     </div>
     <div class="panel panel2">
-      <p>Give</p>
-      <p>Take</p>
-      <p>Receive</p>
+      <p>come</p>
+      <p>get</p>
+      <p>free</p>
     </div>
-    <div class="panel panel3">
-      <p>Experience</p>
-      <p>It</p>
-      <p>Today</p>
+    <div class="panel panel3 open active">
+      <p>take</p>
+      <p>the</p>
+      <p>time</p>
     </div>
     <div class="panel panel4">
-      <p>Give</p>
-      <p>All</p>
-      <p>You can</p>
+      <p>your</p>
+      <p>day</p>
+      <p>goes</p>
     </div>
     <div class="panel panel5">
-      <p>Life</p>
-      <p>In</p>
-      <p>Motion</p>
+      <p>shot</p>
+      <p>off</p>
+      <p>runs</p>
     </div>
   </div>
 
   <script>
+  const panels = document.querySelectorAll('.panel');
+  function closeAll() {
+    // console.log(panels);
+    panels.forEach(panel => panel.classList.remove('open'));
+  }
+  function toggleOpen() {
+    // console.log(this);
+    if (this.classList.contains('open')) {
+      closeAll();
+      this.classList.remove('open');
+    } else {
+      closeAll();
+      this.classList.add('open');
+    }
+  }
+  function toggleActive(e) {
+    // console.log(this);
+    // console.log(e.propertyName);
+    if (e.propertyName.includes('flex')) {
+      // console.log('transitionend');
+      this.classList.toggle('active')
+    }
+  }
+  panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+  panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
 
   </script>
 
