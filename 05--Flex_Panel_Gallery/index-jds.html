@@ -21,6 +21,8 @@
     }
     *, *:before, *:after {
       box-sizing: inherit;
+      padding: 0;
+      margin: 0;
     }
 
     .panels {
@@ -52,8 +54,8 @@
     }
 
     .panel.open {
-      flex:4;
-      font-size:2em;
+      flex:auto;
+      font-size:4em;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -148,7 +150,7 @@
   function toggleActive(e) {
     // console.log(this);
     // console.log(e.propertyName);
-    if (e.propertyName.includes('flex')) {
+    if (e.propertyName.includes('font')) {
       // console.log('transitionend');
       this.classList.toggle('slide')
     }
