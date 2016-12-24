@@ -75,6 +75,7 @@
     });
 
     // Array.prototype.filter()
+    /* The filter() method creates a new array with all elements that pass the test implemented by the provided function. */
     // 1. Filter the list of inventors for those who were born in the 1500's
     const inventorsC16 = inventors.filter(obj => (obj.year > 1499 && obj.year < 1600));
     console.group('1. Array.prototype.filter()');
@@ -82,6 +83,7 @@
     console.groupEnd();
 
     // Array.prototype.map()
+    /* The map() method creates a new array with the results of calling a provided function on every element in this array. */
     // 2. Give us an array of the inventors' first and last names
     // const inventorsNames = inventors.map(obj => obj.first +' '+ obj.last);
     const inventorsNames = inventors.map(obj => `${obj.first} ${obj.last}`);
@@ -90,6 +92,7 @@
     console.groupEnd();
 
     // Array.prototype.sort()
+    /* The sort() method sorts the elements of an array in place and returns the array. The sort is not necessarily stable. The default sort order is according to string Unicode code points. */
     // 3. Sort the inventors by birthdate, oldest to youngest
     // const inventorsBornFirst = inventors.sort(function(a,b){
     //   if (a.year > b.year) {
@@ -104,6 +107,7 @@
     console.groupEnd();
 
     // Array.prototype.reduce()
+    /* The reduce() method applies a function against an accumulator and each value of the array (from left-to-right) to reduce it to a single value. */
     // 4. How many years did all the inventors live?
     const inventorsLifespan = inventors.reduce((total, inventor) => {
       return total + (inventor.passed - inventor.year);
