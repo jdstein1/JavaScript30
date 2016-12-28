@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const string = "string";
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('test');
+
+    // Interpolated
+    console.log('test %s','string');
+    console.log(`test ${string}`);
+
+    // Styled
+    console.log('%ctest','font-size:20px;color:purple;');
+
+    // warning!
+    console.warn('test');
+
+    // Error :|
+    console.error('test');
+
+    // Info
+    console.info('test');
+
+    // Testing
+    console.assert(1===2,'test');
+    console.assert(1===1,'test');
+
+    // clearing
+    console.clear();
+
+    // Viewing DOM Elements
+    const p = document.querySelector('p');
+    console.log(p);
+    console.dir(p);
+
+    // Grouping together
+    console.group('dogs: ');
+    dogs.forEach(dog => {
+      console.groupCollapsed(dog.name);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.groupEnd();
+    });
+    console.groupEnd();
+
+    // counting
+    console.count('test');
+    console.count('test');
+    console.count('test');
+
+    // timing
+    console.time('fetch data');
+    fetch('https://api.github.com/users/jdstein1')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetch data');
+        console.log(data);
+      });
+
+    // table
+    console.table(dogs);
+
+  </script>
+</body>
+</html>
