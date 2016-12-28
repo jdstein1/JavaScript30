@@ -16,6 +16,8 @@ input {
   padding:1rem;
 }
 
+p {text-align: center;}
+
 .search-form {
   max-width:400px;
   margin:50px auto;
