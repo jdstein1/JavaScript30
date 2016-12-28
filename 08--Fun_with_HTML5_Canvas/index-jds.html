@@ -5,14 +5,82 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
+
+<canvas id="draw" width="600" height="600">
+  fallback content
+</canvas>
+
 <script>
+const canvas = document.querySelector("#draw");
+console.log(canvas);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+if (canvas.getContext){
+  const ctx = canvas.getContext("2d");
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 50;
+  ctx.globalCompositeOperation = 'overlay';
+  // ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  // ctx.shadowBlur = 10;
+  console.log(ctx);
+  // drawing code here
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    if (!isDrawing) return; // stop fn from running when not drawing (i.e., mousedown).
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue},100%,50%)`
+    ctx.beginPath();
+    // start from:
+    ctx.moveTo(lastX,lastY);
+    // go to:
+    ctx.lineTo(e.offsetX,e.offsetY);
+    ctx.stroke();
+    // lastX = e.offsetX;
+    // lastY = e.offsetY;
+    // more efficient version of above 2 lines:
+    [lastX,lastY]=[e.offsetX,e.offsetY];
+    hue++;
+    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction;
+    }
+    if (direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX,lastY]=[e.offsetX,e.offsetY];
+  });
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+} else {
+  // canvas-unsupported code here
+}
 </script>
 
 <style>
-  html, body {
+  *, *:before, *:after {
     margin:0;
+    padding:0;
+    box-sizing: border-box;
+    overflow: hidden;
   }
+  html, body {}
+  canvas {background-color: rgba(127,0,255,0.5);}
 </style>
 
 </body>
