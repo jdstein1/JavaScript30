@@ -50,6 +50,12 @@
       return (intNum + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     }
 
+    function popChart(intNum) {
+      const pos = intNum/10000;
+      const neg = (100 - pos)/2;
+      return `<span class="pop-chart"><span style="width:${pos}%;height:${pos}%;margin:${neg}%;"></span></span>`;
+    }
+
     function findMatches (word, array) {
       return array.filter(place => {
         // does the word appear in the place?
@@ -68,7 +74,8 @@
         const matchedState = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
         return `<li>
         <span class="name">${matchedCity}, ${matchedState}</span>
-        <span class="population">${addCommas(place.population)}</span>`;
+        <span class="population">${addCommas(place.population)}</span>
+        ${popChart(place.population)}`;
       }).join('');
       suggestions.innerHTML = html;
     }
