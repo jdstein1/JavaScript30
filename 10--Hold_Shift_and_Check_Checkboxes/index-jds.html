@@ -50,16 +50,15 @@
   </div>
 </div>
 <script>
-  const checkboxes = document.querySelectorAll(".inbox input[type='checkbox']");
-  console.log(checkboxes);
 
-  let flagShift = false;
+  const checkboxes = document.querySelectorAll(".inbox input[type='checkbox']");
+  // console.log(checkboxes);
+
   let lastChecked = -1;
 
   function clickBox(e){
     console.group('START clickBox');
     console.log(e.target.checked);
-    // console.log('target: ',e.target);
     // console.log("SHIFT key pressed: " + e.shiftKey);
     const index = Array.from(checkboxes).indexOf(e.target);
     // console.log('index: ',index);
@@ -87,6 +86,7 @@
   }
 
   checkboxes.forEach(checkbox => checkbox.addEventListener('click',clickBox));
+
 </script>
 </body>
 </html>
