@@ -1,17 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Hold Shift and Check Checkboxes</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
    <!--
    The following is a common layout you would see in an email client.
 
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
-
   -->
+
   <div class="inbox">
     <div class="item">
       <input type="checkbox">
@@ -52,6 +55,41 @@
   </div>
 
 <script>
+  const checkboxes = document.querySelectorAll(".inbox input[type='checkbox']");
+  console.log(checkboxes);
+
+  let flagShift = false;
+
+  function isMyCheckbox (ele, ind, arr) {
+    // console.group('START isMyCheckbox');
+    // console.log(ele);
+    // console.log(ind);
+    // console.log(arr);
+    // console.groupEnd();
+    return ele === arr[ind];
+  }
+
+  function clickBox(e){
+    console.group('START clickBox');
+    // console.log(e);
+    // console.log('target: ',e.target);
+    console.log("SHIFT key pressed: " + e.shiftKey);
+    const index = Array.from(checkboxes).findIndex(isMyCheckbox);
+    console.log('index: ',index);
+    if (e.shiftKey) {
+      // console.log("SHIFT key TRUE");
+      flagShift = true;
+    } else {
+      // console.log("SHIFT key FALSE");
+      flagShift = false;
+    }
+    console.groupEnd();
+  }
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click',clickBox));
+
 </script>
+
 </body>
+
 </html>
