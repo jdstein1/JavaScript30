@@ -58,7 +58,7 @@
 
   function clickBox(e){
     console.group('START clickBox');
-    console.log(e.target.checked);
+    console.log('e.target.checked: ',e.target.checked);
     // console.log("SHIFT key pressed: " + e.shiftKey);
     const index = Array.from(checkboxes).indexOf(e.target);
     // console.log('index: ',index);
@@ -71,7 +71,7 @@
       } else {
         sliced = Array.from(checkboxes).slice(lastChecked,index+1);
       }
-      console.log('sliced: ',sliced);
+      console.log('check these ones: ',sliced);
       if (e.target.checked) {
         sliced.forEach(slice => slice.checked = true);
       } else {
