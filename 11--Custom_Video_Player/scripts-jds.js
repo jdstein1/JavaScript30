@@ -70,11 +70,12 @@ play triangle
 
 function skip() {
   console.log('SKIPPING!!',this.dataset.skip);
-  const skipVal = parseInt(this.dataset.skip);
-  // console.log('currentTime: ',video.currentTime);
+  const skipVal = parseFloat(this.dataset.skip);
+  console.log('old currentTime: ',video.currentTime);
   if (video.played) {
-    video.currentTime = video.currentTime + (skipVal);
+    video.currentTime += (skipVal);
   }
+  console.log('new currentTime: ',video.currentTime);
 }
 
 /**
