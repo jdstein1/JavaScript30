@@ -26,7 +26,7 @@ const ranges = controls.querySelectorAll('[type="range"]');
  * create functions
  */
 function togglePlayer (e) {
-  console.group('START togglePlayer');
+  // console.group('START togglePlayer');
   // console.log('e.target: ',e.target);
   // console.log('this: ',this);
 
@@ -40,7 +40,6 @@ function togglePlayer (e) {
       e.cancelBubble = true
   }
 
-
   // if (video.paused) {
   //   video.play();
   // } else {
@@ -49,9 +48,10 @@ function togglePlayer (e) {
   /* or */
   const method = video.paused ? 'play':'pause';
   video[method]();
-  console.groupEnd();
+  // console.groupEnd();
 }
 
+// change icon of button when toggling play/pause.
 function toggleButton() {
 /*
 play triangle
@@ -85,6 +85,42 @@ function updateRange() {
   console.log('new video['+this.name+'] =', video[this.name]);
 }
 
+function autoProgress() {
+  if (!isSkipping) {
+    // console.group('START autoProgress');
+    // console.log('autoProgress -- video.duration', video.duration);
+    console.log('autoProgress -- old progressBar: ', progressBar.style.flexBasis);
+    progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
+    console.log('autoProgress -- new progressBar: ', progressBar.style.flexBasis);
+    // console.groupEnd();
+  }
+}
+
+window.setInterval(autoProgress, 100);
+
+let isSkipping = false;
+
+/*function manualProgress(e) {
+  if (isSkipping) {
+    // console.group('START manualProgress: ', isSkipping);
+    // console.log('manualProgress -- e.type: ', e.type);
+    console.log('manualProgress -- e.target: ', e.target);
+    console.log('manualProgress -- progressBar: ', progressBar);
+    // console.log('manualProgress -- e.target.style.flexBasis: ', e.target.style.flexBasis);
+    // console.log('manualProgress -- e.target.offsetWidth: ', e.target.offsetWidth);
+    // console.log('manualProgress -- e.offsetX: ', e.offsetX);
+    // console.log('manualProgress -- old manualProgress: ', progressBar.style.flexBasis);
+    console.log('manualProgress -- old video.currentTime: ',video.currentTime);
+    video.currentTime = video.duration * (e.offsetX / e.target.offsetWidth);
+    // progressBar.style.flexBasis = (e.offsetX / e.target.offsetWidth)*100+'%';
+    console.log('manualProgress -- new video.currentTime: ',video.currentTime);
+    // console.log('manualProgress -- progressBar.style.flexBasis: ',progressBar.style.flexBasis);
+    // autoProgress;
+    // console.log('manualProgress -- new manualProgress: ', progressBar.style.flexBasis);
+    // console.groupEnd();
+  }
+}*/
+
 /**
  * hook up event listeners
  */
@@ -94,3 +130,8 @@ video.addEventListener('pause',toggleButton);
 toggle.addEventListener('click',togglePlayer);
 skipButtons.forEach(button => button.addEventListener('click',skip));
 ranges.forEach(range => range.addEventListener('change',updateRange));
+
+// progress.addEventListener('mousedown', () => isSkipping = true);
+// progress.addEventListener('mousemove',manualProgress);
+// progress.addEventListener('mouseup', () => isSkipping = false);
+// progress.addEventListener('mouseout', () => isSkipping = false);
