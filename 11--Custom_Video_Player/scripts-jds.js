@@ -1,4 +1,6 @@
-/* get elements */
+/**
+ * get elements
+ */
 const player = document.querySelector('.player');
 // console.log('player: ', player);
 
@@ -20,13 +22,15 @@ const skipButtons = controls.querySelectorAll('[data-skip]');
 const ranges = controls.querySelector('[type="range"]');
 // console.log(ranges);
 
-/* create functions */
+/**
+ * create functions
+ */
 function togglePlayer (e) {
   console.group('START togglePlayer');
   // console.log('e.target: ',e.target);
   // console.log('this: ',this);
 
-  // Stop propagation.
+  /* Stop propagation */
   e = e || window.event // cross-browser event
   if (e.stopPropagation) {
       // W3C standard variant
@@ -42,7 +46,7 @@ function togglePlayer (e) {
   // } else {
   //   video.pause();
   // }
-  // or
+  /* or */
   const method = video.paused ? 'play':'pause';
   video[method]();
   console.groupEnd();
@@ -64,9 +68,20 @@ play triangle
   video.paused ? toggle.innerHTML='►' : toggle.innerHTML='▮▮';
 }
 
-/* hook up event listeners */
+function skip() {
+  console.log('SKIPPING!!',this.dataset.skip);
+  const skipVal = parseInt(this.dataset.skip);
+  // console.log('currentTime: ',video.currentTime);
+  if (video.played) {
+    video.currentTime = video.currentTime + (skipVal);
+  }
+}
 
+/**
+ * hook up event listeners
+ */
 video.addEventListener('click',togglePlayer);
 video.addEventListener('play',toggleButton);
 video.addEventListener('pause',toggleButton);
 toggle.addEventListener('click',togglePlayer);
+skipButtons.forEach(button => button.addEventListener('click',skip));
