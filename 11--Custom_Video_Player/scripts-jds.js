@@ -22,6 +22,8 @@ const skipButtons = controls.querySelectorAll('[data-skip]');
 const ranges = controls.querySelectorAll('[type="range"]');
 // console.log(ranges);
 
+const fullScreen = controls.querySelector('[name="fullScreen"]');
+
 /**
  * create functions
  */
@@ -90,18 +92,18 @@ function autoProgress() {
   if (!isScrubbing) {
     console.group('START autoProgress -- isScrubbing: ', isScrubbing);
     console.log('autoProgress -- old currentTime: ', video.currentTime);
-    progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
+    // progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
+    const percent = (video.currentTime / video.duration)*100;
+    // console.log(percent);
+    progressBar.style.flexBasis = `${percent}%`;
     console.log('autoProgress -- new currentTime: ', video.currentTime);
     console.groupEnd();
   }
 }
 
-window.setInterval(autoProgress, 100);
-
 let isScrubbing = false;
 
-function manualProgress(e) {
-
+function scrub(e) {
   /* Stop propagation */
   e = e || window.event // cross-browser event
   if (e.stopPropagation) {
@@ -111,14 +113,19 @@ function manualProgress(e) {
       // IE variant
       e.cancelBubble = true
   }
+  console.group('START scrub -- isScrubbing: ', isScrubbing);
+  console.log('scrub -- old currentTime: ',video.currentTime);
+  video.currentTime = video.duration * (e.offsetX / progress.offsetWidth);
+  progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
+  console.log('scrub -- new currentTime: ',video.currentTime);
+  console.groupEnd();
+}
 
-  if (isScrubbing) {
-    console.group('START manualProgress -- isScrubbing: ', isScrubbing);
-    console.log('manualProgress -- old currentTime: ',video.currentTime);
-    video.currentTime = video.duration * (e.offsetX / progress.offsetWidth);
-    progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
-    console.log('manualProgress -- new currentTime: ',video.currentTime);
-    console.groupEnd();
+function goFullScreen(e) {
+  console.log('START goFullScreen');
+  if (video.requestFullscreen) {
+    console.log('requestFullscreen');
+    video.requestFullscreen();
   }
 }
 
@@ -128,14 +135,22 @@ function manualProgress(e) {
 video.addEventListener('click',togglePlayer);
 video.addEventListener('play',toggleButton);
 video.addEventListener('pause',toggleButton);
+video.addEventListener('timeupdate',autoProgress);
+
 toggle.addEventListener('click',togglePlayer);
+
 skipButtons.forEach(button => button.addEventListener('click',skip));
+
+fullScreen.addEventListener('click', () => {
+  goFullScreen;
+});
+
 ranges.forEach(range => range.addEventListener('change',updateRange));
 
 progress.addEventListener('mousedown', () => {
   isScrubbing = true;
-  // manualProgress();
+  scrub();
 });
-progress.addEventListener('mousemove', manualProgress);
+progress.addEventListener('mousemove', (e) => isScrubbing && scrub(e));
 progress.addEventListener('mouseup', () => isScrubbing = false);
-// progress.addEventListener('mouseout', () => isScrubbing = false);
+// progress.addEventListener('mouseout', () => isScrubbing = false); // do not use this event.
