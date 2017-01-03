@@ -171,9 +171,9 @@ button[name='skipAhead'] {background-color:rgba(0,0,255,0.5);}
 input[name='volume'] {background-color:rgba(255,0,255,0.5);}
 input[name='playbackRate'] {background-color:rgba(255,255,0,0.5);}
 
-*:before {position: absolute; background-color: #000; z-index: 0;}
+*:before {position: absolute; color:white; background-color:rgba(0,0,0,0); z-index:0; font-size:1rem; text-shadow:0 0.25rem 0.5rem black;}
 /* .toggle:before {content:"play/pause";} */
 /* button[name='skipBack']:before {content:"skip back";} */
 /* button[name='skipAhead']:before {content:"skip ahead";} */
-/* input[name='volume']:before {content:"volume";} */
-/* input[name='playbackRate']:before {content:"playbackRate";} */
+input[name='volume']:before {content:"volume";}
+input[name='playbackRate']:before {content:"speed";}

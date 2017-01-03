@@ -19,7 +19,7 @@ const toggle = controls.querySelector('.toggle');
 console.log(toggle);
 const skipButtons = controls.querySelectorAll('[data-skip]');
 // console.log(skipButtons);
-const ranges = controls.querySelector('[type="range"]');
+const ranges = controls.querySelectorAll('[type="range"]');
 // console.log(ranges);
 
 /**
@@ -78,6 +78,13 @@ function skip() {
   console.log('new currentTime: ',video.currentTime);
 }
 
+function updateRange() {
+  console.log('updateRange: ', this.name,'value: '+this.value);
+  console.log('old video['+this.name+'] =', video[this.name]);
+  video[this.name] = this.value;
+  console.log('new video['+this.name+'] =', video[this.name]);
+}
+
 /**
  * hook up event listeners
  */
@@ -86,3 +93,4 @@ video.addEventListener('play',toggleButton);
 video.addEventListener('pause',toggleButton);
 toggle.addEventListener('click',togglePlayer);
 skipButtons.forEach(button => button.addEventListener('click',skip));
+ranges.forEach(range => range.addEventListener('change',updateRange));
