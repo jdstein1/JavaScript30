@@ -87,19 +87,18 @@ function updateRange() {
 }
 
 function autoProgress() {
-  if (!isSkipping) {
-    console.group('START autoProgress');
-    // console.log('autoProgress -- video.duration', video.duration);
-    console.log('autoProgress -- old progressBar: ', progressBar.style.flexBasis);
+  if (!isScrubbing) {
+    console.group('START autoProgress -- isScrubbing: ', isScrubbing);
+    console.log('autoProgress -- old currentTime: ', video.currentTime);
     progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
-    console.log('autoProgress -- new progressBar: ', progressBar.style.flexBasis);
+    console.log('autoProgress -- new currentTime: ', video.currentTime);
     console.groupEnd();
   }
 }
 
 window.setInterval(autoProgress, 100);
 
-let isSkipping = false;
+let isScrubbing = false;
 
 function manualProgress(e) {
 
@@ -113,26 +112,14 @@ function manualProgress(e) {
       e.cancelBubble = true
   }
 
-    console.group('START manualProgress: ', isSkipping);
-    console.log('manualProgress -- e.target: ', e.target.classList[0]);
-    console.log('manualProgress -- e.offsetX: ', e.offsetX);
-    console.log('manualProgress -- progress.offsetWidth: ', progress.offsetWidth);
-    console.log('manualProgress -- position: ', (e.offsetX / progress.offsetWidth)*100+'%');
-  if (isSkipping) {
-    // console.log('manualProgress -- e.type: ', e.type);
-    // console.log('manualProgress -- e.target: ', e.target.classList[0]);
-    // console.log('manualProgress -- progressBar: ', progressBar.classList[0]);
-    // console.log('manualProgress -- e.target.style.flexBasis: ', e.target.style.flexBasis);
-    // console.log('manualProgress -- old manualProgress: ', progressBar.style.flexBasis);
-    // console.log('manualProgress -- old video.currentTime: ',video.currentTime);
+  if (isScrubbing) {
+    console.group('START manualProgress -- isScrubbing: ', isScrubbing);
+    console.log('manualProgress -- old currentTime: ',video.currentTime);
     video.currentTime = video.duration * (e.offsetX / progress.offsetWidth);
-    progressBar.style.flexBasis = (e.offsetX / progress.offsetWidth)*100+'%';
-    // console.log('manualProgress -- new video.currentTime: ',video.currentTime);
-    // console.log('manualProgress -- progressBar.style.flexBasis: ',progressBar.style.flexBasis);
-    // autoProgress;
-    // console.log('manualProgress -- new manualProgress: ', progressBar.style.flexBasis);
-  }
+    progressBar.style.flexBasis = (video.currentTime / video.duration)*100+'%';
+    console.log('manualProgress -- new currentTime: ',video.currentTime);
     console.groupEnd();
+  }
 }
 
 /**
@@ -146,9 +133,9 @@ skipButtons.forEach(button => button.addEventListener('click',skip));
 ranges.forEach(range => range.addEventListener('change',updateRange));
 
 progress.addEventListener('mousedown', () => {
-  isSkipping = true;
-  manualProgress();
+  isScrubbing = true;
+  // manualProgress();
 });
 progress.addEventListener('mousemove', manualProgress);
-progress.addEventListener('mouseup', () => isSkipping = false);
-progress.addEventListener('mouseout', () => isSkipping = false);
+progress.addEventListener('mouseup', () => isScrubbing = false);
+// progress.addEventListener('mouseout', () => isScrubbing = false);
