@@ -6,44 +6,52 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
-
+<h1 style="display: block; text-align: center;">enter the konami code</h1>
 <script>
 
-const array = [];
-const konami = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const keysLogged = [];
+// const codesLogged = [];
+const konamiKeys = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+// const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 let flagCode = false;
 
 document.addEventListener('keyup',(e) => {
   // console.log(e.keyCode);
   // console.log(e.key);
   // console.log('flagCode = ', flagCode);
-  console.log('listen for keys');
-  if (e.key === 'Escape') {
-    console.info('stop cornify');
-    const unis = document.querySelectorAll([position="fixed"]);
-    console.log(unis);
-    cornify_count = 0;
-    array.length = 0;
-    flagCode = false;
-  } else {
-    console.info('keep listening');
+  // console.log('listen for keys');
+  // if (e.key === 'Escape') {
+  //   console.log('stop cornify');
+  //   const unis = document.querySelectorAll([position="fixed"]);
+  //   console.log(unis);
+  //   cornify_count = 0;
+  //   keysLogged.length = 0;
+  //   codesLogged.length = 0;
+  //   flagCode = false;
+  // } else {
+    // console.log('keep listening');
     if (!flagCode) {
-      console.warn('push array');
-      array.push(e.key);
-      if (array.length > 10) {
-        console.warn('shift array');
-        array.shift();
+      console.warn('push key to array');
+      keysLogged.push(e.key);
+      // codesLogged.push(e.keyCode);
+      if (keysLogged.length > 10) {
+        console.warn('shift key from array');
+        keysLogged.shift();
+        // codesLogged.shift();
       }
-      // if (JSON.stringify(array) === JSON.stringify(konami)) {
-      if (array.join('') === konami.join('')) {
+      // if (JSON.stringify(keysLogged) === JSON.stringify(konamiKeys)) {
+      if (keysLogged.join('') === konamiKeys.join('')) {
         flagCode = true;
-        console.info('CORNIFY!!!!!');
+        console.info('START CORNIFY!!!!!');
         // cornify_add();
       }
+    } else {
+      console.info('KEEP CORNIFYING!!!!!');
     }
-  }
-  console.log('array: ', array);
-  // console.log('konami: ', konami);
+  // }
+  // console.log('keysLogged: ', keysLogged);
+  // console.log('codesLogged: ', codesLogged);
+  // console.log('konamiKeys: ', konamiKeys);
 });
 
 </script>
