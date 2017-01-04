@@ -6,7 +6,47 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+
 <script>
+
+const array = [];
+const konami = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+let flagCode = false;
+
+document.addEventListener('keyup',(e) => {
+  // console.log(e.keyCode);
+  // console.log(e.key);
+  // console.log('flagCode = ', flagCode);
+  console.log('listen for keys');
+  if (e.key === 'Escape') {
+    console.info('stop cornify');
+    const unis = document.querySelectorAll([position="fixed"]);
+    console.log(unis);
+    cornify_count = 0;
+    array.length = 0;
+    flagCode = false;
+  } else {
+    console.info('keep listening');
+    if (!flagCode) {
+      console.warn('push array');
+      array.push(e.key);
+      if (array.length > 10) {
+        console.warn('shift array');
+        array.shift();
+      }
+      // if (JSON.stringify(array) === JSON.stringify(konami)) {
+      if (array.join('') === konami.join('')) {
+        flagCode = true;
+        console.info('CORNIFY!!!!!');
+        // cornify_add();
+      }
+    }
+  }
+  console.log('array: ', array);
+  // console.log('konami: ', konami);
+});
+
 </script>
+
 </body>
 </html>
