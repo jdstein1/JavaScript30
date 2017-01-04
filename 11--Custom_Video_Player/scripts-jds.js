@@ -108,14 +108,6 @@ function scrub(e) {
   // console.groupEnd();
 }
 
-function goFullScreen(e) {
-  // console.log('START goFullScreen');
-  if (video.requestFullscreen) {
-    // console.log('requestFullscreen');
-    video.requestFullscreen();
-  }
-}
-
 /**
  * hook up event listeners
  */
@@ -128,8 +120,15 @@ toggle.addEventListener('click',togglePlayer);
 
 skipButtons.forEach(button => button.addEventListener('click',skip));
 
-fullScreen.addEventListener('click', () => {
-  goFullScreen;
+fullScreen.addEventListener('click', (e) => {
+  console.log(e);
+  var el = video,
+    rfs = el.requestFullscreen
+      || el.webkitRequestFullScreen
+      || el.mozRequestFullScreen
+      || el.msRequestFullscreen 
+  ;
+  rfs.call(el);
 });
 
 ranges.forEach(range => range.addEventListener('change',updateRange));
