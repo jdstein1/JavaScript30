@@ -20,18 +20,20 @@ window.onload = function() {
 // check if image is in view or not and show/hide accordingly.
 function checkSlide(e) {
   images.forEach(img => {
-    console.group('image ',img.id)
+    // console.group('image ',img.id)
     const imageMidpoint = (img.offsetTop+(img.clientHeight/2));
     const isInView = (imageMidpoint < window.scrollY+window.innerHeight);
-    console.log('isInView: ', isInView);
+    // console.log('isInView: ', isInView);
     const isOutOfView = (imageMidpoint < window.scrollY);
-    console.log('isOutOfView: ', isOutOfView);
+    // console.log('isOutOfView: ', isOutOfView);
     if (isInView && !isOutOfView) {
+      // show when in view AND not out of view
       img.classList.add('active');
     } else {
+      // hide when NOT in view
       img.classList.remove('active');
     }
-    console.groupEnd();
+    // console.groupEnd();
   });
 }
 
