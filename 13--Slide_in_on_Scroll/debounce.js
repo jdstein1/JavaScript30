@@ -1,4 +1,3 @@
-// console.log('debounce');
 function debounce(func, wait = 20, immediate = true) {
   var timeout;
   return function() {

@@ -1,31 +1,40 @@
-// console.log('scripts');
+// cache dom objects.
 const body = document.querySelector('body');
 const images = document.querySelectorAll('.slide-in');
-console.log(images);
 
-body.scrollTop = 0;
+// give each image an ID for logging purposes.
+let count = 0;
+images.forEach(img => {
+  count++;
+  img.id = count;
+});
 
-// images.forEach(img => img.classList.add('active'));
+// return to top of page on refresh/load & clear console.
+window.onload = function() {
+ setTimeout (function () {
+  scrollTo(0,0);
+  console.clear();
+ }, 100); //100ms for example
+}
 
+// check if image is in view or not and show/hide accordingly.
 function checkSlide(e) {
-  console.count(e);
-  // console.log('window.scrollY: ', window.scrollY);
-  // console.log('window.innerHeight: ', window.innerHeight);
-  // console.log('body.clientHeight: ', body.clientHeight);
   images.forEach(img => {
-      // console.group(img.src);
-      // console.log('image midpoint', (img.offsetTop+(img.clientHeight/4)));
-      // console.log('current scroll point', (window.scrollY+window.innerHeight));
-      // console.groupEnd();
-    // console.log('img.offsetTop: ',img.offsetTop);
-    // console.log('img.clientHeight: ',img.clientHeight);
-    if ((img.offsetTop+(img.clientHeight/4)) < (window.scrollY+window.innerHeight)) {
-      console.info(img.src+' is IN VIEW!');
+    console.group('image ',img.id)
+    const imageMidpoint = (img.offsetTop+(img.clientHeight/2));
+    const isInView = (imageMidpoint < window.scrollY+window.innerHeight);
+    console.log('isInView: ', isInView);
+    const isOutOfView = (imageMidpoint < window.scrollY);
+    console.log('isOutOfView: ', isOutOfView);
+    if (isInView && !isOutOfView) {
       img.classList.add('active');
     } else {
+      img.classList.remove('active');
     }
+    console.groupEnd();
   });
 }
 
-// window.addEventListener('scroll',checkSlide);
-window.addEventListener('scroll',debounce(checkSlide));
+// listen for scroll event according to interval given to 
+// debounce function.
+window.addEventListener('scroll',debounce(checkSlide,10));
