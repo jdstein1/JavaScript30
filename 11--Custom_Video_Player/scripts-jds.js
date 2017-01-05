@@ -108,6 +108,16 @@ function scrub(e) {
   // console.groupEnd();
 }
 
+function goFullscreen() {
+  var el = video,
+    rfs = el.requestFullscreen
+      || el.webkitRequestFullScreen
+      || el.mozRequestFullScreen
+      || el.msRequestFullscreen 
+  ;
+  rfs.call(el);
+}
+
 /**
  * hook up event listeners
  */
@@ -120,16 +130,8 @@ toggle.addEventListener('click',togglePlayer);
 
 skipButtons.forEach(button => button.addEventListener('click',skip));
 
-fullScreen.addEventListener('click', (e) => {
-  console.log(e);
-  var el = video,
-    rfs = el.requestFullscreen
-      || el.webkitRequestFullScreen
-      || el.mozRequestFullScreen
-      || el.msRequestFullscreen 
-  ;
-  rfs.call(el);
-});
+video.addEventListener('dblclick', goFullscreen);
+fullScreen.addEventListener('click', goFullscreen);
 
 ranges.forEach(range => range.addEventListener('change',updateRange));
 
