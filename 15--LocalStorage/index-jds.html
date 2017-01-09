@@ -26,6 +26,9 @@
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <input type="button" id="btn--check" value="Check All">
+      <input type="button" id="btn--uncheck" value="Uncheck All">
+      <input type="button" id="btn--delete" value="Delete All">
     </form>
   </div>
 
@@ -40,6 +43,9 @@ const itemsList = document.querySelector('.plates');
 // console.log('itemsList: ', itemsList);
 const items = JSON.parse(localStorage.getItem('items')) || [];
 // console.log('items: ', items);
+const btnCheck = document.querySelector('#btn--check');
+const btnUncheck = document.querySelector('#btn--uncheck');
+const btnDelete = document.querySelector('#btn--delete');
 
 /**
  * 1) Use local storage to preserve data and data states.
@@ -107,12 +113,37 @@ function toggleItem(e) {
   populateList(items,itemsList);
 }
 
+function fnCheck() {
+  console.log('START fnCheck');
+  items.forEach(item => item.done=true)
+  localStorage.setItem('items',JSON.stringify(items));
+  populateList(items,itemsList);
+}
+
+function fnUncheck() {
+  console.log('START fnUncheck');
+  items.forEach(item => item.done=false)
+  localStorage.setItem('items',JSON.stringify(items));
+  populateList(items,itemsList);
+}
+
+function fnDelete() {
+  console.log('START fnDelete');
+  items.splice(0,items.length);
+  localStorage.setItem('items',JSON.stringify(items));
+  populateList(items,itemsList);
+}
+
 /**
  * Event Listeners
  */
 addItems.addEventListener('submit',addItem);
 
 itemsList.addEventListener('click',toggleItem);
+
+btnCheck.addEventListener('click',fnCheck);
+btnUncheck.addEventListener('click',fnUncheck);
+btnDelete.addEventListener('click',fnDelete);
 
 populateList(items,itemsList);
 
