@@ -90,7 +90,14 @@ function populateList(platesArr = [], platesList) {
 
 function toggleItem(e) {
   console.log('START toggleItem');
-  console.log(this);
+  if (e.target.tagName === 'INPUT') {
+    console.log('e.target.id: ', e.target.id);
+    console.log(items[e.target.dataset.index].done);
+    items[e.target.dataset.index].done = !items[e.target.dataset.index].done;
+    console.log(items[e.target.dataset.index].done);
+    console.log('items: ', items);
+    localStorage.setItem('items',JSON.stringify(items));
+  }
 }
 
 
@@ -101,18 +108,7 @@ function toggleItem(e) {
 addItems.addEventListener('submit',addItem);
 
 // itemsList.querySelectorAll('[type=checkbox]').forEach(thing => thing.addEventListener('change',toggleItem));
-document.querySelector('body').addEventListener('click',(e)=>{
-  // toggleItem();
-  // e.stopPropagation();
-  if (e.target.tagName === 'INPUT') {
-    console.log('e.target.id: ', e.target.id);
-    console.log(items[e.target.dataset.index].done);
-    items[e.target.dataset.index].done = !items[e.target.dataset.index].done;
-    console.log(items[e.target.dataset.index].done);
-    console.log('items: ', items);
-    localStorage.setItem('items',JSON.stringify(items));
-  }
-});
+itemsList.addEventListener('click',toggleItem);
 
 populateList(items,itemsList);
 
