@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <!--
       Fish SVG Cred:
       https://thenounproject.com/search/?q=fish&i=589236
@@ -17,7 +18,7 @@
     <h2>LOCAL TAPAS</h2>
     <p></p>
     <ul class="plates">
-      <li id="jhsdg">Loading Tapas...</li>
+      <li>Loading Tapas...</li>
     </ul>
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
@@ -26,12 +27,13 @@
   </div>
 
 <script>
+
   const addItems = document.querySelector('.add-items');
   // console.log('addItems: ', addItems);
   const itemsList = document.querySelector('.plates');
   // console.log('itemsList: ', itemsList);
   const items = JSON.parse(localStorage.getItem('items')) || [];
-  console.log('items: ', items);
+  // console.log('items: ', items);
 
   /**
    * 1) Use local storage to preserve data and data states.
@@ -42,6 +44,11 @@
  * Functions
  */
 
+
+/**
+ * Add item to array and to local storage.
+ * @param {Event} e -- Submit event that triggers this function.
+ */
 function addItem(e) {
   console.group('START addItem');
   e.preventDefault();
@@ -64,8 +71,8 @@ function addItem(e) {
 
 /**
  * put food items into the list
- * @param  {Array} -- platesArr -- Array of food items.
- * @param  {DOM node} -- platesList -- HTML list of food items.
+ * @param  {Array} platesArr -- Array of food items.
+ * @param  {DOM node} platesList -- HTML list of food items.
  * @return {String} -- List items constructed from mapped & joined array.
  */
 function populateList(platesArr = [], platesList) {
@@ -81,29 +88,35 @@ function populateList(platesArr = [], platesList) {
   }).join(''); // join all list items into one string.
 }
 
+function toggleItem(e) {
+  console.log('START toggleItem');
+  console.log(this);
+}
+
 
 /**
  * Event Listeners
  */
 
 addItems.addEventListener('submit',addItem);
-// addItems.addEventListener('submit',(e)=>{
-//   addItem(e);
-// });
+
+// itemsList.querySelectorAll('[type=checkbox]').forEach(thing => thing.addEventListener('change',toggleItem));
+document.querySelector('body').addEventListener('click',(e)=>{
+  // toggleItem();
+  // e.stopPropagation();
+  if (e.target.tagName === 'INPUT') {
+    console.log('e.target.id: ', e.target.id);
+    console.log(items[e.target.dataset.index].done);
+    items[e.target.dataset.index].done = !items[e.target.dataset.index].done;
+    console.log(items[e.target.dataset.index].done);
+    console.log('items: ', items);
+    localStorage.setItem('items',JSON.stringify(items));
+  }
+});
 
 populateList(items,itemsList);
 
-document.querySelector('.plates').addEventListener('click',(e)=>{
-  // console.log(e.target);
-  if(e.target && e.target.nodeName == "INPUT") {
-    // List item found!  Output the ID!
-    console.log("List item \""+e.target.id+"\" was clicked!");
-  }
-})
-
 </script>
-
 
 </body>
 </html>
-
