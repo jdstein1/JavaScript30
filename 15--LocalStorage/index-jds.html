@@ -17,7 +17,7 @@
     <h2>LOCAL TAPAS</h2>
     <p></p>
     <ul class="plates">
-      <li>Loading Tapas...</li>
+      <li id="jhsdg">Loading Tapas...</li>
     </ul>
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
@@ -42,11 +42,38 @@
  * Functions
  */
 
+function addItem(e) {
+  console.group('START addItem');
+  e.preventDefault();
+  // console.log('e: ',e);
+  // console.log('e.target: ',e.target);
+  // console.log('e.target[0].value: ',e.target[0].value);
+  const item = {
+    // text:e.target[0].value,
+    text:this.querySelector('[name=item]').value,
+    done:false
+  };
+  items.push(item);
+  console.log(items);
+  console.groupEnd();
+}
+
 /**
  * Event Listeners
  */
 
+addItems.addEventListener('submit',addItem);
+// addItems.addEventListener('submit',(e)=>{
+//   addItem(e);
+// });
 
+document.querySelector('.plates').addEventListener('click',(e)=>{
+  console.log(e.target);
+  if(e.target && e.target.nodeName == "LI") {
+    // List item found!  Output the ID!
+    console.log("List item \""+e.target.id+"\" was clicked!");
+  }
+})
 
 </script>
 
