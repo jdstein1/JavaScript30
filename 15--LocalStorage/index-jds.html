@@ -27,10 +27,10 @@
 
 <script>
   const addItems = document.querySelector('.add-items');
-  console.log('addItems: ', addItems);
+  // console.log('addItems: ', addItems);
   const itemsList = document.querySelector('.plates');
-  console.log('itemsList: ', itemsList);
-  const items = [];
+  // console.log('itemsList: ', itemsList);
+  const items = JSON.parse(localStorage.getItem('items')) || [];
   console.log('items: ', items);
 
   /**
@@ -53,10 +53,34 @@ function addItem(e) {
     text:this.querySelector('[name=item]').value,
     done:false
   };
+  console.log(item);
   items.push(item);
-  console.log(items);
+  console.table(items);
+  populateList(items,itemsList);
+  localStorage.setItem('items',JSON.stringify(items));
+  this.reset();
   console.groupEnd();
 }
+
+/**
+ * put food items into the list
+ * @param  {Array} -- platesArr -- Array of food items.
+ * @param  {DOM node} -- platesList -- HTML list of food items.
+ * @return {String} -- List items constructed from mapped & joined array.
+ */
+function populateList(platesArr = [], platesList) {
+  console.log('START addItem');
+  // set the inner HTML of the list to the map of the array.
+  platesList.innerHTML = platesArr.map((plate,i)=>{
+    return `
+    <li>
+    <input id="item-${i}" type="checkbox" data-index="${i}" ${plate.done ? 'checked' : ''} />
+    <label for="item-${i}">${plate.text}</label>
+    </li>
+    `;
+  }).join(''); // join all list items into one string.
+}
+
 
 /**
  * Event Listeners
@@ -67,9 +91,11 @@ addItems.addEventListener('submit',addItem);
 //   addItem(e);
 // });
 
+populateList(items,itemsList);
+
 document.querySelector('.plates').addEventListener('click',(e)=>{
-  console.log(e.target);
-  if(e.target && e.target.nodeName == "LI") {
+  // console.log(e.target);
+  if(e.target && e.target.nodeName == "INPUT") {
     // List item found!  Output the ID!
     console.log("List item \""+e.target.id+"\" was clicked!");
   }
