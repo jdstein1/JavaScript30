@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>LocalStorage</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!--
@@ -28,29 +31,31 @@
 
 <script>
 
-  const addItems = document.querySelector('.add-items');
-  // console.log('addItems: ', addItems);
-  const itemsList = document.querySelector('.plates');
-  // console.log('itemsList: ', itemsList);
-  const items = JSON.parse(localStorage.getItem('items')) || [];
-  // console.log('items: ', items);
+/**
+ * Cache DOM
+ */
+const addItems = document.querySelector('.add-items');
+// console.log('addItems: ', addItems);
+const itemsList = document.querySelector('.plates');
+// console.log('itemsList: ', itemsList);
+const items = JSON.parse(localStorage.getItem('items')) || [];
+// console.log('items: ', items);
 
-  /**
-   * 1) Use local storage to preserve data and data states.
-   * 2) Use event delegation to handle objects created in the future.
-   */
+/**
+ * 1) Use local storage to preserve data and data states.
+ * 2) Use event delegation to handle objects created in the future.
+ */
 
 /**
  * Functions
  */
-
 
 /**
  * Add item to array and to local storage.
  * @param {Event} e -- Submit event that triggers this function.
  */
 function addItem(e) {
-  console.group('START addItem');
+  console.log('START addItem');
   e.preventDefault();
   // console.log('e: ',e);
   // console.log('e.target: ',e.target);
@@ -60,13 +65,12 @@ function addItem(e) {
     text:this.querySelector('[name=item]').value,
     done:false
   };
-  console.log(item);
+  // console.log(item);
   items.push(item);
-  console.table(items);
+  // console.table(items);
   populateList(items,itemsList);
   localStorage.setItem('items',JSON.stringify(items));
   this.reset();
-  console.groupEnd();
 }
 
 /**
@@ -76,7 +80,7 @@ function addItem(e) {
  * @return {String} -- List items constructed from mapped & joined array.
  */
 function populateList(platesArr = [], platesList) {
-  console.log('START addItem');
+  console.log('START populateList');
   // set the inner HTML of the list to the map of the array.
   platesList.innerHTML = platesArr.map((plate,i)=>{
     return `
@@ -88,26 +92,26 @@ function populateList(platesArr = [], platesList) {
   }).join(''); // join all list items into one string.
 }
 
+/**
+ * Delegate event handler to parent (list), toggle "done" boolean, update array in local storage.
+ * @param  {Event} e -- Click on parent (list).
+ */
 function toggleItem(e) {
   console.log('START toggleItem');
-  if (e.target.tagName === 'INPUT') {
-    console.log('e.target.id: ', e.target.id);
-    console.log(items[e.target.dataset.index].done);
-    items[e.target.dataset.index].done = !items[e.target.dataset.index].done;
-    console.log(items[e.target.dataset.index].done);
-    console.log('items: ', items);
-    localStorage.setItem('items',JSON.stringify(items));
-  }
+  if (e.target.tagName != 'INPUT') return;
+  // console.log('e.target.id: ', e.target.id);
+  items[e.target.dataset.index].done = !items[e.target.dataset.index].done;
+  console.log('toggle "done"');
+  localStorage.setItem('items',JSON.stringify(items));
+  console.log('set local storage');
+  populateList(items,itemsList);
 }
-
 
 /**
  * Event Listeners
  */
-
 addItems.addEventListener('submit',addItem);
 
-// itemsList.querySelectorAll('[type=checkbox]').forEach(thing => thing.addEventListener('change',toggleItem));
 itemsList.addEventListener('click',toggleItem);
 
 populateList(items,itemsList);
@@ -115,4 +119,5 @@ populateList(items,itemsList);
 </script>
 
 </body>
+
 </html>
