@@ -32,7 +32,7 @@
     }
 
     h1 {
-      text-shadow: 10px 10px 0 rgba(0,0,0,0.75);
+      /* text-shadow: 10px 10px 0 rgba(0,0,0,0.75); */
       text-shadow:
         10px 0px 0 rgba(255,255,0,0.75),
         0px 10px 0 rgba(0,255,255,0.75),
@@ -56,18 +56,18 @@ function fnShadowEffect(e) {
   // const screenW = hero.offsetWidth;
   // const screenH = hero.offsetHeight;
   const {offsetWidth : screenW, offsetHeight : screenH} = hero; // destructured assignment
-  console.log('W:'+screenW+' / H:'+screenH);
+  // console.log('W:'+screenW+' / H:'+screenH);
   // mouse position on screen:
   // const mouseX = e.clientX;
   // const mouseY = e.clientY;
   const {clientX : mouseX, clientY : mouseY} = e; // destructured assignment
-  console.log('X:'+mouseX+' / Y:'+mouseY);
+  // console.log('X:'+mouseX+' / Y:'+mouseY);
   // x and y are relative to the center of the screen,
   // and converted to a percentage, then multiplied by a "walk".
   const walk = 200; // max number of pixels shadows can walk.
   const x = Math.round((mouseX-(screenW/2))/screenW * walk);
   const y = Math.round((mouseY-(screenH/2))/screenH * walk);
-  console.log(x, y);
+  console.log(x+'x', y+'y');
   // if (this !== e.target) {} else {}
   header.style.textShadow = `
     ${-x}px ${y}px 0 rgba(255,255,0,0.75),
@@ -81,8 +81,8 @@ function fnShadowReset(e) {
 }
 
 // hero.addEventListener('mousemove',debounce(fnShadowEffect));
-hero.addEventListener('mousemove',fnShadowEffect);
-document.addEventListener('mouseout',fnShadowReset);
+hero.addEventListener('mousemove',fnShadowEffect); // do shadow effect while mouse is over hero.
+hero.addEventListener('mouseout',fnShadowReset); // reset shadow effect when mouse leaves hero.
 
 </script>
 </body>
