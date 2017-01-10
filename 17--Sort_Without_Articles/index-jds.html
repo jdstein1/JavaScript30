@@ -45,28 +45,38 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 console.log(bands);
-const articles = ['a ','an ','the '];
-// const bandsSorted = bands.sort();
-const bandsMapped = bands.map(band => {
-  band = band.toLowerCase();
-  // console.group('START bandsSorted: ', band);
-  for (var i = 0; i < articles.length; i++) {
-    console.log('\"'+articles[i]+'\" @ '+band.indexOf(articles[i]));
-    // console.log(band.indexOf(articles[i]));
+
+const articlesArr = ['a ','an ','the '];
+const articlesRegex = /^a\s|^an\s|^the\s/gi;
+
+const bandsSorted = bands.sort(function(a,b){
+  console.group('START bandsSorted');
+  console.log(a+' || '+b);
+
+  // console.log(a.match(articlesRegex));
+  const aStart = a.match(articlesRegex)!==null ? a.match(articlesRegex)[0].length : 0;
+  // console.log(aStart);
+  a = a.substr(aStart);
+
+  // console.log(b.match(articlesRegex));
+  const bStart = b.match(articlesRegex)!==null ? b.match(articlesRegex)[0].length : 0;
+  // console.log(bStart);
+  b = b.substr(bStart);
+
+  console.log(a+' || '+b);
+  console.groupEnd();
+
+  if (a > b) {
+    return 1;
   }
-  if (band.indexOf('a ') === 0) {
-    return band.substring(2);
-  } else if (band.indexOf('an ') === 0) {
-    return band.substring(3);
-  } else if (band.indexOf('the ') === 0) {
-    return band.substring(4);
-  } else {
-    return band;
+
+  if (a < b) {
+    return -1;
   }
-  // console.groupEnd();
+
+  return 0;
+
 });
-console.log(bandsMapped);
-const bandsSorted = bandsMapped.sort();
 console.log(bandsSorted);
 
 </script>
