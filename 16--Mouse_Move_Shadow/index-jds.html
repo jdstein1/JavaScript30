@@ -25,30 +25,46 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: 10px 10px 0 rgba(0,0,0,0.75);
+    text-shadow:
+      15px 0px 0 rgba(255,255,0,0.75),
+      0px 15px 0 rgba(0,255,255,0.75),
+      -15px -0px 0 rgba(255,0,255,0.75),
+      -0px -15px 0 rgba(0,255,0,0.75);
     font-size: 100px;
   }
   </style>
 
 <script src="debounce.js"></script>
 <script>
+
 const hero = document.querySelector('.hero');
 const header = hero.querySelector('h1');
+
 function fnShadowEffect(e) {
-  // console.log(e);
-  // console.log('x:'+e.movementX+' / y:'+e.movementY);
-  const x = e.movementX;
-  const y = e.movementY;
+  console.log(e);
+  console.log('W:'+hero.offsetWidth+' / H:'+hero.offsetHeight);
+  console.log('X:'+e.clientX+' / Y:'+e.clientY);
+  const x = e.clientX-(hero.offsetWidth/2);
+  console.log(x);
+  const y = e.clientY-(hero.offsetHeight/2);
+  console.log(y);
   // console.log(header.style.textShadow);
-  header.style.textShadow = `
-    -${x}px ${y}px 0 rgba(255,255,0,0.5),
-    ${y}px -${x}px 0 rgba(0,255,255,0.5),
-    ${x}px -${y}px 0 rgba(255,0,255,0.5),
-    -${y}px ${x}px 0 rgba(0,255,0,0.5)
-  `;
+  // if (e.srcElement.nodeName === 'H1') {
+    header.style.textShadow = `
+      ${-x}px ${y}px 0 rgba(255,255,0,0.75),
+      ${y}px ${-x}px 0 rgba(0,255,255,0.75),
+      ${x}px ${-y}px 0 rgba(255,0,255,0.75),
+      ${-y}px ${x}px 0 rgba(0,255,0,0.75)
+    `;
+  // } else {
+  //   header.style.textShadow = ``;
+  // }
 }
+
 // hero.addEventListener('mousemove',debounce(fnShadowEffect));
 hero.addEventListener('mousemove',fnShadowEffect);
+
 </script>
 </body>
 </html>
