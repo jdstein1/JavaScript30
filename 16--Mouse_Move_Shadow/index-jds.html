@@ -7,32 +7,40 @@
 <body>
 
   <div class="hero">
-    <h1 contenteditable>🔥WOAH!</h1>
+    <h1 class="header" contenteditable>cmyk</h1>
   </div>
 
   <style>
-  html {
-    color:black;
-    font-family: sans-serif;
-  }
+    *, *:before, *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-align: center;
+    }
 
-  .hero {
-    min-height: 100vh;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    color:black;
-  }
+    html {
+      color:white;
+      font-family: sans-serif;
+    }
 
-  h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,0.75);
-    text-shadow:
-      15px 0px 0 rgba(255,255,0,0.75),
-      0px 15px 0 rgba(0,255,255,0.75),
-      -15px -0px 0 rgba(255,0,255,0.75),
-      -0px -15px 0 rgba(0,255,0,0.75);
-    font-size: 100px;
-  }
+    .hero {
+      min-height: 100vh;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0,0,0,0.125);
+    }
+
+    h1 {
+      text-shadow: 10px 10px 0 rgba(0,0,0,0.75);
+      text-shadow:
+        10px 0px 0 rgba(255,255,0,0.75),
+        0px 10px 0 rgba(0,255,255,0.75),
+        -10px -0px 0 rgba(255,0,255,0.75),
+        -0px -10px 0 rgba(0,0,0,0.75);
+      font-size: 100px;
+      background-color: white;
+    }
   </style>
 
 <script src="debounce.js"></script>
@@ -42,28 +50,28 @@ const hero = document.querySelector('.hero');
 const header = hero.querySelector('h1');
 
 function fnShadowEffect(e) {
-  console.log(e);
+  // console.log(this);
+  // console.log(e);
   console.log('W:'+hero.offsetWidth+' / H:'+hero.offsetHeight);
   console.log('X:'+e.clientX+' / Y:'+e.clientY);
-  const x = e.clientX-(hero.offsetWidth/2);
-  console.log(x);
-  const y = e.clientY-(hero.offsetHeight/2);
-  console.log(y);
-  // console.log(header.style.textShadow);
-  // if (e.srcElement.nodeName === 'H1') {
-    header.style.textShadow = `
-      ${-x}px ${y}px 0 rgba(255,255,0,0.75),
-      ${y}px ${-x}px 0 rgba(0,255,255,0.75),
-      ${x}px ${-y}px 0 rgba(255,0,255,0.75),
-      ${-y}px ${x}px 0 rgba(0,255,0,0.75)
-    `;
-  // } else {
-  //   header.style.textShadow = ``;
-  // }
+  const x = Math.round((e.clientX-(hero.offsetWidth/2))/hero.offsetWidth * 200);
+  const y = Math.round((e.clientY-(hero.offsetHeight/2))/hero.offsetHeight * 200);
+  console.log(x, y);
+  // if (this !== e.target) {} else {}
+  header.style.textShadow = `
+    ${-x}px ${y}px 0 rgba(255,255,0,0.75),
+    ${y}px ${x}px 0 rgba(0,255,255,0.75),
+    ${x}px ${-y}px 0 rgba(255,0,255,0.75),
+    ${-y}px ${-x}px 0 rgba(0,0,0,0.75)
+  `;
+}
+function fnShadowReset(e) {
+    header.style.textShadow = ``;
 }
 
 // hero.addEventListener('mousemove',debounce(fnShadowEffect));
 hero.addEventListener('mousemove',fnShadowEffect);
+document.addEventListener('mouseout',fnShadowReset);
 
 </script>
 </body>
