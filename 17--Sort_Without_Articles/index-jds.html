@@ -54,14 +54,14 @@ const bandsSorted = bands.sort((a,b) => {
   console.group('START bandsSorted');
   // console.log(a+' || '+b);
 
-  // console.log(a.match(articlesRegex));
+  // get index of where article (regex) starts or 0...
   const aStart = a.match(articlesRegex)!==null ? a.match(articlesRegex)[0].length : 0;
-  // console.log(aStart);
+  // get substring
   a = a.substr(aStart);
 
-  // console.log(b.match(articlesRegex));
+  // get index of where article (regex) starts or 0...
   const bStart = b.match(articlesRegex)!==null ? b.match(articlesRegex)[0].length : 0;
-  // console.log(bStart);
+  // get substring
   b = b.substr(bStart);
 
   console.log(a+' || '+b);
