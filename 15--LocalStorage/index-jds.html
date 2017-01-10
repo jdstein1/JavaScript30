@@ -122,25 +122,28 @@ function toggleItem(e) {
   populateList(items,itemsList);
 }
 
-function fnCheck() {
-  console.log('START fnCheck');
-  items.forEach(item => item.done=true)
+function fnCool(type) {
+  console.group('START fnCool');
+  switch(type) {
+    case 'check':
+    console.log('check');
+      items.forEach(item => item.done=true);
+      break;
+    case 'uncheck':
+    console.log('uncheck');
+      items.forEach(item => item.done=false);
+      break;
+    case 'delete':
+    console.log('delete');
+      items.splice(0,items.length);
+      break;
+    default:
+      console.log('default');
+      break;
+  }
   localStorage.setItem('items',JSON.stringify(items));
   populateList(items,itemsList);
-}
-
-function fnUncheck() {
-  console.log('START fnUncheck');
-  items.forEach(item => item.done=false)
-  localStorage.setItem('items',JSON.stringify(items));
-  populateList(items,itemsList);
-}
-
-function fnDelete() {
-  console.log('START fnDelete');
-  items.splice(0,items.length);
-  localStorage.setItem('items',JSON.stringify(items));
-  populateList(items,itemsList);
+  console.groupEnd();
 }
 
 /**
@@ -150,9 +153,9 @@ addItems.addEventListener('submit',addItem);
 
 itemsList.addEventListener('click',toggleItem);
 
-btnCheck.addEventListener('click',fnCheck);
-btnUncheck.addEventListener('click',fnUncheck);
-btnDelete.addEventListener('click',fnDelete);
+btnCheck.addEventListener('click',()=>{fnCool('check')});
+btnUncheck.addEventListener('click',()=>{fnCool('uncheck')});
+btnDelete.addEventListener('click',()=>{fnCool('delete')});
 
 populateList(items,itemsList);
 
