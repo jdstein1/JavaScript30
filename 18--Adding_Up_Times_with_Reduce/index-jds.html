@@ -66,9 +66,9 @@
     <li data-time="4:04">Video 58
   </ul>
 <script>
-const videos = document.querySelectorAll('.videos li');
-const minArr = []; // minutes array
-const secArr = []; // seconds array
+const videos = Array.from(document.querySelectorAll('.videos li'));
+let minArr = []; // minutes array
+let secArr = []; // seconds array
 const totObj = {
   hrs:0,
   min:0,
@@ -79,27 +79,35 @@ let durTot = 0;
 function countDurations() {
   console.group('START countDurations');
   // loop over videos to get time...
-  videos.forEach(video=>{
-    // console.count('iteration');
-    const duration = video.dataset.time; // duration of each video
-    const durArr = duration.split(':'); // split on the ":" to get min and sec
-    minArr.push(durArr[0]); // put min in minArr
-    secArr.push(durArr[1]); // put sec in secArr
+  minArr = videos.map(function(m){
+    // console.log('m: ',m.dataset.time);
+    return (m.dataset.time).split(':')[0];
   });
-  // reduce minutes to a total
+  secArr = videos.map(function(s){
+    // console.log('s: ',s.dataset.time);
+    return (s.dataset.time).split(':')[1];
+  });
+  // videos.forEach(video=>{
+  //   // console.count('iteration');
+  //   const duration = video.dataset.time; // duration of each video
+  //   const durArr = duration.split(':'); // split on the ":" to get min and sec
+  //   minArr.push(durArr[0]); // put min in minArr
+  //   secArr.push(durArr[1]); // put sec in secArr
+  // });
+  /*reduce minutes to a total*/
   const minTot = minArr.reduce(function(a,b){
     return parseInt(a,10) + parseInt(b,10);
   });
-  // reduce seconds to a total
+  /*reduce seconds to a total*/
   const secTot = secArr.reduce(function(a,b){
     return parseInt(a,10) + parseInt(b,10);
   });
   console.log('minTot: ', minTot); // check total minutes
   console.log('secTot: ', secTot); // check total seconds
-  totObj.hrs = parseInt(minTot/60);
-  totObj.min = parseInt(minTot%60)+parseInt(secTot/60);
-  totObj.sec = parseInt(secTot%60);
-  console.log('totObj: ', totObj);
+  // totObj.hrs = parseInt(minTot/60);
+  // totObj.min = parseInt(minTot%60)+parseInt(secTot/60);
+  // totObj.sec = parseInt(secTot%60);
+  // console.log('totObj: ', totObj);
   console.groupEnd();
 }
 
