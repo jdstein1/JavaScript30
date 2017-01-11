@@ -67,10 +67,8 @@
   </ul>
 <script>
 const videos = document.querySelectorAll('.videos li');
-console.log(videos.length);
 const minArr = []; // minutes array
 const secArr = []; // seconds array
-const totArr = [];
 const totObj = {
   hrs:0,
   min:0,
@@ -79,42 +77,30 @@ const totObj = {
 let durTot = 0;
 
 function countDurations() {
-  console.log('START countDurations');
+  console.group('START countDurations');
+  // loop over videos to get time...
   videos.forEach(video=>{
+    // console.count('iteration');
     const duration = video.dataset.time; // duration of each video
-    // console.log(duration);
     const durArr = duration.split(':'); // split on the ":" to get min and sec
-    // console.log('durArr: ',durArr);
-    minArr.push(durArr[0]);
-    secArr.push(durArr[1]);
-    // console.log('minArr: ',minArr);
-    // console.log('secArr: ',secArr);
+    minArr.push(durArr[0]); // put min in minArr
+    secArr.push(durArr[1]); // put sec in secArr
   });
+  // reduce minutes to a total
   const minTot = minArr.reduce(function(a,b){
-    // console.log('minArr: a:'+a,'b:'+b);
     return parseInt(a,10) + parseInt(b,10);
   });
+  // reduce seconds to a total
   const secTot = secArr.reduce(function(a,b){
-    // console.log('secArr: a:'+a,'b:'+b);
     return parseInt(a,10) + parseInt(b,10);
   });
-  // console.log('minArr: ',minArr);
-  // console.log('minTot: ',minTot);
-  // console.log('minTot / int: ',parseInt(minTot/60));
-  // console.log('minTot %: ',minTot%60);
-  totArr.push((minTot));
-  // console.log('secArr: ',secArr);
-  // console.log('secTot: ',secTot);
-  // console.log('secTot / int: ',parseInt(secTot/60));
-  // console.log('secTot %: ',secTot%60);
-  totArr.push((secTot));
-  console.log('totArr: ', totArr);
+  console.log('minTot: ', minTot); // check total minutes
+  console.log('secTot: ', secTot); // check total seconds
   totObj.hrs = parseInt(minTot/60);
   totObj.min = parseInt(minTot%60)+parseInt(secTot/60);
   totObj.sec = parseInt(secTot%60);
   console.log('totObj: ', totObj);
-  // console.log('secTot: ', secTot);
-  // console.log(durTot);
+  console.groupEnd();
 }
 
 countDurations();
