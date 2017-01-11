@@ -81,33 +81,29 @@ function countDurations() {
   // loop over videos to get time...
   minArr = videos.map(function(m){
     // console.log('m: ',m.dataset.time);
-    return (m.dataset.time).split(':')[0];
+    return parseFloat((m.dataset.time).split(':')[0],10);
   });
   secArr = videos.map(function(s){
     // console.log('s: ',s.dataset.time);
-    return (s.dataset.time).split(':')[1];
+    return parseFloat((s.dataset.time).split(':')[1],10);
   });
-  // videos.forEach(video=>{
-  //   // console.count('iteration');
-  //   const duration = video.dataset.time; // duration of each video
-  //   const durArr = duration.split(':'); // split on the ":" to get min and sec
-  //   minArr.push(durArr[0]); // put min in minArr
-  //   secArr.push(durArr[1]); // put sec in secArr
-  // });
+
   /*reduce minutes to a total*/
   const minTot = minArr.reduce(function(a,b){
-    return parseInt(a,10) + parseInt(b,10);
-  });
-  /*reduce seconds to a total*/
-  const secTot = secArr.reduce(function(a,b){
-    return parseInt(a,10) + parseInt(b,10);
+    return a + b;
   });
   console.log('minTot: ', minTot); // check total minutes
+
+  /*reduce seconds to a total*/
+  const secTot = secArr.reduce(function(a,b){
+    return a + b;
+  });
   console.log('secTot: ', secTot); // check total seconds
-  // totObj.hrs = parseInt(minTot/60);
-  // totObj.min = parseInt(minTot%60)+parseInt(secTot/60);
-  // totObj.sec = parseInt(secTot%60);
-  // console.log('totObj: ', totObj);
+
+  totObj.hrs = Math.floor(minTot/60);
+  totObj.min = (minTot%60)+Math.floor(secTot/60);
+  totObj.sec = (secTot%60);
+  console.log('totObj: ', totObj);
   console.groupEnd();
 }
 
