@@ -13,15 +13,18 @@ let positionX = 0;
 let positionY = 0;
 
 /* FUNCTIONS */
-const videoSettings = {audio: true, video: true};
-  // {
-    // width: { min: 1024, ideal: 1280, max: 1920 },
-    // height: { min: 776, ideal: 720, max: 1080 },
-    // facingMode: (front ? "user" : "environment")
+const videoSettings = {
+  audio: false, 
+  video: true
+  // video: {
+  //   width: { min: 1024, ideal: 1280, max: 1920 },
+  //   height: { min: 776, ideal: 720, max: 1080 },
+  //   facingMode: (front ? "user" : "environment")
   // }
+};
 
 function getVideo(mode) {
-  console.log('START getVideo');
+  console.group('START getVideo');
   navigator.mediaDevices.getUserMedia(videoSettings)
   .then(function(mediaStream) {
     myStream = mediaStream;
@@ -45,7 +48,7 @@ function getVideo(mode) {
     console.error('err: ', err);
     // console.log(err.name + ": " + err.message); // always check for errors at the end.
   });
-  // console.groupEnd();
+  console.groupEnd();
 }
 
 function videoToCanvas() {
@@ -89,13 +92,13 @@ function videoToCanvas() {
   console.groupEnd();
 }
 
+function takePhoto() {
+  alert('I JUST TOOK YOUR PHOTO');
+}
+
 function flipCamera() {
   front = !front;
   alert('I JUST FLIPPED YOUR CAMERA');
-}
-
-function takePhoto() {
-  alert('I JUST TOOK YOUR PHOTO');
 }
 
 function startStream() {
