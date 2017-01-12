@@ -8,11 +8,13 @@
 <body>
 
     <div class="controls">
-      <fieldset><legend>Camera</legend>
+      <fieldset>
+        <!-- <legend>Camera</legend> -->
         <button onClick="startStream()">On</button>
         <button onClick="stopStream()">Off</button>
       </fieldset>
-      <fieldset class="rgb"><legend>Experimental</legend>
+      <fieldset class="rgb">
+        <!-- <legend>Experimental</legend> -->
         <table>
           <tr>
             <th class="rControl">Red</th>
@@ -49,15 +51,18 @@
           </tr>
         </table>
       </fieldset>
-      <fieldset><legend>Photo</legend>
-        <button onClick="takePhoto()" class="snapshot">Snap!</button>
+      <fieldset>
+        <!-- <legend>View</legend> -->
+        <!-- <button onClick="flipCamera()">Flip</button> -->
+        <button onClick="takePhoto()">Snap</button>
       </fieldset>
     </div>
 
   <div class="photobooth">
-    <canvas class="canvas"></canvas>
     <video class="video"></video>
+    <canvas class="canvas"></canvas>
   </div>
+
   <div class="strip"></div>
 
   <audio class="snap" src="http://wesbos.com/demos/photobooth/snap.mp3" hidden></audio>

@@ -10,14 +10,26 @@ html {
   background:#ffc600;
 }
 
-
+.controls {z-index: 2;}
+.photobooth {z-index: 1;}
+.strip {z-index: 3;}
 
 .photobooth {
   background-color:rgba(127, 127, 127, 0.5);
-  max-width:100vw;
-  margin:5rem auto;
+
+  max-width:auto;
+  width:auto;
+
+  max-height:100vh;
+  height:100%;
+
+  margin:0 auto;
   box-shadow:0 0 1rem 0 rgba(0, 0, 0, 0.25);
-  position:relative;
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
 }
 
 /*clearfix*/
@@ -34,6 +46,7 @@ html {
   bottom:auto;
   right:0;
   background-color:rgba(0, 0, 0, 0.5);
+  color:white;
   padding:0;
   display: flex;
   flex-direction: row;
@@ -41,12 +54,12 @@ html {
 }
 .controls > * {float:left; display:inline-block; text-align:center; flex:1;}
 .controls button {padding:0.5rem; margin:0 0.25rem 0 0;}
-.controls table {width:100%;}
+.controls table {width:100%; margin-top: -0.5rem;}
 .controls input {width:auto;}
 .controls label {
-  display:inline-block; width:3rem; text-align:right; background-color:black; color:white;
+  display:inline-block; width:3rem; text-align:right; background-color:black;
 }
-.controls .rgb {flex:5;}
+.controls .rgb {flex:5; display: none;}
 .controls .rControl {background-color:red;}
 .controls .gControl {background-color:green;}
 .controls .bControl {background-color:blue;}
@@ -54,7 +67,7 @@ html {
 
 .canvas {
   width:100%;
-  float:left;
+  height:auto;
   background-color:rgba(0, 255, 0, 0.5);
 }
 
@@ -65,7 +78,7 @@ html {
   width:200px;
   background-color:rgba(0, 0, 255, 0.5);
   box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
-  border:0.5rem white solid;
+  /*border:0.5rem white solid;*/
 }
 
 /*
@@ -74,8 +87,10 @@ html {
 
 .strip {
   padding:1rem;
+  height:auto;
   background-color:rgba(255, 0, 0, 0.5);
   position:absolute;
+  top:auto;
   left:0;
   bottom:0;
   right:0;
