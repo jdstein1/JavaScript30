@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Webcam Fun -- Get User Media Code Along!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="controls">
+      <fieldset><legend>Camera</legend>
+        <button onClick="startStream()">On</button>
+        <button onClick="stopStream()">Off</button>
+      </fieldset>
+      <fieldset class="rgb"><legend>Experimental</legend>
+        <table>
+          <tr>
+            <th class="rControl">Red</th>
+            <th class="gControl">Green</th>
+            <th class="bControl">Blue</th>
+          </tr>
+          <tr>
+            <td class="rControl">
+              <label for="rmin">Min:</label>
+              <input type="range" min=0 max=255 name="rmin">
+            </td>
+            <td class="gControl">
+              <label for="gmin">Min:</label>
+              <input type="range" min=0 max=255 name="gmin">
+            </td>
+            <td class="bControl">
+              <label for="bmin">Min:</label>
+              <input type="range" min=0 max=255 name="bmin">
+            </td>
+          </tr>
+          <tr>
+            <td class="rControl">
+              <label for="rmax">Max:</label>
+              <input type="range" min=0 max=255 name="rmax">
+            </td>
+            <td class="gControl">
+              <label for="gmax">Max:</label>
+              <input type="range" min=0 max=255 name="gmax">
+            </td>
+            <td class="bControl">
+              <label for="bmax">Max:</label>
+              <input type="range" min=0 max=255 name="bmax">
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+      <fieldset><legend>Photo</legend>
+        <button onClick="takePhoto()" class="snapshot">Snap!</button>
+      </fieldset>
+    </div>
+
+  <div class="photobooth">
+    <canvas class="canvas"></canvas>
+    <video class="video"></video>
+  </div>
+  <div class="strip"></div>
+
+  <audio class="snap" src="http://wesbos.com/demos/photobooth/snap.mp3" hidden></audio>
+
+  <script src="scripts.js"></script>
+  <!-- <script src="scripts-FINISHED.js"></script> -->
+
+</body>
+</html>
