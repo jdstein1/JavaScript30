@@ -4,6 +4,7 @@ const video = document.querySelector('.video');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
+const stripList = strip.querySelector('ul');
 const snap = document.querySelector('.snap');
 
 /* VARIABLES */
@@ -11,6 +12,9 @@ let myStream;
 let front = true;
 let positionX = 0;
 let positionY = 0;
+let stripLen = 0;
+const stripMax = 5;
+const stripItemW = 150;
 
 /* FUNCTIONS */
 const videoSettings = {
@@ -36,11 +40,12 @@ function getVideo(mode) {
       // video.srcObject = myStream;
       video.onloadedmetadata = function(e) {
         video.play();
-        videoToCanvas();
       };
     } else {
       video.src = '';
+      myStream.active = false;
     }
+    console.log('video.src: ',video.src);
     console.log('myStream: ', myStream);
   })
   .catch(function(err) {
@@ -87,15 +92,43 @@ function videoToCanvas() {
   // console.log(canvas.width,canvas.height);
   return setInterval(() => {
     ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
+    let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
+    console.log('pixels: ', pixels);
+    pixels = fxRed(pixels);
+    debugger;
   }, 100);
   console.groupEnd();
 }
 
 function snapPhoto() {
   console.group('START snapPhoto');
-  strip.innerHTML += `
-    <img src="${canvas.toDataURL('image/webp')}" alt="" />
-  `;
+  if (video.src !== '') {
+    // make snap sound
+    snap.currentTime = 0;
+    snap.play();
+
+    // take photo data from canvas
+    const item = document.createElement('li');
+    item.style.width = stripItemW+'px';
+    const data = canvas.toDataURL('image/jpeg');
+    const link = document.createElement('a');
+    link.href = data;
+    // link.download = 'picture';
+    link.setAttribute('download','picture.jpg');
+    link.innerHTML = `<img src="${data}" alt="download picture" />`;
+    item.appendChild(link);
+    stripLen++;
+    stripList.insertBefore(item,stripList.firstChild);
+    console.log(item.clientHeight);
+    stripList.style.width = (stripLen*(stripItemW+0))+'px'
+    stripList.style.height = strip.style.height = item.clientHeight+40+'px';
+    // if (stripLen < stripMax) {
+    //   stripLen++;
+    // } else {
+    //   stripLen = stripMax;
+    //   stripList.removeChild(stripList.lastChild);  
+    // }
+  }
   console.groupEnd();
 }
 
@@ -107,7 +140,7 @@ function clearCanvas() {
 
 function clearStrip() {
   console.group('START clearStrip');
-  strip.innerHTML = ``;
+  stripList.innerHTML = ``;
   console.groupEnd();
 }
 
@@ -130,5 +163,26 @@ function stopStream() {
   console.groupEnd();
 }
 
+function fxRed(pixels) {
+  for (let i = 0; i < pixels.length; i+=4) {
+    // expression
+    pixels.data[i+0] = pixels.data[i+0]; // r
+    pixels.data[i+1] = 0; // g
+    pixels.data[i+2] = 0; // b
+  }
+}
+function fxGreen(pixels) {
+  for (let i = 1; i < pixels.length; i+=4) {
+    // expression
+    pixels[i] = ; // r
+  }
+}
+function fxBlue(pixels) {
+  for (let i = 2; i < pixels.length; i+=4) {
+    // expression
+    pixels[i] = ; // r
+  }
+}
 
 /* EVENT LISTENERS */
+video.addEventListener('canplay',videoToCanvas);
