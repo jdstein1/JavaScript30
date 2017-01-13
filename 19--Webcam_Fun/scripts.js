@@ -24,7 +24,7 @@ const videoSettings = {
 };
 
 function getVideo(mode) {
-  console.group('START getVideo');
+  console.group('START getVideo', mode);
   navigator.mediaDevices.getUserMedia(videoSettings)
   .then(function(mediaStream) {
     myStream = mediaStream;
@@ -40,12 +40,11 @@ function getVideo(mode) {
       };
     } else {
       video.src = '';
-      // video.pause();
     }
     console.log('myStream: ', myStream);
   })
   .catch(function(err) {
-    console.error('err: ', err);
+    console.error('err: ', err.name);
     // console.log(err.name + ": " + err.message); // always check for errors at the end.
   });
   console.groupEnd();
@@ -86,23 +85,40 @@ function videoToCanvas() {
   }
 
   // console.log(canvas.width,canvas.height);
-  setInterval(() => {
+  return setInterval(() => {
     ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
   }, 100);
   console.groupEnd();
 }
 
-function takePhoto() {
-  alert('I JUST TOOK YOUR PHOTO');
+function snapPhoto() {
+  console.group('START snapPhoto');
+  strip.innerHTML += `
+    <img src="${canvas.toDataURL('image/webp')}" alt="" />
+  `;
+  console.groupEnd();
+}
+
+function clearCanvas() {
+  console.group('START clearCanvas');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  console.groupEnd();
+}
+
+function clearStrip() {
+  console.group('START clearStrip');
+  strip.innerHTML = ``;
+  console.groupEnd();
 }
 
 function flipCamera() {
+  console.group('START flipCamera');
   front = !front;
-  alert('I JUST FLIPPED YOUR CAMERA');
+  console.groupEnd();
 }
 
 function startStream() {
-  console.group('CAMERA ON');
+  console.group('START startStream');
   // myStream.active = true;
   getVideo('start');
   console.groupEnd();
@@ -110,9 +126,9 @@ function startStream() {
 
 function stopStream() {
   console.group('CAMERA OFF');
-  // myStream.active = false;
   getVideo('stop');
   console.groupEnd();
 }
+
 
 /* EVENT LISTENERS */
