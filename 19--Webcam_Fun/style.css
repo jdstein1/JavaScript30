@@ -1,21 +1,26 @@
-*, *:before, *:after {
-  box-sizing:border-box;
-  padding:0;
-  margin:0;
-}
-
 html {
   font-size:100%;
   font-family:sans-serif;
   background:#ffc600;
 }
 
+*, *:before, *:after {
+  box-sizing:border-box;
+  padding:0;
+  margin:0;
+  font-size:1rem;
+}
+
+body {}
+fieldset {border:none;}
+
 .controls {z-index: 2;}
 .photobooth {z-index: 1;}
 .strip {z-index: 3;}
 
 .photobooth {
-  background-color:rgba(127, 127, 127, 0.5);
+  /* background-color:rgba(127, 127, 127, 0.5); */
+  background:white;
 
   max-width:auto;
   width:auto;
@@ -40,28 +45,32 @@ html {
 }
 
 .controls {
+  color: white;
   position:absolute;
   top:0;
   left:0;
   bottom:auto;
   right:0;
-  background-color:rgba(0, 0, 0, 0.5);
+  /* background-color:rgba(0, 0, 0, 0.5); */
+  background:transparent;
   color:white;
   padding:0;
   display: flex;
   flex-direction: row;
   justify-content:space-between;
+  flex-wrap:nowrap;
 }
-.controls > * {float:left; display:inline-block; text-align:center; flex:1;}
+.controls > * {float:left; display:inline-block; text-align:center; flex:1; flex-wrap:nowrap;}
 .controls button {padding:0.5rem; margin:0 0.25rem 0 0;}
-.controls table {width:100%; margin-top: -0.5rem;}
-.controls input {width:auto;display:inline-block;}
+.controls table {width:100%;}
+.controls input {width:auto;display:inline-block; color:black;}
+/* .controls input[type=range]:before {content:"Range";} */
 .controls label {
-  display:inline-block; width:3rem; text-align:right; background-color:black;
+  display:inline-block; text-align:right; background-color:black;
 }
 .controls .rgb {
-  flex:4; 
-  /*display: none;*/
+  flex:3; 
+  /* display: none; */
 }
 .controls .rControl {background-color:red;}
 .controls .gControl {background-color:green;}
@@ -71,15 +80,17 @@ html {
 .canvas {
   width:100%;
   height:auto;
-  background-color:rgba(0, 255, 0, 0.5);
+  /* background-color:rgba(0, 255, 0, 0.5); */
+  background:transparent;
 }
 
 .video {
   position:absolute;
-  top:2rem;
+  top:4rem;
   right:1rem;
   width:200px;
-  background-color:rgba(0, 0, 255, 0.5);
+  /* background-color:rgba(0, 0, 255, 0.5); */
+  background:black;
   box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
   /*border:0.5rem white solid;*/
 }
@@ -93,7 +104,8 @@ html {
   height:auto;
   margin:0;
   padding:10px;
-  background-color:rgba(255, 0, 0, 0.5);
+  /* background-color:rgba(255, 0, 0, 0.5); */
+  background:transparent;
   position:absolute;
   overflow:auto;
   overflow-x:scroll;

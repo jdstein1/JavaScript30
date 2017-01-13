@@ -61,17 +61,19 @@ function videoToCanvas() {
 
   const vWidth = video.videoWidth;
   const vHeight = video.videoHeight;
-  console.log(vWidth,vHeight);
+  console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
 
   const wWidth = window.innerWidth;
   const wHeight = window.innerHeight;
-  console.log(wWidth,wHeight);
+  console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
 
-  canvas.width = vWidth;
-  canvas.height = vHeight;
+  // set canvas to W&H of window
+  canvas.width = wWidth;
+  canvas.height = wHeight;
 
-  // positionX = (wWidth - vWidth)/2;
-  // positionY = (wHeight - vHeight)/2;
+  // center the canvas
+  positionX = (wWidth - vWidth)/2;
+  positionY = (wHeight - vHeight)/2;
 
   if (vWidth < wWidth && vHeight > wHeight) {
     console.log('video taller than window');
@@ -93,9 +95,21 @@ function videoToCanvas() {
   return setInterval(() => {
     ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
     let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
-    console.log('pixels: ', pixels);
-    pixels = fxRed(pixels);
-    debugger;
+
+    // manipulate pixels
+    pixels = fxChromaKey(pixels);
+    // pixels = fxSplit(pixels);
+    // pixels = fxRGB(pixels,'blue');
+
+    // control ghosting effect
+    ctx.globalAlpha = 0.5;
+
+    // put pixels back
+    ctx.putImageData(pixels,positionX,positionY);
+
+    // console.log('pixels: ', pixels);
+    // debugger;
+
   }, 100);
   console.groupEnd();
 }
@@ -163,25 +177,52 @@ function stopStream() {
   console.groupEnd();
 }
 
-function fxRed(pixels) {
-  for (let i = 0; i < pixels.length; i+=4) {
-    // expression
-    pixels.data[i+0] = pixels.data[i+0]; // r
-    pixels.data[i+1] = 0; // g
-    pixels.data[i+2] = 0; // b
+function fxChromaKey(pixels) {
+  const levels = {};
+  document.querySelectorAll('.rgb input').forEach((input) => {
+    levels[input.name] = input.value;
+  });
+  // console.log(levels);
+  // debugger;
+  for (let i = 0; i < pixels.data.length; i+=4) {
+    // put values into vars
+    red = pixels.data[i+0]; // r
+    green = pixels.data[i+1]; // g
+    blue = pixels.data[i+2]; // b
+    alpha = pixels.data[i+3]; // a
+
+    // check if values are within ranges
+    if (red >= levels.rmin
+      && red <= levels.rmax
+      && green >= levels.gmin
+      && green <= levels.gmax
+      && blue >= levels.bmin
+      && blue <= levels.bmax) {
+      // take it out!
+      pixels.data[i + 3] = 0;
+    }
   }
+  return pixels;
 }
-function fxGreen(pixels) {
-  for (let i = 1; i < pixels.length; i+=4) {
+
+function fxSplit(pixels) {
+  for (let i = 0; i < pixels.data.length; i+=4) {
     // expression
-    pixels[i] = ; // r
+    pixels.data[i-300] = pixels.data[i+0]; // r
+    pixels.data[i+300] = pixels.data[i+1]; // g
+    pixels.data[i+150] = pixels.data[i+2]; // b
   }
+  return pixels;
 }
-function fxBlue(pixels) {
-  for (let i = 2; i < pixels.length; i+=4) {
-    // expression
-    pixels[i] = ; // r
+
+function fxRGB(pixels,effect) {
+  console.log('START fxRGB',effect);
+  for (let i = 0; i < pixels.data.length; i+=4) {
+    pixels.data[i+0] += (effect==='red') ? 150 : -50; // r
+    pixels.data[i+1] += (effect==='green') ? 150 : -50; // g
+    pixels.data[i+2] += (effect==='blue') ? 150 : -50; // b
   }
+  return pixels;
 }
 
 /* EVENT LISTENERS */
