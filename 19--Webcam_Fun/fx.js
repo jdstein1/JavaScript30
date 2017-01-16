@@ -1,17 +1,18 @@
 /* fx.js */
-function fxChromaKey(pixels) {
+function fxChromaKey(data) {
+  // console.log('START fxChromaKey');
   const levels = {};
-  document.querySelectorAll('.rgb input').forEach((input) => {
+  document.querySelectorAll('#ctrl_fx--chroma input').forEach((input) => {
     levels[input.name] = input.value;
   });
   // console.log(levels);
   // debugger;
-  for (let i = 0; i < pixels.data.length; i+=4) {
+  for (let i = 0; i < data.data.length; i+=4) {
     // put values into vars
-    red = pixels.data[i+0]; // r
-    green = pixels.data[i+1]; // g
-    blue = pixels.data[i+2]; // b
-    alpha = pixels.data[i+3]; // a
+    red = data.data[i+0]; // r
+    green = data.data[i+1]; // g
+    blue = data.data[i+2]; // b
+    alpha = data.data[i+3]; // a
 
     // check if values are within ranges
     if (red >= levels.rmin
@@ -21,27 +22,35 @@ function fxChromaKey(pixels) {
       && blue >= levels.bmin
       && blue <= levels.bmax) {
       // take it out!
-      pixels.data[i + 3] = 0;
+      data.data[i + 3] = 0;
     }
   }
-  return pixels;
+  return data;
 }
 
-function fxSplit(pixels,randoms) {
-  for (let i = 0; i < pixels.data.length; i+=4) {
-    pixels.data[i-randoms[1]] = pixels.data[i+0]; // r
-    pixels.data[i+randoms[2]] = pixels.data[i+1]; // g
-    pixels.data[i+randoms[3]] = pixels.data[i+2]; // b
+function fxSplit(data,nums) {
+  // console.log('START fxSplit');
+  for (let i = 0; i < data.data.length; i+=4) {
+    data.data[i+nums[1]] = data.data[i+0]; // r
+    data.data[i+nums[2]] = data.data[i+1]; // g
+    data.data[i+nums[3]] = data.data[i+2]; // b
   }
-  return pixels;
+  return data;
 }
 
-function fxRGB(pixels,effect) {
-  console.log('START fxRGB',effect);
-  for (let i = 0; i < pixels.data.length; i+=4) {
-    pixels.data[i+0] += (effect==='red') ? 150 : -50; // r
-    pixels.data[i+1] += (effect==='green') ? 150 : -50; // g
-    pixels.data[i+2] += (effect==='blue') ? 150 : -50; // b
+function fxRGB(data,effect) {
+  // console.log('START fxRGB',effect);
+  for (let i = 0; i < data.data.length; i+=4) {
+    data.data[i+0] += (effect==='red') ? 150 : -50; // r
+    data.data[i+1] += (effect==='green') ? 150 : -50; // g
+    data.data[i+2] += (effect==='blue') ? 150 : -50; // b
   }
-  return pixels;
+  return data;
+}
+
+function fxPixelate(data,resolution) {
+  // console.log('START fxPixelate',resolution);
+  for (let i = 0; i < data.data.length; i+=4) {
+  }
+  return data;
 }

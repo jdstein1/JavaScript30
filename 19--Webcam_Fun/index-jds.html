@@ -26,7 +26,7 @@
       </fieldset>
       <fieldset class="">
         <legend>booth</legend>
-        <button class="status info" onClick="snapPhoto()">Snap</button>
+        <button class="status warn" onClick="snapPhoto()">Snap</button>
         <button class="status" onClick="clearCanvas()">Clear</button>
         <!-- <button class="status info" onClick="flipCamera()">Flip</button> -->
       </fieldset>
@@ -49,7 +49,24 @@
             <option value="b_channel">B Channel</option>
           </select>
         </legend>
-        <table>
+        <table id="ctrl_fx--split">
+          <tr>
+            <td>
+              <label>split:
+                <select class="status info" id="split">
+                  <option>Choose effect...</option>
+                  <option value="random">random</option>
+                  <option value="stereo" selected>stereo</option>
+                  <option value="rgb">RGB</option>
+                </select>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td><button class="status success" onClick="startStream()">Restart</button></td>
+          </tr>
+        </table>
+        <table id="ctrl_fx--chroma">
           <tr>
             <td class="ctrl_r">
               <label for="rmin">Min:
