@@ -1,0 +1,33 @@
+/* container for webcam video and canvas */
+.photobooth {
+  background:white;
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+}
+
+/*clearfix*/
+.photobooth:after {
+  content:'';
+  display:block;
+  clear:both;
+}
+
+.canvas {
+  width:100%;
+  height:100%;
+  background:black;
+}
+
+.video {
+  background:white;
+  box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
+  padding:5px;
+  position:absolute;
+  top:2rem;
+  right:2rem;
+  width:200px;
+}
+

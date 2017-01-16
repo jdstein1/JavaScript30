@@ -1,3 +1,4 @@
+/* fx.js */
 function fxChromaKey(pixels) {
   const levels = {};
   document.querySelectorAll('.rgb input').forEach((input) => {
@@ -26,12 +27,11 @@ function fxChromaKey(pixels) {
   return pixels;
 }
 
-function fxSplit(pixels) {
+function fxSplit(pixels,randoms) {
   for (let i = 0; i < pixels.data.length; i+=4) {
-    // expression
-    pixels.data[i-300] = pixels.data[i+0]; // r
-    pixels.data[i+300] = pixels.data[i+1]; // g
-    pixels.data[i+150] = pixels.data[i+2]; // b
+    pixels.data[i-randoms[1]] = pixels.data[i+0]; // r
+    pixels.data[i+randoms[2]] = pixels.data[i+1]; // g
+    pixels.data[i+randoms[3]] = pixels.data[i+2]; // b
   }
   return pixels;
 }

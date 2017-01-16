@@ -1,11 +1,14 @@
+/* scripts.js */
 
 /* DOM NODES */
 const video = document.querySelector('.video');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
-const stripList = strip.querySelector('ul');
 const snap = document.querySelector('.snap');
+const fxSelect = document.querySelector('#fx');
+const inputs = document.querySelectorAll('.ctrl_fx')
+const inputLimit = document.querySelector('#limit');
 
 /* VARIABLES */
 let myStream;
@@ -13,8 +16,11 @@ let front = true;
 let positionX = 0;
 let positionY = 0;
 let stripLen = 0;
+let stripLimit = true;
 const stripMax = 5;
 const stripItemW = 150;
+
+inputLimit.checked = stripLimit;
 
 /* FUNCTIONS */
 const videoSettings = {
@@ -53,60 +59,100 @@ function getVideo(mode) {
 
 function videoToCanvas() {
   console.group('START videoToCanvas');
-  console.log(video);
+  // console.log(video);
 
   const vWidth = video.videoWidth;
   const vHeight = video.videoHeight;
-  console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
+  // console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
+
+  const ratio = vWidth/vHeight;
+  // console.log('ratio: ', ratio);
 
   const wWidth = window.innerWidth;
   const wHeight = window.innerHeight;
-  console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
+  // console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
 
   /* set canvas to W&H of window */
-  canvas.width = wWidth;
-  canvas.height = wHeight;
+  // canvas.width = wWidth;
+  // canvas.height = wHeight;
 
   /* center the canvas */
   // positionX = (wWidth - vWidth)/2;
   // positionY = (wHeight - vHeight)/2;
 
-  if (vWidth < wWidth && vHeight > wHeight) {
-    console.log('video taller than window');
-    // stretch video vertically...
+  // if (vWidth < wWidth && vHeight > wHeight) {
+  //   console.log('video taller than window');
+  //   // stretch video vertically...
+  //   canvas.width = vWidth;
+  //   canvas.height = wHeight;
+  // } else if (vWidth > wWidth && vHeight < wHeight) {
+  //   console.log('video wider than window');
+  //   // stretch video horizontally...
+  //   canvas.width = wWidth;
+  //   canvas.height = vHeight;
+  // } else {
+  //   console.log('video ??? than window');
     canvas.width = vWidth;
-    canvas.height = wHeight;
-  } else if (vWidth > wWidth && vHeight < wHeight) {
-    console.log('video wider than window');
-    // stretch video horizontally...
-    canvas.width = wWidth;
     canvas.height = vHeight;
+  // }
+
+  const randoms = [];
+  randoms.push(Math.floor(Math.random()*100));
+  randoms.push(Math.floor(Math.random()*100));
+  randoms.push(Math.floor(Math.random()*100));
+  console.log('randoms: ', randoms);
+
+  console.log(fxSelect.value);
+  if (fxSelect.value = 'chroma') {
+    for (var i = 0; i < inputs.length; i++) {
+      // console.log('input: ',inputs[i]);
+      inputs[i].readOnly = false;
+    }
   } else {
-    console.log('video ??? than window');
-    canvas.width = vWidth;
-    canvas.height = vHeight;
+    for (var i = 0; i < inputs.length; i++) {
+      // console.log('input: ',inputs[i]);
+      inputs[i].readOnly = true;
+    }
   }
 
   // console.log(canvas.width,canvas.height);
-  return setInterval(() => {
-    ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
-    let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
-
-    /* manipulate pixels */
-    pixels = fxChromaKey(pixels);
-    // pixels = fxSplit(pixels);
-    // pixels = fxRGB(pixels,'blue');
-
-    /* control ghosting effect */
-    ctx.globalAlpha = 0.5;
-
-    /* put pixels back */
-    ctx.putImageData(pixels,positionX,positionY);
-
-    // console.log('pixels: ', pixels);
-    // debugger;
-
+  function videoFX (fx) {
+      ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
+      let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
+  
+      /* manipulate pixels */
+      switch(fx) {
+        case 'chroma':
+          pixels = fxChromaKey(pixels);
+          break;
+        case 'split':
+          pixels = fxSplit(pixels,randoms);
+          break;
+        case 'r_channel':
+          pixels = fxRGB(pixels,'red');
+          break;
+        case 'g_channel':
+          pixels = fxRGB(pixels,'green');
+          break;
+        case 'b_channel':
+          pixels = fxRGB(pixels,'blue');
+          break;
+      }
+  
+      /* control ghosting effect */
+      // ctx.globalAlpha = 0.5;
+  
+      /* put pixels back */
+      ctx.putImageData(pixels,positionX,positionY);
+  
+      // console.log('pixels: ', pixels);
+      // debugger;
+  
+    }
+  const videoInterval = setInterval(()=>{
+    videoFX(fxSelect.value);
   }, 100);
+  return videoInterval 
   console.groupEnd();
 }
 
@@ -118,32 +164,33 @@ function snapPhoto() {
     snap.play();
 
     /* take photo data from canvas */
-    // const item = document.createElement('li');
-    // item.style.width = stripItemW+'px';
     const data = canvas.toDataURL('image/jpeg');
     const link = document.createElement('a');
     link.href = data;
     link.setAttribute('download','picture.jpg');
     link.innerHTML = `<img src="${data}" alt="download picture" />`;
     link.style.width = stripItemW+'px';
-    // item.appendChild(link);
     console.log('link',link);
 
     /* put photo snaps into strip */
-    stripLen++;
-    strip.insertBefore(link,strip.firstChild);
-    // strip.insertBefore(item,strip.firstChild);
-    // console.log(item.clientHeight);
-    // strip.style.height = (stripLen*(stripItemW+0))+'px'
-    // strip.style.width = strip.style.height = link.clientHeight+40+'px';
-
+    // stripLen++;
     /* set a max limit on number of photo snaps */
-    // if (stripLen < stripMax) {
-    //   stripLen++;
-    // } else {
-    //   stripLen = stripMax;
-    //   strip.removeChild(strip.lastChild);  
-    // }
+    // stripLimit = true;
+    if (stripLimit && (stripLen < stripMax)) {
+      console.log('NO LIMIT');
+      stripLen++;
+    } else {
+      console.log('YES LIMIT');
+      stripLen = stripMax;
+      strip.removeChild(strip.lastChild);  
+    }
+    console.log('stripLen: ', stripLen);
+
+    if (stripLen>0) {
+      strip.style.display = 'flex';
+    }
+    strip.insertBefore(link,strip.firstChild);
+    strip.style.width = stripItemW+20+'px'
 
   }
   console.groupEnd();
@@ -182,3 +229,6 @@ function stopStream() {
 
 /* EVENT LISTENERS */
 video.addEventListener('canplay',videoToCanvas);
+inputLimit.addEventListener('click',(e)=>{
+  console.log(e.target.checked);
+})

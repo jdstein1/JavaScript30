@@ -1,4 +1,6 @@
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing:border-box;
   padding:0;
   margin:0;
@@ -11,63 +13,94 @@ html {
 
 body {
   font-size:1rem;
-  background-color:rgb(255, 0, 255);
-  /* background:black; */
+  background:black;
   padding:0;
   margin:0;
 }
 
-table {border-collapse: collapse;}
-fieldset {border:none;}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {color:black;}
 
-/* Z-INDICES FOR LAYERING */
-.controls {z-index:3;}
-.photobooth {z-index:1;}
-.strip {z-index:2;}
-
-/* container for webcam video and canvas */
-.photobooth {
-  background:white;
-  background-color:rgba(255, 255, 0, 0.5);
-
-  /* max-width:auto; */
-  /* width:auto; */
-
-  /* max-height:100vh; */
-  /* height:100%; */
-
-  /* box-shadow:0 0 1rem 0 rgba(0, 0, 0, 0.25); */
-  position:absolute;
-  top:0;
-  left:0;
-  bottom:0;
-  right:0;
-}
-
-/*clearfix*/
-.photobooth:after {
-  content:'';
-  display:block;
-  clear:both;
-}
-
-.canvas {
+table {
   width:100%;
-  height:auto;
-  background:transparent;
-  background-color:rgba(0, 255, 0, 0.5);
+  /* border-collapse:separate; */
+  border-collapse:collapse;
+  border-width:3px;
 }
 
-.video {
-  background:black;
-  background:white;
-  padding:5px;
-  position:absolute;
-  top:2rem;
-  right:2rem;
-  width:200px;
-  box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
+legend,
+label,
+input,
+button,
+select,
+td {
+  font-size:0.9em;
+  color:black;
+  width:auto;
+  white-space:nowrap;
 }
+td {margin: 0 0.25rem 0.25rem 0;}
+legend,
+label,
+input,
+button,
+select {
+  display: inline-block;
+  border-width:3px;
+  padding:0.25rem 0.5rem;
+  line-height: 1.5;
+}
+td > legend,
+td > label,
+td > input,
+td > button,
+td > select,
+fieldset {border:none;}
+label,
+input,
+button,
+select {
+  border-style: solid;
+  border-color:rgba(255,255,255,0.5) rgba(153,153,153,0.5) rgba(102,102,102,0.5) rgba(204,204,204,0.5);
+  /* border-color:yellow limegreen cyan magenta; */
+  border-radius:0.25rem;
+  /* width:100%; */
+  /* width:auto; */
+  /* display:inline-block; */
+}
+button+button,
+button+input,
+input+button,
+input+input,
+label+label,
+label+input,
+input+label,
+label+button,
+button+label {margin-top:0.25rem;}
+label {
+  /* width:40%; */
+  /* color:white; */
+  /* text-align:right; */
+  padding-left:0;
+}
+button {
+  width:100%;
+  /* padding:0.5rem; */
+  /* margin:0 0 0.25rem 0; */
+}
+input[type=checkbox],
+input[type=radio] {margin:0 0.25rem 0 0.5rem;}
+/* Z-INDICES FOR LAYERING */
+header {z-index:1;display:none;}
+main {z-index:2;}
+
+.controls {z-index:30;}
+.photobooth {z-index:10;}
+.strip {z-index:20;}
 
 /* misc classes */
 .status {background-color:palegoldenrod;}

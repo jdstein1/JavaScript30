@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="controls.css">
   <link rel="stylesheet" href="strip.css">
+  <link rel="stylesheet" href="booth.css">
+  <!-- <link rel="stylesheet" href="test.css"> -->
 </head>
 <body>
 
@@ -18,59 +20,71 @@
     <div class="controls">
       <!-- <h3>controls</h3> -->
       <fieldset class="ctrl_camera">
-        <!-- <legend>Camera</legend> -->
+        <legend>camera</legend>
         <button class="status success" onClick="startStream()">On</button>
         <button class="status error" onClick="stopStream()">Off</button>
-        <button class="status warn" onClick="snapPhoto()">Snap</button>
       </fieldset>
-      <fieldset class="ctrl_rgb">
-        <caption>Experimental</caption>
+      <fieldset class="">
+        <legend>booth</legend>
+        <button class="status info" onClick="snapPhoto()">Snap</button>
+        <button class="status" onClick="clearCanvas()">Clear</button>
+        <!-- <button class="status info" onClick="flipCamera()">Flip</button> -->
+      </fieldset>
+      <fieldset class="ctrl_canvas">
+        <legend>strip</legend>
+        <label class="status info" for="limit">
+          <input type="checkbox" id="limit" class="">
+          Limit?
+        </label>
+        <button class="status" onClick="clearStrip()">Clear</button>
+      </fieldset>
+      <fieldset class="ctrl_fx">
+        <legend>fx:
+          <select class="status info" id="fx">
+            <option>Choose effect...</option>
+            <option value="chroma">Chroma Key</option>
+            <option value="split">Channel Split</option>
+            <option value="r_channel">R Channel</option>
+            <option value="g_channel">G Channel</option>
+            <option value="b_channel">B Channel</option>
+          </select>
+        </legend>
         <table>
-          <!-- <tr>
-            <th class="rControl">Red</th>
-            <th class="gControl">Green</th>
-            <th class="bControl">Blue</th>
-          </tr> -->
           <tr>
-            <td class="rControl">
-              <label for="rmin">Min:</label>
-              <input type="number" value=127 min=0 max=255 name="rmin">
+            <td class="ctrl_r">
+              <label for="rmin">Min:
+                <input type="number" value=127 min=0 max=255 name="rmin">
+              </label>
             </td>
-            <td class="gControl">
-              <label for="gmin">Min:</label>
-              <input type="number" value=127 min=0 max=255 name="gmin">
+            <td class="ctrl_g">
+              <label for="gmin">Min:
+                <input type="number" value=127 min=0 max=255 name="gmin">
+              </label>
             </td>
-            <td class="bControl">
-              <label for="bmin">Min:</label>
-              <input type="number" value=127 min=0 max=255 name="bmin">
+            <td class="ctrl_b">
+              <label for="bmin">Min:
+                <input type="number" value=127 min=0 max=255 name="bmin">
+              </label>
             </td>
           </tr>
           <tr>
-            <td class="rControl">
-              <label for="rmax">Max:</label>
-              <input type="number" value=127 min=0 max=255 name="rmax">
+            <td class="ctrl_r">
+              <label for="rmax">Max:
+                <input type="number" value=127 min=0 max=255 name="rmax">
+              </label>
             </td>
-            <td class="gControl">
-              <label for="gmax">Max:</label>
-              <input type="number" value=127 min=0 max=255 name="gmax">
+            <td class="ctrl_g">
+              <label for="gmax">Max:
+                <input type="number" value=127 min=0 max=255 name="gmax">
+              </label>
             </td>
-            <td class="bControl">
-              <label for="bmax">Max:</label>
-              <input type="number" value=127 min=0 max=255 name="bmax">
+            <td class="ctrl_b">
+              <label for="bmax">Max:
+                <input type="number" value=127 min=0 max=255 name="bmax">
+              </label>
             </td>
           </tr>
         </table>
-      </fieldset>
-      <fieldset class="ctrl_canvas">
-        <!-- <legend>View</legend> -->
-        <!-- <button onClick="flipCamera()">Flip</button> -->
-        <button class="status" onClick="clearCanvas()">Clear Canvas</button>
-      </fieldset>
-      <fieldset class="ctrl_strip">
-        <button class="status" onClick="clearStrip()">Clear Strip</button>
-      <!-- <label for="limit">Limit Strip?
-        <input type="checkbox" id="limit" class="">
-      </label> -->
       </fieldset>
     </div>
 
@@ -81,7 +95,7 @@
 
     <div class="strip"></div>
 
-    </main>
+  </main>
 
   <audio class="snap" src="http://wesbos.com/demos/photobooth/snap.mp3" hidden></audio>
 
