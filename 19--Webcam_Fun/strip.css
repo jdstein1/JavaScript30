@@ -1,0 +1,39 @@
+/* photobooth picture strip */
+.strip {
+  width:100%;
+  height:auto;
+  margin:0;
+  padding:1rem;
+  /* background-color:rgba(255, 0, 0, 0.5); */
+  background:transparent;
+  position:absolute;
+  overflow:auto;
+  overflow-x:hidden;
+  overflow-y:auto;
+  top:0;
+  left:0;
+  bottom:0;
+  right:auto;
+
+  display:flex;
+  flex-wrap:nowrap;
+  flex-direction:column;
+  justify-content:start;
+  align-items:start;
+}
+.strip a {
+  /* width:100%; */
+  margin:0;
+}
+.strip a img {
+  width:100%;
+  background:white;
+  padding:5px;
+  box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
+}
+
+/*.strip :nth-child(5n+1) img {transform:rotate(4deg);}*/
+/*.strip :nth-child(5n+2) img {transform:rotate(-2deg);}*/
+/*.strip :nth-child(5n+3) img {transform:rotate(1deg);}*/
+/*.strip :nth-child(5n+4) img {transform:rotate(-3deg);}*/
+/*.strip :nth-child(5n+5) img {transform:rotate(2deg);}*/

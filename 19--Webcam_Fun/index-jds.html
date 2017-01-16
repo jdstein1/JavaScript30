@@ -4,18 +4,27 @@
   <meta charset="UTF-8">
   <title>Webcam Fun -- Get User Media Code Along!</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="controls.css">
+  <link rel="stylesheet" href="strip.css">
 </head>
 <body>
 
+  <header>
+    <h1>webcam fun</h1>
+  </header>
+
+  <main>
+
     <div class="controls">
-      <fieldset>
+      <!-- <h3>controls</h3> -->
+      <fieldset class="ctrl_camera">
         <!-- <legend>Camera</legend> -->
-        <button onClick="startStream()">On</button>
-        <button onClick="stopStream()">Off</button>
-        <button onClick="snapPhoto()">Snap</button>
+        <button class="status success" onClick="startStream()">On</button>
+        <button class="status error" onClick="stopStream()">Off</button>
+        <button class="status warn" onClick="snapPhoto()">Snap</button>
       </fieldset>
-      <fieldset class="rgb">
-        <!-- <legend>Experimental</legend> -->
+      <fieldset class="ctrl_rgb">
+        <caption>Experimental</caption>
         <table>
           <!-- <tr>
             <th class="rControl">Red</th>
@@ -52,29 +61,32 @@
           </tr>
         </table>
       </fieldset>
-      <fieldset>
+      <fieldset class="ctrl_canvas">
         <!-- <legend>View</legend> -->
         <!-- <button onClick="flipCamera()">Flip</button> -->
-        <button onClick="clearCanvas()">Clear Canvas</button>
+        <button class="status" onClick="clearCanvas()">Clear Canvas</button>
       </fieldset>
-      <fieldset>
-        <button onClick="clearStrip()">Clear Strip</button>
-      <label for="limit">Limit Strip?
+      <fieldset class="ctrl_strip">
+        <button class="status" onClick="clearStrip()">Clear Strip</button>
+      <!-- <label for="limit">Limit Strip?
         <input type="checkbox" id="limit" class="">
-      </label>
+      </label> -->
       </fieldset>
     </div>
 
-  <div class="photobooth">
-    <video class="video"></video>
-    <canvas class="canvas"></canvas>
-  </div>
+    <div class="photobooth">
+      <video class="video"></video>
+      <canvas class="canvas"></canvas>
+    </div>
 
-  <div class="strip"><ul></ul></div>
+    <div class="strip"></div>
+
+    </main>
 
   <audio class="snap" src="http://wesbos.com/demos/photobooth/snap.mp3" hidden></audio>
 
   <script src="scripts.js"></script>
+  <script src="fx.js"></script>
   <!-- <script src="scripts-FINISHED.js"></script> -->
 
 </body>

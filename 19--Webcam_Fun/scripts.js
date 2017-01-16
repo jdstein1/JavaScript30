@@ -33,11 +33,7 @@ function getVideo(mode) {
   .then(function(mediaStream) {
     myStream = mediaStream;
     if (mode && mode === 'start') {
-      /* method 1 */
       video.src = window.URL.createObjectURL(myStream);
-      // video.play();
-      /* method 2 */
-      // video.srcObject = myStream;
       video.onloadedmetadata = function(e) {
         video.play();
       };
@@ -67,28 +63,28 @@ function videoToCanvas() {
   const wHeight = window.innerHeight;
   console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
 
-  // set canvas to W&H of window
+  /* set canvas to W&H of window */
   canvas.width = wWidth;
   canvas.height = wHeight;
 
-  // center the canvas
-  positionX = (wWidth - vWidth)/2;
-  positionY = (wHeight - vHeight)/2;
+  /* center the canvas */
+  // positionX = (wWidth - vWidth)/2;
+  // positionY = (wHeight - vHeight)/2;
 
   if (vWidth < wWidth && vHeight > wHeight) {
     console.log('video taller than window');
     // stretch video vertically...
-    // canvas.width = vWidth;
-    // canvas.height = wHeight;
+    canvas.width = vWidth;
+    canvas.height = wHeight;
   } else if (vWidth > wWidth && vHeight < wHeight) {
     console.log('video wider than window');
     // stretch video horizontally...
-    // canvas.width = wWidth;
-    // canvas.height = vHeight;
+    canvas.width = wWidth;
+    canvas.height = vHeight;
   } else {
     console.log('video ??? than window');
-    // canvas.width = vWidth;
-    // canvas.height = vHeight;
+    canvas.width = vWidth;
+    canvas.height = vHeight;
   }
 
   // console.log(canvas.width,canvas.height);
@@ -96,15 +92,15 @@ function videoToCanvas() {
     ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
     let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
 
-    // manipulate pixels
+    /* manipulate pixels */
     pixels = fxChromaKey(pixels);
     // pixels = fxSplit(pixels);
     // pixels = fxRGB(pixels,'blue');
 
-    // control ghosting effect
+    /* control ghosting effect */
     ctx.globalAlpha = 0.5;
 
-    // put pixels back
+    /* put pixels back */
     ctx.putImageData(pixels,positionX,positionY);
 
     // console.log('pixels: ', pixels);
@@ -117,31 +113,38 @@ function videoToCanvas() {
 function snapPhoto() {
   console.group('START snapPhoto');
   if (video.src !== '') {
-    // make snap sound
+    /* make snap sound */
     snap.currentTime = 0;
     snap.play();
 
-    // take photo data from canvas
-    const item = document.createElement('li');
-    item.style.width = stripItemW+'px';
+    /* take photo data from canvas */
+    // const item = document.createElement('li');
+    // item.style.width = stripItemW+'px';
     const data = canvas.toDataURL('image/jpeg');
     const link = document.createElement('a');
     link.href = data;
-    // link.download = 'picture';
     link.setAttribute('download','picture.jpg');
     link.innerHTML = `<img src="${data}" alt="download picture" />`;
-    item.appendChild(link);
+    link.style.width = stripItemW+'px';
+    // item.appendChild(link);
+    console.log('link',link);
+
+    /* put photo snaps into strip */
     stripLen++;
-    stripList.insertBefore(item,stripList.firstChild);
-    console.log(item.clientHeight);
-    stripList.style.width = (stripLen*(stripItemW+0))+'px'
-    stripList.style.height = strip.style.height = item.clientHeight+40+'px';
+    strip.insertBefore(link,strip.firstChild);
+    // strip.insertBefore(item,strip.firstChild);
+    // console.log(item.clientHeight);
+    // strip.style.height = (stripLen*(stripItemW+0))+'px'
+    // strip.style.width = strip.style.height = link.clientHeight+40+'px';
+
+    /* set a max limit on number of photo snaps */
     // if (stripLen < stripMax) {
     //   stripLen++;
     // } else {
     //   stripLen = stripMax;
-    //   stripList.removeChild(stripList.lastChild);  
+    //   strip.removeChild(strip.lastChild);  
     // }
+
   }
   console.groupEnd();
 }
@@ -154,7 +157,7 @@ function clearCanvas() {
 
 function clearStrip() {
   console.group('START clearStrip');
-  stripList.innerHTML = ``;
+  strip.innerHTML = ``;
   console.groupEnd();
 }
 
@@ -175,54 +178,6 @@ function stopStream() {
   console.group('CAMERA OFF');
   getVideo('stop');
   console.groupEnd();
-}
-
-function fxChromaKey(pixels) {
-  const levels = {};
-  document.querySelectorAll('.rgb input').forEach((input) => {
-    levels[input.name] = input.value;
-  });
-  // console.log(levels);
-  // debugger;
-  for (let i = 0; i < pixels.data.length; i+=4) {
-    // put values into vars
-    red = pixels.data[i+0]; // r
-    green = pixels.data[i+1]; // g
-    blue = pixels.data[i+2]; // b
-    alpha = pixels.data[i+3]; // a
-
-    // check if values are within ranges
-    if (red >= levels.rmin
-      && red <= levels.rmax
-      && green >= levels.gmin
-      && green <= levels.gmax
-      && blue >= levels.bmin
-      && blue <= levels.bmax) {
-      // take it out!
-      pixels.data[i + 3] = 0;
-    }
-  }
-  return pixels;
-}
-
-function fxSplit(pixels) {
-  for (let i = 0; i < pixels.data.length; i+=4) {
-    // expression
-    pixels.data[i-300] = pixels.data[i+0]; // r
-    pixels.data[i+300] = pixels.data[i+1]; // g
-    pixels.data[i+150] = pixels.data[i+2]; // b
-  }
-  return pixels;
-}
-
-function fxRGB(pixels,effect) {
-  console.log('START fxRGB',effect);
-  for (let i = 0; i < pixels.data.length; i+=4) {
-    pixels.data[i+0] += (effect==='red') ? 150 : -50; // r
-    pixels.data[i+1] += (effect==='green') ? 150 : -50; // g
-    pixels.data[i+2] += (effect==='blue') ? 150 : -50; // b
-  }
-  return pixels;
 }
 
 /* EVENT LISTENERS */
