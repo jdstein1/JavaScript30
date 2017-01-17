@@ -3,10 +3,14 @@
 /* DOM NODES */
 
 const video = document.querySelector('.video');
+const photobooth = document.querySelector('.photobooth');
+const photoboothA = document.querySelector('.photobooth::after');
+const photoboothB = document.querySelector('.photobooth::before');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
-const snap = document.querySelector('.snap');
+const btnSnap = document.querySelector('#snap');
+const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
 
 /* F/X controls */
@@ -27,6 +31,12 @@ const selectSplit = ctrlFx.querySelector('#split');
 const fxRGB = ctrlFx.querySelector('#ctrl_fx--rgb');
 const selectRGB = ctrlFx.querySelector('#rgb');
 
+/* buttons */
+const btnCamOn = document.querySelector('.ctrl_camera .btn_on');
+const btnCamOff = document.querySelector('.ctrl_camera .btn_off');
+const btnCamClear = document.querySelector('.ctrl_camera .btn_clear');
+const btnStripClear = document.querySelector('.ctrl_strip .btn_clear');
+const btnStripSnap = document.querySelector('.ctrl_strip .btn_snap');
 
 /* VARIABLES */
 let myStream;
@@ -46,7 +56,7 @@ const stripItemW = 150;
 // selectFx.disabled = true;
 selectFx.style.display = 'none';
 snapLimit.checked = stripLimit;
-document.querySelector('.ctrl_canvas label span').innerHTML = `Limit? (${stripMax})`;
+document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 
 
 /* FUNCTIONS */
@@ -61,8 +71,10 @@ const videoSettings = {
   // }
 };
 
-function getVideo(mode) {
-  console.group('START getVideo', mode);
+function accessMedia(mode,effect) {
+  console.group('START accessMedia');
+  console.log('mode: ', mode);
+  console.log('effect: ', effect);
   navigator.mediaDevices.getUserMedia(videoSettings)
   .then(function(mediaStream) {
     myStream = mediaStream;
@@ -72,25 +84,31 @@ function getVideo(mode) {
       video.onloadedmetadata = function(e) {
         video.play();
       };
+      // photoboothB.style.opacity = 0;
       // alertFx.style.display = 'none';
       alertFxMsgs[0].style.display = 'none';
       alertFxMsgs[1].style.display = 'block';
       selectFx.style.display = 'inline-block';
       // ctrlFx.classList.remove('disabled');
       selectFx.disabled = false;
+      btnSnap.disabled = false;
+      btnSnap.classList.remove('disabled');
     } else {
       // turn video off
       video.src = '';
       myStream.active = false;
+      // photoboothB.style.opacity = '';
       // alertFx.style.display = 'block';
       alertFxMsgs[0].style.display = 'block';
       alertFxMsgs[1].style.display = 'none';
       selectFx.style.display = 'none';
       // ctrlFx.classList.add('disabled');
       selectFx.disabled = true;
+      btnSnap.disabled = true;
+      btnSnap.classList.add('disabled');
       toggleControls();
-      document.querySelector('.ctrl_camera .btn_clear').disabled = false;
-      document.querySelector('.ctrl_camera .btn_clear').classList.remove('disabled');
+      btnCamClear.disabled = false;
+      btnCamClear.classList.remove('disabled');
     }
     console.log('video.src: ',video.src);
     console.log('myStream: ', myStream);
@@ -102,8 +120,8 @@ function getVideo(mode) {
   console.groupEnd();
 }
 
-function videoToCanvas() {
-  console.group('START videoToCanvas');
+function pixelsToCanvas() {
+  console.group('START pixelsToCanvas');
   // console.log(video);
 
   const vWidth = video.videoWidth;
@@ -164,14 +182,20 @@ function videoToCanvas() {
   }
   console.log('ints: ', ints);
 
-  console.log(selectFx.value);
+  console.log('selectFx.value: ',selectFx.value);
   /* enable F/X controls */
   if (selectFx.value === 'chroma') {
     console.log('toggle chroma controls');
+    // get initial value for effect
+    
   } else if (selectFx.value === 'split') {
     console.log('toggle split controls');
+    // get initial value for effect
+    console.log('selectSplit: ', selectSplit.value);
   } else if (selectFx.value === 'rgb') {
     console.log('toggle rgb controls');
+    // get initial value for effect
+    console.log('selectRGB: ', selectRGB.value);
   } else {
   }
 
@@ -218,8 +242,8 @@ function snapPhoto() {
   console.group('START snapPhoto');
   if (video.src !== '') {
     /* make snap sound */
-    snap.currentTime = 0;
-    snap.play();
+    snapSound.currentTime = 0;
+    snapSound.play();
 
     /* take photo data from canvas */
     const data = canvas.toDataURL('image/jpeg');
@@ -245,9 +269,11 @@ function snapPhoto() {
 
     if (stripLen > 0) {
       strip.style.display = 'flex';
-      document.querySelector('.ctrl_canvas legend').innerHTML = `snapshots (${stripLen})`;
-      document.querySelector('.ctrl_canvas .btn_clear').disabled = false;
-      document.querySelector('.ctrl_canvas .btn_clear').classList.remove('disabled');
+      document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
+      btnStripClear.disabled = false;
+      btnStripClear.classList.remove('disabled');
+    } else {
+      strip.style.display = 'none';
     }
  
     /* put photo snaps into strip */
@@ -261,6 +287,8 @@ function snapPhoto() {
 function clearCanvas() {
   console.group('START clearCanvas');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  btnCamClear.disabled = true;
+  btnCamClear.classList.add('disabled');
   console.groupEnd();
 }
 
@@ -268,8 +296,9 @@ function clearStrip() {
   console.group('START clearStrip');
   strip.innerHTML = ``;
   stripLen = 0;
-  document.querySelector('.ctrl_canvas .btn_clear').disabled = true;
-  document.querySelector('.ctrl_canvas .btn_clear').classList.add('disabled');
+  strip.style.display = 'none';
+  btnStripClear.disabled = true;
+  btnStripClear.classList.add('disabled');
   console.groupEnd();
 }
 
@@ -279,17 +308,17 @@ function flipCamera() {
   console.groupEnd();
 }
 
-function startStream() {
+function startStream(effect) {
   console.group('START startStream');
   clearInterval(videoInterval);
-  getVideo('start');
+  accessMedia('start',effect);
   console.groupEnd();
 }
 
 function stopStream() {
   console.group('CAMERA OFF');
   clearInterval(videoInterval);
-  getVideo('stop');
+  accessMedia('stop');
   console.groupEnd();
 }
 
@@ -300,15 +329,14 @@ function stopStream() {
  */
 function toggleControls (x) {
   console.group('START toggleControls');
-  console.log('hide controls');
+  console.log('hide all controls...');
   for (var i = 0; i < ctrlTables.length; i++) {
     ctrlTables[i].style.display = 'none';
     // show alert
     alertFx.style.display = 'flex';
   }
-  if (x) {
-    console.log(x);
-    console.log('show '+x+' controls');
+  if (x && x.indexOf('Choose')<0) {
+    console.log('...then show __'+x+'__ controls!');
     // hide alert
     alertFx.style.display = 'none';
     // console.warn('x!')
@@ -325,6 +353,7 @@ function toggleControls (x) {
         break;
     }
   } else {
+    console.log('...then done!');
     // console.warn('no x!')
   }
   console.groupEnd();
@@ -335,7 +364,7 @@ toggleControls();
 /* EVENT LISTENERS */
 
 /* when web cam starts, send pixels to canvas */
-video.addEventListener('canplay',videoToCanvas);
+video.addEventListener('canplay',pixelsToCanvas);
 
 /* set/unset limit on snapshots */
 snapLimit.addEventListener('click',(e)=>{
@@ -353,9 +382,11 @@ selectFx.addEventListener('change',(e)=>{
 /* listen to change on video channel split F/X select/option */
 selectSplit.addEventListener('change',(e)=>{
   console.log('selectSplit: ',e.target.value);
+  startStream(e.target.value);
 });
 
 /* listen to change on video channel colorize F/X select/option */
 selectRGB.addEventListener('change',(e)=>{
   console.log('selectRGB: ',e.target.value);
+  startStream(e.target.value);
 });

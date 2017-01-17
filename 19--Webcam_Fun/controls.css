@@ -60,20 +60,20 @@
   margin:0 0 0 0.5rem;
 }
 #ctrl_fx--chroma .ctrl_r input {
-  background-color:red;
+  background-color:#f00;
 }
 #ctrl_fx--chroma .ctrl_r:before {
-  /* content:'R'; *//* color:red; */
+  /* content:'R'; *//* color:#f00; */
 }
 #ctrl_fx--chroma .ctrl_g input {
-  background-color:green;
+  background-color:#0f0;
 }
 #ctrl_fx--chroma .ctrl_g:before {
-  /* content:'G'; *//* color:green; */
+  /* content:'G'; *//* color:#0f0; */
 }
 #ctrl_fx--chroma .ctrl_b input {
-  background-color:blue;
+  background-color:#00f;
 }
 #ctrl_fx--chroma .ctrl_b:before {
-  /* content:'B'; *//* color:blue; */
+  /* content:'B'; *//* color:#00f; */
 }

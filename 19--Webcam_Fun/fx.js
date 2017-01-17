@@ -42,18 +42,18 @@ function fFxRGB(data,effect) {
   // console.log('START fFxRGB',effect);
     if (typeof effect === 'string') {
       console.log('string!');
-  for (let i = 0; i < data.data.length; i+=4) {
-      data.data[i+0] += (effect==='red') ? 150 : -50; // r
-      data.data[i+1] += (effect==='green') ? 150 : -50; // g
-      data.data[i+2] += (effect==='blue') ? 150 : -50; // b
-  }
+      for (let i = 0; i < data.data.length; i+=4) {
+          data.data[i+0] += (effect==='red') ? 150 : -50; // r
+          data.data[i+1] += (effect==='green') ? 150 : -50; // g
+          data.data[i+2] += (effect==='blue') ? 150 : -50; // b
+      }
     } else if (typeof effect === 'object') {
       console.log('object!');
-  for (let i = 0; i < data.data.length; i+=4) {
-      data.data[i+0] += effect[0]; // r
-      data.data[i+1] += effect[1]; // g
-      data.data[i+2] += effect[2]; // b
-  }
+      for (let i = 0; i < data.data.length; i+=4) {
+          data.data[i+0] += effect[0]; // r
+          data.data[i+1] += effect[1]; // g
+          data.data[i+2] += effect[2]; // b
+      }
     } else {
       console.error('not the right type!');
     }
