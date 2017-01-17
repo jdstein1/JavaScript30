@@ -14,3 +14,6 @@ README.md
 * [] -- style the labels
 * [] -- redo chroma key inputs w a single HTML5 color input
 * [X] -- goofy background to show thru chroma key
+* [] -- toggle buttons w utils.js function
+* [] -- move other common stuff to utils.js
+* [] -- move CSS and JS to folders
