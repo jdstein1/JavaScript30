@@ -20,43 +20,65 @@
     <div class="controls">
       <!-- <h3>controls</h3> -->
       <fieldset class="ctrl_camera">
-        <legend>camera</legend>
-        <button class="status success" onClick="startStream()">On</button>
-        <button class="status error" onClick="stopStream()">Off</button>
-      </fieldset>
-      <fieldset class="">
-        <legend>booth</legend>
-        <button class="status warn" onClick="snapPhoto()">Snap</button>
-        <button class="status" onClick="clearCanvas()">Clear</button>
+        <legend>web cam</legend>
+        <button class="btn_on col_half status success" onClick="startStream()">On</button>
+        <button class="btn_off col_half status error" onClick="stopStream()">Off</button>
+        <button class="btn_clear status disabled" onClick="clearCanvas()" disabled>Clear</button>
         <!-- <button class="status info" onClick="flipCamera()">Flip</button> -->
       </fieldset>
+      <!-- <fieldset class="">
+        <legend>photo</legend>
+      </fieldset> -->
       <fieldset class="ctrl_canvas">
-        <legend>strip</legend>
-        <label class="status info" for="limit">
+        <legend>snapshots</legend>
+        <label class="status col_half info" for="limit">
           <input type="checkbox" id="limit" class="">
-          Limit?
+          <span>Limit?</span>
         </label>
-        <button class="status" onClick="clearStrip()">Clear</button>
+        <button class="status col_half warn" onClick="snapPhoto()">Snap</button>
+        <button class="btn_clear status disabled" onClick="clearStrip()" disabled>Clear</button>
       </fieldset>
       <fieldset class="ctrl_fx">
-        <legend>fx:
+        <legend>f/x:
           <select class="status info" id="fx">
             <option>Choose effect...</option>
             <option value="chroma">Chroma Key</option>
             <option value="split">Channel Split</option>
-            <option value="r_channel">R Channel</option>
-            <option value="g_channel">G Channel</option>
-            <option value="b_channel">B Channel</option>
+            <option value="rgb_channel">RGB Channel</option>
           </select>
         </legend>
+        <div class="alert">
+          <p class="msg msg_cam" id="">turn web cam "ON" to use video effects</p>
+          <p class="msg msg_fx" id="">choose a video effect above</p>
+        </div>
+        <table id="ctrl_fx--rgb">
+          <tr>
+            <td>
+              <label>
+                <span>rgb:</span>
+                <select class="status info" id="rgb">
+                  <option>Choose color...</option>
+                  <option value="random" selected>random</option>
+                  <option value="red">red</option>
+                  <option value="green">green</option>
+                  <option value="blue">blue</option>
+                </select>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td><button class="status success" onClick="startStream()">Restart</button></td>
+          </tr>
+        </table>
         <table id="ctrl_fx--split">
           <tr>
             <td>
-              <label>split:
+              <label>
+                <span>split:</span>
                 <select class="status info" id="split">
                   <option>Choose effect...</option>
-                  <option value="random">random</option>
-                  <option value="stereo" selected>stereo</option>
+                  <option value="random" selected>random</option>
+                  <option value="stereo">stereo</option>
                   <option value="rgb">RGB</option>
                 </select>
               </label>
@@ -69,34 +91,40 @@
         <table id="ctrl_fx--chroma">
           <tr>
             <td class="ctrl_r">
-              <label for="rmin">Min:
+              <label for="rmin">
+                <span>min:</span>
                 <input type="number" value=127 min=0 max=255 name="rmin">
               </label>
             </td>
             <td class="ctrl_g">
-              <label for="gmin">Min:
+              <label for="gmin">
+                <span>min:</span>
                 <input type="number" value=127 min=0 max=255 name="gmin">
               </label>
             </td>
             <td class="ctrl_b">
-              <label for="bmin">Min:
+              <label for="bmin">
+                <span>min:</span>
                 <input type="number" value=127 min=0 max=255 name="bmin">
               </label>
             </td>
           </tr>
           <tr>
             <td class="ctrl_r">
-              <label for="rmax">Max:
+              <label for="rmax">
+                <span>max:</span>
                 <input type="number" value=127 min=0 max=255 name="rmax">
               </label>
             </td>
             <td class="ctrl_g">
-              <label for="gmax">Max:
+              <label for="gmax">
+                <span>max:</span>
                 <input type="number" value=127 min=0 max=255 name="gmax">
               </label>
             </td>
             <td class="ctrl_b">
-              <label for="bmax">Max:
+              <label for="bmax">
+                <span>max:</span>
                 <input type="number" value=127 min=0 max=255 name="bmax">
               </label>
             </td>

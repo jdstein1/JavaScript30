@@ -1,6 +1,6 @@
 /* fx.js */
-function fxChromaKey(data) {
-  // console.log('START fxChromaKey');
+function fFxChromaKey(data) {
+  // console.log('START fFxChromaKey');
   const levels = {};
   document.querySelectorAll('#ctrl_fx--chroma input').forEach((input) => {
     levels[input.name] = input.value;
@@ -28,28 +28,40 @@ function fxChromaKey(data) {
   return data;
 }
 
-function fxSplit(data,nums) {
-  // console.log('START fxSplit');
+function fFxSplit(data,nums) {
+  // console.log('START fFxSplit');
   for (let i = 0; i < data.data.length; i+=4) {
-    data.data[i+nums[1]] = data.data[i+0]; // r
-    data.data[i+nums[2]] = data.data[i+1]; // g
-    data.data[i+nums[3]] = data.data[i+2]; // b
+    data.data[i+nums[0]] = data.data[i+0]; // r
+    data.data[i+nums[1]] = data.data[i+1]; // g
+    data.data[i+nums[2]] = data.data[i+2]; // b
   }
   return data;
 }
 
-function fxRGB(data,effect) {
-  // console.log('START fxRGB',effect);
+function fFxRGB(data,effect) {
+  // console.log('START fFxRGB',effect);
+    if (typeof effect === 'string') {
+      console.log('string!');
   for (let i = 0; i < data.data.length; i+=4) {
-    data.data[i+0] += (effect==='red') ? 150 : -50; // r
-    data.data[i+1] += (effect==='green') ? 150 : -50; // g
-    data.data[i+2] += (effect==='blue') ? 150 : -50; // b
+      data.data[i+0] += (effect==='red') ? 150 : -50; // r
+      data.data[i+1] += (effect==='green') ? 150 : -50; // g
+      data.data[i+2] += (effect==='blue') ? 150 : -50; // b
   }
+    } else if (typeof effect === 'object') {
+      console.log('object!');
+  for (let i = 0; i < data.data.length; i+=4) {
+      data.data[i+0] += effect[0]; // r
+      data.data[i+1] += effect[1]; // g
+      data.data[i+2] += effect[2]; // b
+  }
+    } else {
+      console.error('not the right type!');
+    }
   return data;
 }
 
-function fxPixelate(data,resolution) {
-  // console.log('START fxPixelate',resolution);
+function fFxPixelate(data,resolution) {
+  // console.log('START fFxPixelate',resolution);
   for (let i = 0; i < data.data.length; i+=4) {
   }
   return data;

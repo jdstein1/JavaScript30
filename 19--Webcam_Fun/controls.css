@@ -8,8 +8,8 @@
   right:0;
   padding:0.25rem;
   margin:0;
-  /* background:transparent; */
   background-color:rgba(0, 0, 0, 0.5);
+  background:transparent;
   /* color:white; */
   /* padding:0; */
   display:flex;
@@ -32,6 +32,7 @@
   justify-content:center;
   align-items:center;
 }
+.controls .ctrl_fx {flex:4;}
 .controls fieldset {
   background:white;
   box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
@@ -46,14 +47,33 @@
   margin-bottom:0.25rem;
 }
 
-.controls .ctrl_camera {/* flex:2; */}
-.controls .ctrl_rgb {flex:3;}
-.controls .ctrl_canvas {/*flex:1;*/}
-.controls .ctrl_strip {/*flex:1;*/}
 
-/*.controls .ctrl_r, .controls .ctrl_r label {background-color:red;color:white !important;}*/
-.controls .ctrl_r:before {content:'R';margin:0 0 0 0.5rem;color:red;font-weight:900;}
-/*.controls .ctrl_g, .controls .ctrl_g label {background-color:green;color:white !important;}*/
-.controls .ctrl_g:before {content:'G';margin:0 0 0 0.5rem;color:green;font-weight:900;}
-/*.controls .ctrl_b, .controls .ctrl_b label {background-color:blue;color:white !important;}*/
-.controls .ctrl_b:before {content:'B';margin:0 0 0 0.5rem;color:blue;font-weight:900;}
+.ctrl_fx table label {width:100%;text-align:right;}
+.ctrl_fx table label span {max-width:6rem; width:40%; min-width:3rem; display:inline-block;}
+.ctrl_fx table input, .ctrl_fx table select {width:60%;min-width:4rem;text-align:left;display:inline-block;}
+#ctrl_fx--chroma input {
+  /* background-color:red; */
+  color:white !important;
+}
+#ctrl_fx--chroma label:before {
+  font-weight:900;
+  margin:0 0 0 0.5rem;
+}
+#ctrl_fx--chroma .ctrl_r input {
+  background-color:red;
+}
+#ctrl_fx--chroma .ctrl_r:before {
+  /* content:'R'; *//* color:red; */
+}
+#ctrl_fx--chroma .ctrl_g input {
+  background-color:green;
+}
+#ctrl_fx--chroma .ctrl_g:before {
+  /* content:'G'; *//* color:green; */
+}
+#ctrl_fx--chroma .ctrl_b input {
+  background-color:blue;
+}
+#ctrl_fx--chroma .ctrl_b:before {
+  /* content:'B'; *//* color:blue; */
+}

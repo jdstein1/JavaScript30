@@ -52,14 +52,14 @@ select {
   display: inline-block;
   border-width:3px;
   padding:0.25rem 0.5rem;
-  line-height: 1.5;
+  line-height: 1.25;
 }
-td > legend,
+/* td > legend,
 td > label,
 td > input,
 td > button,
 td > select,
-fieldset {border:none;}
+fieldset {border:none;} */
 label,
 input,
 button,
@@ -103,8 +103,30 @@ main {z-index:2;}
 .strip {z-index:20;}
 
 /* misc classes */
-.status {background-color:palegoldenrod;}
+.status, .status.default {background-color:#eee;}
 .status.success {background-color:mediumseagreen;color:white;font-weight:900;}
 .status.error {background-color:crimson;color:white;font-weight:900;}
 .status.warn {background-color:coral;}
 .status.info {background-color:powderblue;}
+
+.disabled {opacity: 0.5;}
+
+.alert {
+  width:100%;
+  min-height:72.5%;
+  display:flex;
+  /* flex-direction:column; */
+  justify-content:center;
+  align-items:center;
+}
+.msg, 
+.alert > * {flex:1;margin:0; padding:0;}
+.msg_cam {}
+.msg_fx {display: none;}
+.alert, .alert.default {
+  text-align: center; vertical-align: middle; width: 100%; border:1px solid #ccc; background-color:#eee;
+}
+.alert.success {background-color:mediumseagreen;color:white;font-weight:900;}
+.alert.error {background-color:crimson;color:white;font-weight:900;}
+.alert.warn {background-color:coral;}
+.alert.info {background-color:powderblue;}
