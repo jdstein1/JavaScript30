@@ -6,7 +6,7 @@
   left:0;
   bottom:0;
   right:0;
-  background:black url('img/starrynight.jpg') center center no-repeat;
+  background:black url('../img/starrynight.jpg') center center no-repeat;
   background-size:cover;
 }
 
@@ -22,7 +22,7 @@
   bottom:0;
   right:0;
   background:transparent;
-  /* background:transparent url('img/tvstatic-snow.gif') center center no-repeat; */
+  /* background:transparent url('../img/tvstatic-snow.gif') center center no-repeat; */
   /* background-size:cover; */
   opacity:0.25;
 }
@@ -39,6 +39,7 @@ canvas {
   background:white;
   box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
   padding:5px;
+  display:none;
   position:absolute;
   top:2rem;
   right:2rem;

@@ -84,6 +84,7 @@ function accessMedia(mode,effect) {
     myStream = mediaStream;
     if (mode && mode === 'start') {
       // turn video on
+      video.style.display = 'block';
       video.src = window.URL.createObjectURL(myStream);
       video.onloadedmetadata = (e) => {
         video.play();
@@ -99,8 +100,9 @@ function accessMedia(mode,effect) {
       btnSnap.classList.remove('disabled');
     } else {
       // turn video off
+      // video.style.display = 'none';
       video.src = '';
-      myStream.active = false;
+      // myStream.active = false;
       // photoboothB.style.opacity = '';
       // alertFx.style.display = 'block';
       alertFxMsgs[0].style.display = 'block';
