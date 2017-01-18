@@ -1,4 +1,5 @@
 /* fx.js */
+console.log('fx.js READY!');
 function fFxChromaKey(data) {
   // console.log('START fFxChromaKey');
   const levels = {};
@@ -38,27 +39,12 @@ function fFxSplit(data,nums) {
   return data;
 }
 
-function fFxRGB(data,color) {
-  // console.log('START fFxRGB',color);
-    if (typeof color === 'string') {
-      console.log('string!');
-      for (let i = 0; i < data.data.length; i+=4) {
-          data.data[i+0] += (color==='red') ? 150 : -50; // r
-          data.data[i+1] += (color==='green') ? 150 : -50; // g
-          data.data[i+2] += (color==='blue') ? 150 : -50; // b
-      }
-    } else {
-      console.error('not the right type!');
-    }
-  return data;
-}
-
-function fFxRGBRandom(data,nums) {
+function fFxColorize(data,nums) {
   // console.log('START fFxRGB',nums);
   for (let i = 0; i < data.data.length; i+=4) {
-      data.data[i+0] += nums[0]; // r
-      data.data[i+1] += nums[1]; // g
-      data.data[i+2] += nums[2]; // b
+    data.data[i+0] += nums[0]; // r
+    data.data[i+1] += nums[1]; // g
+    data.data[i+2] += nums[2]; // b
   }
   return data;
 }

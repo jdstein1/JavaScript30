@@ -22,7 +22,7 @@
       <fieldset class="ctrl_camera">
         <legend>web cam</legend>
         <button class="btn_on status success" onClick="startStream()">On</button>
-        <button class="btn_off status error" onClick="stopStream()">Off</button>
+        <button class="btn_off status error disabled" onClick="stopStream()" disabled>Off</button>
         <button class="btn_clear disabled" onClick="clearCanvas()" disabled>Clear</button>
         <!-- <button class="status info" onClick="flipCamera()">Flip</button> -->
       </fieldset>
@@ -44,19 +44,19 @@
             <option>Choose effect...</option>
             <option value="chroma">Chroma Key</option>
             <option value="split">Channel Split</option>
-            <option value="rgb_channel">RGB Channel</option>
+            <option value="colorize">Colorize</option>
           </select>
         </legend>
         <div class="alert">
           <p class="msg msg_cam" id="">turn web cam "ON" to use video effects</p>
           <p class="msg msg_fx" id="">choose a video effect above</p>
         </div>
-        <table id="ctrl_fx--rgb">
+        <table id="ctrl_fx--colorize">
           <tr>
             <td>
               <label>
                 <span>rgb:</span>
-                <select class="status info" id="rgb">
+                <select class="status info" id="colorize">
                   <option>Choose color...</option>
                   <option value="random" selected>random</option>
                   <option value="red">red</option>
@@ -67,7 +67,7 @@
             </td>
           </tr>
           <tr>
-            <td><button class="btn_apply status success" onClick="startStream()">Apply</button></td>
+            <td><button class="btn_apply status success">Apply</button></td>
           </tr>
         </table>
         <table id="ctrl_fx--split">
@@ -85,7 +85,7 @@
             </td>
           </tr>
           <tr>
-            <td><button class="btn_apply status success" onClick="startStream()">Apply</button></td>
+            <td><button class="btn_apply status success">Apply</button></td>
           </tr>
         </table>
         <table id="ctrl_fx--chroma">

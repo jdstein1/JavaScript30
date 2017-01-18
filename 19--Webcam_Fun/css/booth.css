@@ -7,6 +7,7 @@
   bottom:0;
   right:0;
   background:black url('../img/starrynight.jpg') center center no-repeat;
+  background:black url('../img/tvstatic-diagonal.gif') center center no-repeat;
   background-size:cover;
 }
 
@@ -38,7 +39,7 @@ canvas {
   z-index:3;
   background:white;
   box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
-  padding:5px;
+  padding:0.125em;
   display:none;
   position:absolute;
   top:2rem;

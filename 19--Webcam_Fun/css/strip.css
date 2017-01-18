@@ -4,8 +4,8 @@
   height:100%;
   margin:0;
   padding:1rem 10px;
-  /* background:transparent; */
   background-color:rgba(0, 0, 0, 0.5);
+  background-color:transparent;
   position:absolute;
   overflow:auto;
   overflow-x:hidden;
@@ -28,7 +28,7 @@
 .strip a img {
   width:100%;
   background:white;
-  padding:5px;
+  padding:0.125em;
   box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
 }
 

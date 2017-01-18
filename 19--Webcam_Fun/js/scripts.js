@@ -1,5 +1,5 @@
 /* scripts.js */
-
+console.log('scripts.js READY!');
 /**
  * DOM NODES
  */
@@ -14,26 +14,27 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
+const allSelects = document.querySelectorAll('select');
 
 /* F/X controls */
 const ctrlFx = document.querySelector('.ctrl_fx');
 const alertFx = ctrlFx.querySelector('.alert');
 const alertFxMsgs = alertFx.querySelectorAll('.msg');
 /* main select/option for F/X */
-const selectFx = ctrlFx.querySelector('#fx');
+const selectFx = document.querySelector('#fx');
 /* array of tables of control interfaces */
 const ctrlTables = ctrlFx.querySelectorAll('table');
 /* video channel colorize controls */
-const ctrlRGB = ctrlFx.querySelector('#ctrl_fx--rgb');
-const selectRGB = ctrlFx.querySelector('#rgb');
-const btnApplyRGB = ctrlRGB.querySelector('.btn_apply');
+const ctrlColorize = document.querySelector('#ctrl_fx--colorize');
+const selectColorize = document.querySelector('#colorize');
+const btnApplyColorize = ctrlColorize.querySelector('.btn_apply');
 /* video channel split controls */
-const ctrlSplit = ctrlFx.querySelector('#ctrl_fx--split');
-const selectSplit = ctrlFx.querySelector('#split');
+const ctrlSplit = document.querySelector('#ctrl_fx--split');
+const selectSplit = document.querySelector('#split');
 const btnApplySplit = ctrlSplit.querySelector('.btn_apply');
 /* video croma key controls */
-const ctrlChroma = ctrlFx.querySelector('#ctrl_fx--chroma');
-const inputsChroma = ctrlFx.querySelectorAll('#ctrl_fx--chroma input')
+const ctrlChroma = document.querySelector('#ctrl_fx--chroma');
+const inputsChroma = document.querySelectorAll('#ctrl_fx--chroma input')
 
 /* buttons */
 const btnOn = document.querySelector('.ctrl_camera .btn_on');
@@ -55,7 +56,7 @@ let stripLimit = true;
 let videoInterval;
 
 const stripMax = 5;
-const stripItemW = 150;
+const stripItemW = 140;
 const videoSettings = {audio: false, video: true};
 
 /**
@@ -71,14 +72,12 @@ document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax
 
 /**
  * request access to client video and audio inputs.
- * @param  {[type]} mode   [description]
- * @param  {[type]} effect [description]
+ * @param  {[type]} mode -- ['start'|'stop']
  * @return {[type]}        [description]
  */
-function accessMedia(mode,effect) {
+function accessMedia(mode) {
   console.group('START accessMedia');
   console.log('mode: ', mode);
-  console.log('effect: ', effect);
   navigator.mediaDevices.getUserMedia(videoSettings)
   .then((mediaStream) => {
     myStream = mediaStream;
@@ -96,8 +95,10 @@ function accessMedia(mode,effect) {
       selectFx.style.display = 'inline-block';
       // ctrlFx.classList.remove('disabled');
       selectFx.disabled = false;
-      btnSnap.disabled = false;
-      btnSnap.classList.remove('disabled');
+      toggleButton(btnOff,'on');
+      toggleButton(btnSnap,'on');
+      // btnSnap.disabled = false;
+      // btnSnap.classList.remove('disabled');
     } else {
       // turn video off
       // video.style.display = 'none';
@@ -107,17 +108,23 @@ function accessMedia(mode,effect) {
       // alertFx.style.display = 'block';
       alertFxMsgs[0].style.display = 'block';
       alertFxMsgs[1].style.display = 'none';
+      selectFx.selectedIndex = 0;
+      for (var i = 0; i < allSelects.length; i++) {
+        allSelects[i].selectedIndex = 0;
+      }
       selectFx.style.display = 'none';
-      // ctrlFx.classList.add('disabled');
       selectFx.disabled = true;
-      btnSnap.disabled = true;
-      btnSnap.classList.add('disabled');
+      toggleButton(btnOff,'off');
+      toggleButton(btnSnap,'off');
+      // btnSnap.disabled = true;
+      // btnSnap.classList.add('disabled');
       toggleControls();
-      btnClearCam.disabled = false;
-      btnClearCam.classList.remove('disabled');
+      toggleButton(btnClearCam,'on');
+      // btnClearCam.disabled = false;
+      // btnClearCam.classList.remove('disabled');
     }
-    console.log('video.src: ',video.src);
-    console.log('myStream: ', myStream);
+    // console.log('video.src: ',video.src);
+    // console.log('myStream: ', myStream);
   })
   .catch((err) => {
     console.error('err: ', err.name);
@@ -169,44 +176,60 @@ function pixelsToCanvas() {
     canvas.height = vHeight;
   // }
 
-  let ints = [];
+  let randoms = []; // random numbers
+  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+  // console.log('randoms: ', randoms);
+  for (var i = 0; i < randoms.length; i++) {
+    randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+  }
+  console.log('randoms: ', randoms);
+
+  let intsSplit = [];
   if (selectSplit.value === 'stereo') {
     // expression
-    ints = [-144, -238, -235]; // stereo split
+    intsSplit = [-144, -238, -235]; // stereo split
     // [247, -116, -26]
     // [-144, -238, -235]
     // [202, -202, -215]
     // [-141, 148, -96]
   } else if (selectSplit.value === 'rgb') {
-    ints = [-100, 198, -92]; // rgb split
-    // [-229, -231, 242]
+    intsSplit = [-100, 198, -92]; // rgb split
+    // [-115, -258, 25]
   } else {
-    // random numbers
-    ints.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-    ints.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-    ints.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-    // console.log('ints: ', ints);
-    for (var i = 0; i < ints.length; i++) {
-      ints[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-    }
+    intsSplit = randoms;
   }
-  console.log('ints: ', ints);
+  // console.log('intsSplit: ', intsSplit);
+  let intsColorize = [];
+  if (selectColorize.value === 'red') {
+    intsColorize = [150, -50, -50];
+  } else if (selectColorize.value === 'green') {
+    intsColorize = [-50, 150, -50];
+  } else if (selectColorize.value === 'blue') {
+    intsColorize = [-50, -50, 150];
+  } else {
+    intsColorize = randoms;
+  }
+  // console.log('intsColorize: ', intsColorize);
 
-  console.log('selectFx.value: ',selectFx.value);
+  // console.log('selectFx.value: ',selectFx.value);
+  const effect = selectFx.value | '';
+  console.log('effect: ', effect);
   /* enable F/X controls */
-  if (selectFx.value === 'chroma') {
+  if (effect === 'chroma') {
     console.log('toggle chroma controls');
     // get initial value for effect
-    
-  } else if (selectFx.value === 'split') {
+  } else if (effect === 'split') {
     console.log('toggle split controls');
     // get initial value for effect
     console.log('selectSplit: ', selectSplit.value);
-  } else if (selectFx.value === 'rgb') {
-    console.log('toggle rgb controls');
+  } else if (effect === 'colorize') {
+    console.log('toggle colorize controls');
     // get initial value for effect
-    console.log('selectRGB: ', selectRGB.value);
+    console.log('selectColorize: ', selectColorize.value);
   } else {
+    console.log('no effect chosen yet');
   }
   // console.log(canvas.width,canvas.height);
 
@@ -226,10 +249,10 @@ function pixelsToCanvas() {
         pixels = fFxChromaKey(pixels);
         break;
       case 'split':
-        pixels = fFxSplit(pixels,ints);
+        pixels = fFxSplit(pixels,intsSplit);
         break;
-      case 'rgb_channel':
-        pixels = fFxRGB(pixels,ints);
+      case 'colorize':
+        pixels = fFxColorize(pixels,intsColorize);
         break;
     }
 
@@ -290,8 +313,9 @@ function snapPhoto() {
     if (stripLen > 0) {
       strip.style.display = 'flex';
       document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
-      btnClearStrip.disabled = false;
-      btnClearStrip.classList.remove('disabled');
+      toggleButton(btnClearStrip,'on');
+      // btnClearStrip.disabled = false;
+      // btnClearStrip.classList.remove('disabled');
     } else {
       strip.style.display = 'none';
     }
@@ -311,8 +335,9 @@ function snapPhoto() {
 function clearCanvas() {
   console.group('START clearCanvas');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  btnClearCam.disabled = true;
-  btnClearCam.classList.add('disabled');
+  toggleButton(btnClearCam,'off');
+  // btnClearCam.disabled = true;
+  // btnClearCam.classList.add('disabled');
   console.groupEnd();
 }
 
@@ -325,8 +350,9 @@ function clearStrip() {
   strip.innerHTML = ``;
   stripLen = 0;
   strip.style.display = 'none';
-  btnClearStrip.disabled = true;
-  btnClearStrip.classList.add('disabled');
+  toggleButton(btnClearStrip,'off');
+  // btnClearStrip.disabled = true;
+  // btnClearStrip.classList.add('disabled');
   document.querySelector('.ctrl_strip legend').innerHTML = 'snapshots';
   console.groupEnd();
 }
@@ -346,10 +372,10 @@ function flipCamera() {
  * @param  {[type]} effect [description]
  * @return {[type]}        [description]
  */
-function startStream(effect) {
+function startStream() {
   console.group('START startStream');
   clearInterval(videoInterval);
-  accessMedia('start',effect);
+  accessMedia('start');
   console.groupEnd();
 }
 
@@ -391,8 +417,8 @@ function toggleControls (x) {
       case 'split':
         ctrlSplit.style.display = 'table';
         break;
-      case 'rgb_channel':
-        ctrlRGB.style.display = 'table';
+      case 'colorize':
+        ctrlColorize.style.display = 'table';
         break;
     }
   } else {
@@ -408,7 +434,10 @@ toggleControls();
  */
 
 /* when web cam starts, send pixels to canvas */
-video.addEventListener('canplay',pixelsToCanvas);
+video.addEventListener('canplay',(e)=>{
+  console.log('playing media');
+  pixelsToCanvas();
+});
 
 /* set/unset limit on snapshots */
 snapLimit.addEventListener('click',(e)=>{
@@ -420,17 +449,28 @@ snapLimit.addEventListener('click',(e)=>{
 /* listen to change on master F/X select/option */
 selectFx.addEventListener('change',(e)=>{
   console.log('selectFx: ',e.target.value);
-    toggleControls(e.target.value);
+  toggleControls(e.target.value);
 });
 
 /* listen to change on video channel split F/X select/option */
 selectSplit.addEventListener('change',(e)=>{
   console.log('selectSplit: ',e.target.value);
-  startStream(e.target.value);
+  startStream();
+});
+
+btnApplySplit.addEventListener('click',(e)=>{
+  console.log(e.target);
+  startStream();
 });
 
 /* listen to change on video channel colorize F/X select/option */
-selectRGB.addEventListener('change',(e)=>{
-  console.log('selectRGB: ',e.target.value);
-  startStream(e.target.value);
+selectColorize.addEventListener('change',(e)=>{
+  console.log('selectColorize: ',e.target.value);
+  startStream();
 });
+
+btnApplyColorize.addEventListener('click',(e)=>{
+  console.log(e.target);
+  startStream();
+});
+
