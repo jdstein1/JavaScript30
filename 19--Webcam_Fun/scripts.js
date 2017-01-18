@@ -1,7 +1,10 @@
 /* scripts.js */
 
-/* DOM NODES */
+/**
+ * DOM NODES
+ */
 
+/* misc */
 const video = document.querySelector('.video');
 const photobooth = document.querySelector('.photobooth');
 const photoboothA = document.querySelector('.photobooth::after');
@@ -9,7 +12,6 @@ const photoboothB = document.querySelector('.photobooth::before');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
-const btnSnap = document.querySelector('#snap');
 const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
 
@@ -21,24 +23,29 @@ const alertFxMsgs = alertFx.querySelectorAll('.msg');
 const selectFx = ctrlFx.querySelector('#fx');
 /* array of tables of control interfaces */
 const ctrlTables = ctrlFx.querySelectorAll('table');
-/* video croma key controls */
-const fxChroma = ctrlFx.querySelector('#ctrl_fx--chroma');
-const inputsChroma = ctrlFx.querySelectorAll('#ctrl_fx--chroma input')
-/* video channel split controls */
-const fxSplit = ctrlFx.querySelector('#ctrl_fx--split');
-const selectSplit = ctrlFx.querySelector('#split');
 /* video channel colorize controls */
-const fxRGB = ctrlFx.querySelector('#ctrl_fx--rgb');
+const ctrlRGB = ctrlFx.querySelector('#ctrl_fx--rgb');
 const selectRGB = ctrlFx.querySelector('#rgb');
+const btnApplyRGB = ctrlRGB.querySelector('.btn_apply');
+/* video channel split controls */
+const ctrlSplit = ctrlFx.querySelector('#ctrl_fx--split');
+const selectSplit = ctrlFx.querySelector('#split');
+const btnApplySplit = ctrlSplit.querySelector('.btn_apply');
+/* video croma key controls */
+const ctrlChroma = ctrlFx.querySelector('#ctrl_fx--chroma');
+const inputsChroma = ctrlFx.querySelectorAll('#ctrl_fx--chroma input')
 
 /* buttons */
-const btnCamOn = document.querySelector('.ctrl_camera .btn_on');
-const btnCamOff = document.querySelector('.ctrl_camera .btn_off');
-const btnCamClear = document.querySelector('.ctrl_camera .btn_clear');
-const btnStripClear = document.querySelector('.ctrl_strip .btn_clear');
-const btnStripSnap = document.querySelector('.ctrl_strip .btn_snap');
+const btnOn = document.querySelector('.ctrl_camera .btn_on');
+const btnOff = document.querySelector('.ctrl_camera .btn_off');
+const btnClearCam = document.querySelector('.ctrl_camera .btn_clear');
+const btnClearStrip = document.querySelector('.ctrl_strip .btn_clear');
+const btnSnap = document.querySelector('.ctrl_strip .btn_snap');
 
-/* VARIABLES */
+/**
+ * VARIABLES
+ */
+
 let myStream;
 let front = true;
 let positionX = 0;
@@ -49,39 +56,36 @@ let videoInterval;
 
 const stripMax = 5;
 const stripItemW = 150;
+const videoSettings = {audio: false, video: true};
 
-/* default states */
-// ctrlFx.style.display = 'none';
-// ctrlFx.classList.add('disabled');
-// selectFx.disabled = true;
-selectFx.style.display = 'none';
+/**
+ * DEFAULT STATES
+ */
+
 snapLimit.checked = stripLimit;
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 
+/**
+ * FUNCTIONS
+ */
 
-/* FUNCTIONS */
-
-const videoSettings = {
-  audio: false, 
-  video: true
-  // video: {
-  //   width: { min: 1024, ideal: 1280, max: 1920 },
-  //   height: { min: 776, ideal: 720, max: 1080 },
-  //   facingMode: (front ? "user" : "environment")
-  // }
-};
-
+/**
+ * request access to client video and audio inputs.
+ * @param  {[type]} mode   [description]
+ * @param  {[type]} effect [description]
+ * @return {[type]}        [description]
+ */
 function accessMedia(mode,effect) {
   console.group('START accessMedia');
   console.log('mode: ', mode);
   console.log('effect: ', effect);
   navigator.mediaDevices.getUserMedia(videoSettings)
-  .then(function(mediaStream) {
+  .then((mediaStream) => {
     myStream = mediaStream;
     if (mode && mode === 'start') {
       // turn video on
       video.src = window.URL.createObjectURL(myStream);
-      video.onloadedmetadata = function(e) {
+      video.onloadedmetadata = (e) => {
         video.play();
       };
       // photoboothB.style.opacity = 0;
@@ -107,19 +111,23 @@ function accessMedia(mode,effect) {
       btnSnap.disabled = true;
       btnSnap.classList.add('disabled');
       toggleControls();
-      btnCamClear.disabled = false;
-      btnCamClear.classList.remove('disabled');
+      btnClearCam.disabled = false;
+      btnClearCam.classList.remove('disabled');
     }
     console.log('video.src: ',video.src);
     console.log('myStream: ', myStream);
   })
-  .catch(function(err) {
+  .catch((err) => {
     console.error('err: ', err.name);
     // console.log(err.name + ": " + err.message); // always check for errors at the end.
   });
   console.groupEnd();
 }
 
+/**
+ * copy video pixels and put them in the canvas.
+ * @return {[type]} [description]
+ */
 function pixelsToCanvas() {
   console.group('START pixelsToCanvas');
   // console.log(video);
@@ -198,8 +206,13 @@ function pixelsToCanvas() {
     console.log('selectRGB: ', selectRGB.value);
   } else {
   }
-
   // console.log(canvas.width,canvas.height);
+
+/**
+ * manipulate pixels with video effect.
+ * @param  {[type]} fx [description]
+ * @return {[type]}    [description]
+ */
   function videoFX (fx) {
     // console.log('fx: ', fx);
     ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
@@ -238,6 +251,11 @@ function pixelsToCanvas() {
   return videoInterval;
 }
 
+/**
+ * copy canvas data (photo with video manipulations) to a 
+ * photo strip.
+ * @return {[type]} [description]
+ */
 function snapPhoto() {
   console.group('START snapPhoto');
   if (video.src !== '') {
@@ -270,8 +288,8 @@ function snapPhoto() {
     if (stripLen > 0) {
       strip.style.display = 'flex';
       document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
-      btnStripClear.disabled = false;
-      btnStripClear.classList.remove('disabled');
+      btnClearStrip.disabled = false;
+      btnClearStrip.classList.remove('disabled');
     } else {
       strip.style.display = 'none';
     }
@@ -284,30 +302,48 @@ function snapPhoto() {
   console.groupEnd();
 }
 
+/**
+ * reset canvas to no image.
+ * @return {[type]} [description]
+ */
 function clearCanvas() {
   console.group('START clearCanvas');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  btnCamClear.disabled = true;
-  btnCamClear.classList.add('disabled');
+  btnClearCam.disabled = true;
+  btnClearCam.classList.add('disabled');
   console.groupEnd();
 }
 
+/**
+ * reset photo strip to empty HTML element.
+ * @return {[type]} [description]
+ */
 function clearStrip() {
   console.group('START clearStrip');
   strip.innerHTML = ``;
   stripLen = 0;
   strip.style.display = 'none';
-  btnStripClear.disabled = true;
-  btnStripClear.classList.add('disabled');
+  btnClearStrip.disabled = true;
+  btnClearStrip.classList.add('disabled');
+  document.querySelector('.ctrl_strip legend').innerHTML = 'snapshots';
   console.groupEnd();
 }
 
+/**
+ * switch between front- and back-facing cameras (mobile devices only).
+ * @return {[type]} [description]
+ */
 function flipCamera() {
   console.group('START flipCamera');
   front = !front;
   console.groupEnd();
 }
 
+/**
+ * start/restart the video and audio media input recording.
+ * @param  {[type]} effect [description]
+ * @return {[type]}        [description]
+ */
 function startStream(effect) {
   console.group('START startStream');
   clearInterval(videoInterval);
@@ -315,6 +351,11 @@ function startStream(effect) {
   console.groupEnd();
 }
 
+/**
+ * stop the video and audio media input recording.
+ * TODO: revoke access to video and audio media inputs.
+ * @return {[type]} [description]
+ */
 function stopStream() {
   console.group('CAMERA OFF');
   clearInterval(videoInterval);
@@ -343,13 +384,13 @@ function toggleControls (x) {
     /* manipulate pixels */
     switch(x) {
       case 'chroma':
-        fxChroma.style.display = 'table';
+        ctrlChroma.style.display = 'table';
         break;
       case 'split':
-        fxSplit.style.display = 'table';
+        ctrlSplit.style.display = 'table';
         break;
       case 'rgb_channel':
-        fxRGB.style.display = 'table';
+        ctrlRGB.style.display = 'table';
         break;
     }
   } else {
@@ -360,8 +401,9 @@ function toggleControls (x) {
 }
 toggleControls();
 
-
-/* EVENT LISTENERS */
+/**
+ * EVENT LISTENERS
+ */
 
 /* when web cam starts, send pixels to canvas */
 video.addEventListener('canplay',pixelsToCanvas);

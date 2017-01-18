@@ -17,3 +17,4 @@ README.md
 * [] -- toggle buttons w utils.js function
 * [] -- move other common stuff to utils.js
 * [] -- move CSS and JS to folders
+* [] -- make RGB colorize effect work again

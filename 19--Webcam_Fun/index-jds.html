@@ -35,7 +35,7 @@
           <input type="checkbox" id="limit" class="">
           <span>Limit?</span>
         </label>
-        <button id="snap" class="btn_snap status info disabled" onClick="snapPhoto()" disabled>Snap</button>
+        <button class="btn_snap status info disabled" onClick="snapPhoto()" disabled>Snap</button>
         <button class="btn_clear disabled" onClick="clearStrip()" disabled>Clear</button>
       </fieldset>
       <fieldset class="ctrl_fx">
@@ -67,7 +67,7 @@
             </td>
           </tr>
           <tr>
-            <td><button class="status success" onClick="startStream()">Apply</button></td>
+            <td><button class="btn_apply status success" onClick="startStream()">Apply</button></td>
           </tr>
         </table>
         <table id="ctrl_fx--split">
@@ -85,7 +85,7 @@
             </td>
           </tr>
           <tr>
-            <td><button class="status success" onClick="startStream()">Apply</button></td>
+            <td><button class="btn_apply status success" onClick="startStream()">Apply</button></td>
           </tr>
         </table>
         <table id="ctrl_fx--chroma">
@@ -93,19 +93,19 @@
             <td class="ctrl_r">
               <label for="rmin">
                 <span>dark:</span>
-                <input type="number" value=0 min=0 max=255 name="rmin">
+                <input type="range" value=0 min=0 max=255 name="rmin">
               </label>
             </td>
             <td class="ctrl_g">
               <label for="gmin">
                 <span>dark:</span>
-                <input type="number" value=0 min=0 max=255 name="gmin">
+                <input type="range" value=0 min=0 max=255 name="gmin">
               </label>
             </td>
             <td class="ctrl_b">
               <label for="bmin">
                 <span>dark:</span>
-                <input type="number" value=0 min=0 max=255 name="bmin">
+                <input type="range" value=0 min=0 max=255 name="bmin">
               </label>
             </td>
           </tr>
@@ -113,19 +113,19 @@
             <td class="ctrl_r">
               <label for="rmax">
                 <span>light:</span>
-                <input type="number" value=0 min=0 max=255 name="rmax">
+                <input type="range" value=0 min=0 max=255 name="rmax">
               </label>
             </td>
             <td class="ctrl_g">
               <label for="gmax">
                 <span>light:</span>
-                <input type="number" value=0 min=0 max=255 name="gmax">
+                <input type="range" value=0 min=0 max=255 name="gmax">
               </label>
             </td>
             <td class="ctrl_b">
               <label for="bmax">
                 <span>light:</span>
-                <input type="number" value=0 min=0 max=255 name="bmax">
+                <input type="range" value=0 min=0 max=255 name="bmax">
               </label>
             </td>
           </tr>
