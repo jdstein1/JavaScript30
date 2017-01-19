@@ -3,13 +3,13 @@ console.log('fx.js READY!');
 /**
  * check if each pixel's color value falls within ranges set 
  * by inputs.  if it does, drop alpha value to 0 to hide pixel.
- * @param  {[type]} data [description]
- * @return {[type]}      [description]
+ * @param  {big array} data - The pixels.
+ * @return {big array}      The modified pixels.
  */
 function fFxChromaKey(data) {
   // console.log('START fFxChromaKey');
   const levels = {};
-  document.querySelectorAll('#ctrl_fx--chroma input').forEach((input) => {
+  document.querySelectorAll('#table-chroma input').forEach((input) => {
     levels[input.name] = input.value;
   });
   // console.log(levels);
@@ -36,10 +36,12 @@ function fFxChromaKey(data) {
 }
 
 /**
- * [fFxSplit description]
- * @param  {[type]} data [description]
- * @param  {[type]} nums [description]
- * @return {[type]}      [description]
+ * Offset the R, G, and B values of each pixel to another pixel 
+ * location, thereby splitting the R, G, and B channels into 
+ * distinctly separate layers.
+ * @param  {big array} data - The pixels.
+ * @param  {array} nums - Integers used to shift each R, G, and B value.
+ * @return {big array}      The modified pixels.
  */
 function fFxSplit(data,nums) {
   // console.log('START fFxSplit');
@@ -52,10 +54,11 @@ function fFxSplit(data,nums) {
 }
 
 /**
- * [fFxSplit description]
- * @param  {[type]} data [description]
- * @param  {[type]} nums [description]
- * @return {[type]}      [description]
+ * Increase or decrease value of each pixels R, G, and B values to 
+ * create a monochromatic picture.
+ * @param  {big array} data - The pixels.
+ * @param  {array} nums - Integers used to shift each R, G, and B value.
+ * @return {big array}      The modified pixels.
  */
 function fFxColorize(data,nums) {
   // console.log('START fFxRGB',nums);
@@ -69,9 +72,9 @@ function fFxColorize(data,nums) {
 
 /**
  * [fFxPixelate description]
- * @param  {[type]} data       [description]
- * @param  {[type]} resolution [description]
- * @return {[type]}            [description]
+ * @param  {big array} data - The pixels.
+ * @param  {number} resolution - Resolution of the pixels. 1 = full res.  2 = half res.
+ * @return {big array}      The modified pixels.
  */
 function fFxPixelate(data,resolution) {
   // console.log('START fFxPixelate',resolution);

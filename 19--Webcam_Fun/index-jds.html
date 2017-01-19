@@ -24,15 +24,6 @@
         <button class="btn_off status error disabled" disabled>Off</button>
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
-      <fieldset class="ctrl_strip">
-        <legend>snapshots</legend>
-        <label class="" for="limit">
-          <input type="checkbox" id="limit" class="" checked>
-          <span>Limit?</span>
-        </label>
-        <button class="btn_snap status info disabled" disabled>Snap</button>
-        <button class="btn_clear disabled" disabled>Clear</button>
-      </fieldset>
       <fieldset class="ctrl_fx">
         <legend>f/x:
           <select class="status info" id="fx">
@@ -42,15 +33,22 @@
             <option value="colorize">Colorize</option>
           </select>
         </legend>
-        <div class="alert">
-          <p class="msg msg_cam" id="">turn web cam "ON" to use video effects</p>
-          <p class="msg msg_fx" id="">choose a video effect above</p>
+        <div class="alert info" id="msg_cam">
+          <p class="msg">turn web cam "ON" to use video effects</p>
         </div>
-        <table id="ctrl_fx--colorize">
+        <div class="alert info" id="msg_fx">
+          <p class="msg">choose a video effect above</p>
+        </div>
+        <div class="alert error" id="msg_err">
+          <p class="msg">web API <code>navigator.mediaDevices</code> not supported</p>
+        </div>
+        <table id="table-colorize">
+          <!-- <caption>colorize</caption> -->
+          <tbody>
           <tr>
             <td>
               <label>
-                <span>rgb:</span>
+                <span>colorize:</span>
                 <select class="status info" id="colorize">
                   <option>Choose color...</option>
                   <option value="random" selected>random</option>
@@ -64,8 +62,11 @@
           <tr>
             <td><button class="btn_apply status success">Apply</button></td>
           </tr>
+          </tbody>
         </table>
-        <table id="ctrl_fx--split">
+        <table id="table-split">
+          <!-- <caption>split</caption> -->
+          <tbody>
           <tr>
             <td>
               <label>
@@ -82,8 +83,11 @@
           <tr>
             <td><button class="btn_apply status success">Apply</button></td>
           </tr>
+          </tbody>
         </table>
-        <table id="ctrl_fx--chroma">
+        <table id="table-chroma">
+          <!-- <caption>chroma key</caption> -->
+          <tbody>
           <tr>
             <td class="ctrl_r">
               <label for="rmin">
@@ -124,7 +128,17 @@
               </label>
             </td>
           </tr>
+          </tbody>
         </table>
+      </fieldset>
+      <fieldset class="ctrl_strip">
+        <legend>snapshots</legend>
+        <label class="" for="limit">
+          <input type="checkbox" id="limit" class="" checked>
+          <span>Limit?</span>
+        </label>
+        <button class="btn_snap status info disabled" disabled>Snap</button>
+        <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
     </div>
 

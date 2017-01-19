@@ -14,8 +14,6 @@
   left:1rem;
   bottom:0;
   right:auto;
-
-  display:none;
   flex-wrap:nowrap;
   flex-direction:column;
   justify-content:start;

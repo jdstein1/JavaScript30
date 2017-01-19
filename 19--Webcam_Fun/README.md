@@ -18,6 +18,9 @@
     * [X] Style the inputs
     * [X] Style the labels
     * [] Make a cool skin/theme
+        * [awwwards.com](http://www.awwwards.com/30-recent-inspirational-ui-examples-in-mobile-device-screens.html)
+        * [webdesign-inspiration.com](http://www.webdesign-inspiration.com/)
+        * [material design](https://material.io/guidelines/)
 * Effects
     * Chroma Key
         * [] Redo inputs w a single HTML5 color input
@@ -39,3 +42,4 @@
     * [] Move other common stuff to utils.js
     * [] Set W&H dimensions of video picture in canvas so it is not distorted
         * [] Get native resolution
+    * [] Custom "hide()" and "show()" function break when element passed has children (i.e., Select/Option).

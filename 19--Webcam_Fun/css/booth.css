@@ -40,7 +40,6 @@ canvas {
   background:white;
   box-shadow:0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.5);
   padding:0.125em;
-  display:none;
   position:absolute;
   top:2rem;
   right:2rem;

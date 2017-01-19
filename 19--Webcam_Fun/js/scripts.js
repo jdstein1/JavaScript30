@@ -13,25 +13,29 @@ const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
 const allSelects = document.querySelectorAll('select');
 
+const alertMsgs = document.querySelectorAll('.alert');
+const alertMsgCam = document.querySelector('#msg_cam');
+const alertMsgFx = document.querySelector('#msg_fx');
+const alertMsgErr = document.querySelector('#msg_err');
+// const alertFx = ctrlFx.querySelector('.alert');
+
 /* F/X controls */
-const ctrlFx = document.querySelector('.ctrl_fx');
-const alertFx = ctrlFx.querySelector('.alert');
-const alertFxMsgs = alertFx.querySelectorAll('.msg');
 /* main select/option for F/X */
 const selectFx = document.querySelector('#fx');
 /* array of tables of control interfaces */
+const ctrlFx = document.querySelector('.ctrl_fx');
 const ctrlTables = ctrlFx.querySelectorAll('table');
 /* video channel colorize controls */
-const ctrlColorize = document.querySelector('#ctrl_fx--colorize');
+const ctrlColorize = document.querySelector('#table-colorize');
 const selectColorize = document.querySelector('#colorize');
 const btnApplyColorize = ctrlColorize.querySelector('.btn_apply');
 /* video channel split controls */
-const ctrlSplit = document.querySelector('#ctrl_fx--split');
+const ctrlSplit = document.querySelector('#table-split');
 const selectSplit = document.querySelector('#split');
 const btnApplySplit = ctrlSplit.querySelector('.btn_apply');
 /* video croma key controls */
-const ctrlChroma = document.querySelector('#ctrl_fx--chroma');
-const inputsChroma = document.querySelectorAll('#ctrl_fx--chroma input')
+const ctrlChroma = document.querySelector('#table-chroma');
+const inputsChroma = document.querySelectorAll('#table-chroma input')
 
 /* buttons */
 const btnOn = document.querySelector('.ctrl_camera .btn_on');
@@ -53,7 +57,7 @@ let videoInterval;
 
 const stripMax = 5;
 const stripItemW = 140;
-const videoSettings = {audio: false, video: true};
+const constraints = {audio: false, video: true};
 
 /**
  * DEFAULT STATES
@@ -65,6 +69,8 @@ document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax
  * FUNCTIONS
  */
 
+hide(selectFx);
+selectFx.disabled = true;
 /**
  * [toggleControls description]
  * @param  {[type]} x [description]
@@ -73,26 +79,28 @@ document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax
 function toggleControls (x) {
   console.group('START toggleControls');
   console.log('hide all controls...');
-  for (var i = 0; i < ctrlTables.length; i++) {
-    ctrlTables[i].style.display = 'none';
-    // show alert
-    alertFx.style.display = 'flex';
-  }
+  hide(ctrlTables);
+  console.log('...hide all alerts...');
+  hide(alertMsgs);
+  // for (var i = 0; i < alertMsgs.length; i++) {
+  //   alertMsgs[i].style.display = 'none';
+  // }
+  console.log('...show camera alert...');
+  show(alertMsgCam);
   if (x && x.indexOf('Choose')<0) {
     console.log('...then show __'+x+'__ controls!');
-    // hide alert
-    alertFx.style.display = 'none';
-    // console.warn('x!')
     /* manipulate pixels */
     switch(x) {
       case 'chroma':
-        ctrlChroma.style.display = 'table';
+        // show(ctrlChroma);
         break;
       case 'split':
-        ctrlSplit.style.display = 'table';
+        // show(ctrlSplit);
         break;
       case 'colorize':
-        ctrlColorize.style.display = 'table';
+        // show(ctrlColorize);
+        break;
+      default:
         break;
     }
   } else {
@@ -104,11 +112,11 @@ function toggleControls (x) {
 toggleControls();
 
 if (navigator.mediaDevices) {
-  console.info(navigator.mediaDevices.getSupportedConstraints());
+  // console.info(navigator.mediaDevices.getSupportedConstraints());
   navigator.mediaDevices.enumerateDevices()
   .then(function(devices) {
     devices.forEach(function(device) {
-      console.log(device);
+      // console.log(device);
       // console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
     });
   })
@@ -123,7 +131,8 @@ if (navigator.mediaDevices) {
 function accessMedia(mode) {
   console.group('START accessMedia');
   console.log('mode: ', mode);
-  navigator.mediaDevices.getUserMedia(videoSettings)
+  hide(alertMsgs);
+  navigator.mediaDevices.getUserMedia(constraints)
   .then((mediaStream) => {
     // console.log('mediaStream: ', mediaStream);
     myStream = mediaStream;
@@ -134,44 +143,42 @@ function accessMedia(mode) {
       video.onloadedmetadata = (e) => {
         video.play();
       };
-      // alertFx.style.display = 'none';
-      alertFxMsgs[0].style.display = 'none';
-      alertFxMsgs[1].style.display = 'block';
-      selectFx.style.display = 'inline-block';
-      // ctrlFx.classList.remove('disabled');
+      show(alertMsgFx);
+
+      selectFx.selectedIndex = 0;
+      show(selectFx);
       selectFx.disabled = false;
+
       toggleButton(btnOff,'on');
       toggleButton(btnSnap,'on');
-      // btnSnap.disabled = false;
-      // btnSnap.classList.remove('disabled');
+
     } else {
       // turn video off
-      video.style.display = 'none';
+      hide(video);
       video.src = '';
       // myStream.active = false;
-      // alertFx.style.display = 'block';
-      alertFxMsgs[0].style.display = 'block';
-      alertFxMsgs[1].style.display = 'none';
-      selectFx.selectedIndex = 0;
+      show(alertMsgCam);
       for (var i = 0; i < allSelects.length; i++) {
         allSelects[i].selectedIndex = 0;
       }
-      selectFx.style.display = 'none';
+
+      selectFx.selectedIndex = 0;
+      hide(selectFx);
       selectFx.disabled = true;
+
       toggleButton(btnOff,'off');
       toggleButton(btnSnap,'off');
-      // btnSnap.disabled = true;
-      // btnSnap.classList.add('disabled');
+
       toggleControls();
+
       toggleButton(btnClearCam,'on');
-      // btnClearCam.disabled = false;
-      // btnClearCam.classList.remove('disabled');
     }
     // console.log('video.src: ',video.src);
     // console.log('myStream: ', myStream);
   })
   .catch((err) => {
     console.error('err: ', err.name);
+    alertMsgs[2].style.display = 'block';
     // console.log(err.name + ": " + err.message); // always check for errors at the end.
   });
   console.groupEnd();
@@ -476,6 +483,7 @@ btnApplyColorize.addEventListener('click',(e)=>{
 });
 
 } else {
-  console.error('navigator.mediaDevices NOT supported!');
+  console.error('web API navigator.mediaDevices NOT supported!');
+  alertMsgs[2].style.display = 'block';
 }
 
