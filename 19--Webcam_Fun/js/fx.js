@@ -1,5 +1,11 @@
 /* fx.js */
 console.log('fx.js READY!');
+/**
+ * check if each pixel's color value falls within ranges set 
+ * by inputs.  if it does, drop alpha value to 0 to hide pixel.
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
 function fFxChromaKey(data) {
   // console.log('START fFxChromaKey');
   const levels = {};
@@ -29,6 +35,12 @@ function fFxChromaKey(data) {
   return data;
 }
 
+/**
+ * [fFxSplit description]
+ * @param  {[type]} data [description]
+ * @param  {[type]} nums [description]
+ * @return {[type]}      [description]
+ */
 function fFxSplit(data,nums) {
   // console.log('START fFxSplit');
   for (let i = 0; i < data.data.length; i+=4) {
@@ -39,6 +51,12 @@ function fFxSplit(data,nums) {
   return data;
 }
 
+/**
+ * [fFxSplit description]
+ * @param  {[type]} data [description]
+ * @param  {[type]} nums [description]
+ * @return {[type]}      [description]
+ */
 function fFxColorize(data,nums) {
   // console.log('START fFxRGB',nums);
   for (let i = 0; i < data.data.length; i+=4) {
@@ -49,6 +67,12 @@ function fFxColorize(data,nums) {
   return data;
 }
 
+/**
+ * [fFxPixelate description]
+ * @param  {[type]} data       [description]
+ * @param  {[type]} resolution [description]
+ * @return {[type]}            [description]
+ */
 function fFxPixelate(data,resolution) {
   // console.log('START fFxPixelate',resolution);
   for (let i = 0; i < data.data.length; i+=4) {

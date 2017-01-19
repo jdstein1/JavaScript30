@@ -18,25 +18,20 @@
   <main>
 
     <div class="controls">
-      <!-- <h3>controls</h3> -->
       <fieldset class="ctrl_camera">
         <legend>web cam</legend>
-        <button class="btn_on status success" onClick="startStream()">On</button>
-        <button class="btn_off status error disabled" onClick="stopStream()" disabled>Off</button>
-        <button class="btn_clear disabled" onClick="clearCanvas()" disabled>Clear</button>
-        <!-- <button class="status info" onClick="flipCamera()">Flip</button> -->
+        <button class="btn_on status success">On</button>
+        <button class="btn_off status error disabled" disabled>Off</button>
+        <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
-      <!-- <fieldset class="">
-        <legend>photo</legend>
-      </fieldset> -->
       <fieldset class="ctrl_strip">
         <legend>snapshots</legend>
         <label class="" for="limit">
-          <input type="checkbox" id="limit" class="">
+          <input type="checkbox" id="limit" class="" checked>
           <span>Limit?</span>
         </label>
-        <button class="btn_snap status info disabled" onClick="snapPhoto()" disabled>Snap</button>
-        <button class="btn_clear disabled" onClick="clearStrip()" disabled>Clear</button>
+        <button class="btn_snap status info disabled" disabled>Snap</button>
+        <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
       <fieldset class="ctrl_fx">
         <legend>f/x:

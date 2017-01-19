@@ -6,9 +6,6 @@ console.log('scripts.js READY!');
 
 /* misc */
 const video = document.querySelector('.video');
-const photobooth = document.querySelector('.photobooth');
-const photoboothA = document.querySelector('.photobooth::after');
-const photoboothB = document.querySelector('.photobooth::before');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
@@ -52,7 +49,6 @@ let front = true;
 let positionX = 0;
 let positionY = 0;
 let stripLen = 0;
-let stripLimit = true;
 let videoInterval;
 
 const stripMax = 5;
@@ -63,13 +59,62 @@ const videoSettings = {audio: false, video: true};
  * DEFAULT STATES
  */
 
-snapLimit.checked = stripLimit;
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 
 /**
  * FUNCTIONS
  */
 
+/**
+ * [toggleControls description]
+ * @param  {[type]} x [description]
+ * @return {[type]}   [description]
+ */
+function toggleControls (x) {
+  console.group('START toggleControls');
+  console.log('hide all controls...');
+  for (var i = 0; i < ctrlTables.length; i++) {
+    ctrlTables[i].style.display = 'none';
+    // show alert
+    alertFx.style.display = 'flex';
+  }
+  if (x && x.indexOf('Choose')<0) {
+    console.log('...then show __'+x+'__ controls!');
+    // hide alert
+    alertFx.style.display = 'none';
+    // console.warn('x!')
+    /* manipulate pixels */
+    switch(x) {
+      case 'chroma':
+        ctrlChroma.style.display = 'table';
+        break;
+      case 'split':
+        ctrlSplit.style.display = 'table';
+        break;
+      case 'colorize':
+        ctrlColorize.style.display = 'table';
+        break;
+    }
+  } else {
+    console.log('...then done!');
+    // console.warn('no x!')
+  }
+  console.groupEnd();
+}
+toggleControls();
+
+if (navigator.mediaDevices) {
+  console.info(navigator.mediaDevices.getSupportedConstraints());
+  navigator.mediaDevices.enumerateDevices()
+  .then(function(devices) {
+    devices.forEach(function(device) {
+      console.log(device);
+      // console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+    });
+  })
+  .catch(function(err) {
+    console.error(err.name + ": " + err.message);
+  });
 /**
  * request access to client video and audio inputs.
  * @param  {[type]} mode -- ['start'|'stop']
@@ -80,6 +125,7 @@ function accessMedia(mode) {
   console.log('mode: ', mode);
   navigator.mediaDevices.getUserMedia(videoSettings)
   .then((mediaStream) => {
+    // console.log('mediaStream: ', mediaStream);
     myStream = mediaStream;
     if (mode && mode === 'start') {
       // turn video on
@@ -88,7 +134,6 @@ function accessMedia(mode) {
       video.onloadedmetadata = (e) => {
         video.play();
       };
-      // photoboothB.style.opacity = 0;
       // alertFx.style.display = 'none';
       alertFxMsgs[0].style.display = 'none';
       alertFxMsgs[1].style.display = 'block';
@@ -101,10 +146,9 @@ function accessMedia(mode) {
       // btnSnap.classList.remove('disabled');
     } else {
       // turn video off
-      // video.style.display = 'none';
+      video.style.display = 'none';
       video.src = '';
       // myStream.active = false;
-      // photoboothB.style.opacity = '';
       // alertFx.style.display = 'block';
       alertFxMsgs[0].style.display = 'block';
       alertFxMsgs[1].style.display = 'none';
@@ -297,13 +341,9 @@ function snapPhoto() {
     link.style.width = stripItemW+'px';
     // console.log('link',link);
 
-    console.log('stripLimit: ', stripLimit);
-    // console.log('stripMax: ', stripMax);
     /* set a max limit on number of photo snaps */
-    // console.log('stripLen: ', stripLen);
-    // if (!stripLimit && (stripLen < stripMax)) {
     stripLen++;
-    if (stripLimit && stripLen > stripMax) {
+    if (snapLimit.checked && stripLen > stripMax) {
       console.log('YES LIMIT');
       stripLen = stripMax;
       strip.removeChild(strip.lastChild);
@@ -392,58 +432,19 @@ function stopStream() {
 }
 
 /**
- * [toggleControls description]
- * @param  {[type]} x [description]
- * @return {[type]}   [description]
- */
-function toggleControls (x) {
-  console.group('START toggleControls');
-  console.log('hide all controls...');
-  for (var i = 0; i < ctrlTables.length; i++) {
-    ctrlTables[i].style.display = 'none';
-    // show alert
-    alertFx.style.display = 'flex';
-  }
-  if (x && x.indexOf('Choose')<0) {
-    console.log('...then show __'+x+'__ controls!');
-    // hide alert
-    alertFx.style.display = 'none';
-    // console.warn('x!')
-    /* manipulate pixels */
-    switch(x) {
-      case 'chroma':
-        ctrlChroma.style.display = 'table';
-        break;
-      case 'split':
-        ctrlSplit.style.display = 'table';
-        break;
-      case 'colorize':
-        ctrlColorize.style.display = 'table';
-        break;
-    }
-  } else {
-    console.log('...then done!');
-    // console.warn('no x!')
-  }
-  console.groupEnd();
-}
-toggleControls();
-
-/**
  * EVENT LISTENERS
  */
+
+btnOn.addEventListener('click',startStream);
+btnOff.addEventListener('click',stopStream);
+btnSnap.addEventListener('click',snapPhoto);
+btnClearCam.addEventListener('click',clearCanvas);
+btnClearStrip.addEventListener('click',clearStrip);
 
 /* when web cam starts, send pixels to canvas */
 video.addEventListener('canplay',(e)=>{
   console.log('playing media');
   pixelsToCanvas();
-});
-
-/* set/unset limit on snapshots */
-snapLimit.addEventListener('click',(e)=>{
-  // console.log(e.target.checked);
-  stripLimit = e.target.checked;
-  console.log(stripLimit);
 });
 
 /* listen to change on master F/X select/option */
@@ -473,4 +474,8 @@ btnApplyColorize.addEventListener('click',(e)=>{
   console.log(e.target);
   startStream();
 });
+
+} else {
+  console.error('navigator.mediaDevices NOT supported!');
+}
 

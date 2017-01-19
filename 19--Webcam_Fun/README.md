@@ -1,21 +1,41 @@
-README.md
+# 19. Web Cam Fun!
 
-# Web Cam Fun!
+## About
+
+1. Access client video and audio media inputs and output to web page.
+1. Snap still image of video output to save for download.
+1. Manipulate video output with video effects functions.
 
 ## TODO:
 
-* [X] -- enable/disable "clear" buttons
-* [X] -- enable/disable "snap" button
-* [X] -- hide alert message
-* [X] -- fix snapshot limit
-* [X] -- style the buttons (status)
-* [X] -- style the alerts
-* [X] -- style the inputs
-* [X] -- style the labels
-* [] -- redo chroma key inputs w a single HTML5 color input
-* [X] -- goofy background to show thru chroma key
-* [] -- toggle buttons w utils.js function
-* [] -- move other common stuff to utils.js
-* [] -- move CSS and JS to folders
-* [] -- make RGB colorize effect work again
-    * [] -- build separate function for random
+* User Interactions
+    * [X] Enable/disable "clear" buttons
+    * [X] Enable/disable "snap" button
+    * [X] Hide alert message
+* Styling
+    * [X] Style the buttons (status)
+    * [X] Style the alerts
+    * [X] Style the inputs
+    * [X] Style the labels
+    * [] Make a cool skin/theme
+* Effects
+    * Chroma Key
+        * [] Redo inputs w a single HTML5 color input
+        * [] Display the colors that the inputs represent
+    * Colorize
+        * [X] Make RGB colorize effect work again
+        * ~~[] Build separate function for random~~
+        * [X] Pass array of numbers in from videoFX function to use single colorize function
+    * Split
+        * [X] Make color channel split function work
+    * Pixelate
+        * [] Make pixelate effect function work
+* Structure
+    * [X] Move CSS and JS to folders
+* Misc
+    * [X] Fix snapshot limit
+    * [X] Add background image (animated?  fractal?  tv static?) to show thru chroma key
+    * [X] Toggle buttons w utils.js function
+    * [] Move other common stuff to utils.js
+    * [] Set W&H dimensions of video picture in canvas so it is not distorted
+        * [] Get native resolution
