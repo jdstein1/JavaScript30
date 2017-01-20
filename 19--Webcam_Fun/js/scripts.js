@@ -28,11 +28,10 @@ const ctrlTables = ctrlFx.querySelectorAll('table');
 /* video channel colorize controls */
 const ctrlColorize = document.querySelector('#table-colorize');
 const selectColorize = document.querySelector('#colorize');
-const btnApplyColorize = ctrlColorize.querySelector('.btn_apply');
+const btnsApply = document.querySelectorAll('.btn_apply');
 /* video channel split controls */
 const ctrlSplit = document.querySelector('#table-split');
 const selectSplit = document.querySelector('#split');
-const btnApplySplit = ctrlSplit.querySelector('.btn_apply');
 /* video croma key controls */
 const ctrlChroma = document.querySelector('#table-chroma');
 const inputsChroma = document.querySelectorAll('#table-chroma input')
@@ -63,56 +62,59 @@ const constraints = {audio: false, video: true};
  * DEFAULT STATES
  */
 
+hide(video);
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 
 /**
  * FUNCTIONS
  */
 
-hide(selectFx);
-selectFx.disabled = true;
+// hide(selectFx);
+// selectFx.disabled = true;
 /**
  * [toggleControls description]
  * @param  {[type]} x [description]
  * @return {[type]}   [description]
  */
-function toggleControls (x) {
+function toggleControls () {
   console.group('START toggleControls');
   console.log('hide all controls...');
   hide(ctrlTables);
-  console.log('...hide all alerts...');
   hide(alertMsgs);
+  show(alertMsgCam);
+  // console.log('...hide all alerts...');
+  // hide(alertMsgs);
   // for (var i = 0; i < alertMsgs.length; i++) {
   //   alertMsgs[i].style.display = 'none';
   // }
-  console.log('...show camera alert...');
-  show(alertMsgCam);
-  if (x && x.indexOf('Choose')<0) {
-    console.log('...then show __'+x+'__ controls!');
+  if (selectFx.selectedIndex>0) {
+    console.log('...then show __'+selectFx.selectedIndex+'__ controls!');
+    hide(alertMsgs);
     /* manipulate pixels */
-    switch(x) {
-      case 'chroma':
-        // show(ctrlChroma);
-        break;
-      case 'split':
-        // show(ctrlSplit);
-        break;
-      case 'colorize':
-        // show(ctrlColorize);
-        break;
-      default:
-        break;
-    }
+    show(ctrlTables[selectFx.selectedIndex-1]);
+    // switch(selectFx.selectedIndex) {
+    //   case 'chroma':
+    //     show(ctrlChroma);
+    //     break;
+    //   case 'split':
+    //     show(ctrlSplit);
+    //     break;
+    //   case 'colorize':
+    //     show(ctrlColorize);
+    //     break;
+    //   default:
+    //     break;
+    // }
   } else {
     console.log('...then done!');
-    // console.warn('no x!')
   }
   console.groupEnd();
 }
 toggleControls();
 
+// not every browser can access navigator.mediaDevices API...
 if (navigator.mediaDevices) {
-  // console.info(navigator.mediaDevices.getSupportedConstraints());
+
   navigator.mediaDevices.enumerateDevices()
   .then(function(devices) {
     devices.forEach(function(device) {
@@ -123,364 +125,369 @@ if (navigator.mediaDevices) {
   .catch(function(err) {
     console.error(err.name + ": " + err.message);
   });
-/**
- * request access to client video and audio inputs.
- * @param  {[type]} mode -- ['start'|'stop']
- * @return {[type]}        [description]
- */
-function accessMedia(mode) {
-  console.group('START accessMedia');
-  console.log('mode: ', mode);
-  hide(alertMsgs);
-  navigator.mediaDevices.getUserMedia(constraints)
-  .then((mediaStream) => {
-    // console.log('mediaStream: ', mediaStream);
-    myStream = mediaStream;
-    if (mode && mode === 'start') {
-      // turn video on
-      video.style.display = 'block';
-      video.src = window.URL.createObjectURL(myStream);
-      video.onloadedmetadata = (e) => {
-        video.play();
-      };
-      show(alertMsgFx);
 
-      selectFx.selectedIndex = 0;
-      show(selectFx);
-      selectFx.disabled = false;
+  /**
+   * request access to client video and audio inputs.
+   * @param  {[type]} mode -- ['start'|'stop']
+   * @return {[type]}        [description]
+   */
+  function accessMedia(mode) {
+    console.group('START accessMedia');
+    console.log('mode: ', mode);
+    hide(alertMsgs);
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then((mediaStream) => {
+      // console.log('mediaStream: ', mediaStream);
+      myStream = mediaStream;
+      if (mode && mode === 'start') {
+        // turn video on
+        video.style.display = 'block';
+        video.src = window.URL.createObjectURL(myStream);
+        video.onloadedmetadata = (e) => {
+          video.play();
+        };
 
-      toggleButton(btnOff,'on');
-      toggleButton(btnSnap,'on');
+        if (selectFx.selectedIndex === 0) {
+          show(alertMsgFx);
+        }
 
+        // selectFx.selectedIndex = 0;
+        // show(selectFx);
+        // selectFx.disabled = false;
+
+        toggleButton(btnOff,'on');
+        toggleButton(btnSnap,'on');
+
+      } else {
+        // turn video off
+        hide(video);
+        video.src = '';
+        // myStream.active = false;
+
+        if (selectFx.selectedIndex === 0) {
+          show(alertMsgCam);
+        }
+
+        // for (var i = 0; i < allSelects.length; i++) {
+        //   allSelects[i].selectedIndex = 0;
+        // }
+
+        // selectFx.selectedIndex = 0;
+        // hide(selectFx);
+        // selectFx.disabled = true;
+
+        toggleButton(btnOff,'off');
+        toggleButton(btnSnap,'off');
+
+        toggleControls();
+
+        toggleButton(btnClearCam,'on');
+      }
+      // console.log('video.src: ',video.src);
+      // console.log('myStream: ', myStream);
+    })
+    .catch((err) => {
+      console.error('err: ', err.name);
+      alertMsgs[2].style.display = 'block';
+      // console.log(err.name + ": " + err.message); // always check for errors at the end.
+    });
+    console.groupEnd();
+  }
+
+  /**
+   * copy video pixels and put them in the canvas.
+   * @return {[type]} [description]
+   */
+  function pixelsToCanvas() {
+    console.group('START pixelsToCanvas');
+    // console.log(video);
+
+    const vWidth = video.videoWidth;
+    const vHeight = video.videoHeight;
+    // console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
+
+    const ratio = vWidth/vHeight;
+    // console.log('ratio: ', ratio);
+
+    const wWidth = window.innerWidth;
+    const wHeight = window.innerHeight;
+    // console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
+
+    /* set canvas to W&H of window */
+    // canvas.width = wWidth;
+    // canvas.height = wHeight;
+
+    /* center the canvas */
+    // positionX = (wWidth - vWidth)/2;
+    // positionY = (wHeight - vHeight)/2;
+
+    // if (vWidth < wWidth && vHeight > wHeight) {
+    //   console.log('video taller than window');
+    //   // stretch video vertically...
+    //   canvas.width = vWidth;
+    //   canvas.height = wHeight;
+    // } else if (vWidth > wWidth && vHeight < wHeight) {
+    //   console.log('video wider than window');
+    //   // stretch video horizontally...
+    //   canvas.width = wWidth;
+    //   canvas.height = vHeight;
+    // } else {
+    //   console.log('video ??? than window');
+      canvas.width = vWidth;
+      canvas.height = vHeight;
+    // }
+
+    let randoms = []; // random numbers
+    randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+    randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+    randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
+    // console.log('randoms: ', randoms);
+    for (var i = 0; i < randoms.length; i++) {
+      randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+    }
+    console.log('randoms: ', randoms);
+
+    let intsSplit = [];
+    if (selectSplit.value === 'stereo') {
+      // expression
+      intsSplit = [-144, -238, -235]; // stereo split
+      // [247, -116, -26]
+      // [-144, -238, -235]
+      // [202, -202, -215]
+      // [-141, 148, -96]
+    } else if (selectSplit.value === 'rgb') {
+      intsSplit = [-100, 198, -92]; // rgb split
+      // [-115, -258, 25]
     } else {
-      // turn video off
-      hide(video);
-      video.src = '';
-      // myStream.active = false;
-      show(alertMsgCam);
-      for (var i = 0; i < allSelects.length; i++) {
-        allSelects[i].selectedIndex = 0;
+      intsSplit = randoms;
+    }
+    // console.log('intsSplit: ', intsSplit);
+    let intsColorize = [];
+    if (selectColorize.value === 'red') {
+      intsColorize = [150, -50, -50];
+    } else if (selectColorize.value === 'green') {
+      intsColorize = [-50, 150, -50];
+    } else if (selectColorize.value === 'blue') {
+      intsColorize = [-50, -50, 150];
+    } else {
+      intsColorize = randoms;
+    }
+    // console.log('intsColorize: ', intsColorize);
+
+    // console.log('selectFx.value: ',selectFx.value);
+    const effect = selectFx.value | '';
+    console.log('effect: ', effect);
+    /* enable F/X controls */
+    if (effect === 'chroma') {
+      console.log('toggle chroma controls');
+      // get initial value for effect
+    } else if (effect === 'split') {
+      console.log('toggle split controls');
+      // get initial value for effect
+      console.log('selectSplit: ', selectSplit.value);
+    } else if (effect === 'colorize') {
+      console.log('toggle colorize controls');
+      // get initial value for effect
+      console.log('selectColorize: ', selectColorize.value);
+    } else {
+      console.log('no effect chosen yet');
+    }
+    // console.log(canvas.width,canvas.height);
+
+  /**
+   * manipulate pixels with video effect.
+   * @param  {[type]} fx [description]
+   * @return {[type]}    [description]
+   */
+    function videoFX (fx) {
+      // console.log('fx: ', fx);
+      ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
+      let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
+
+      /* manipulate pixels */
+      switch(fx) {
+        case 'chroma':
+          pixels = fFxChromaKey(pixels);
+          break;
+        case 'split':
+          pixels = fFxSplit(pixels,intsSplit);
+          break;
+        case 'colorize':
+          pixels = fFxColorize(pixels,intsColorize);
+          break;
       }
 
-      selectFx.selectedIndex = 0;
-      hide(selectFx);
-      selectFx.disabled = true;
+      /* control ghosting effect */
+      // ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 1;
 
-      toggleButton(btnOff,'off');
-      toggleButton(btnSnap,'off');
+      /* put pixels back */
+      ctx.putImageData(pixels,positionX,positionY);
 
-      toggleControls();
+      // console.log('pixels: ', pixels);
+      // debugger;
 
-      toggleButton(btnClearCam,'on');
     }
-    // console.log('video.src: ',video.src);
-    // console.log('myStream: ', myStream);
-  })
-  .catch((err) => {
-    console.error('err: ', err.name);
-    alertMsgs[2].style.display = 'block';
-    // console.log(err.name + ": " + err.message); // always check for errors at the end.
+
+    videoInterval = setInterval(()=>{
+      videoFX(selectFx.value);
+    }, 100);
+    console.groupEnd();
+
+    return videoInterval;
+  }
+
+  /**
+   * copy canvas data (photo with video manipulations) to a 
+   * photo strip.
+   * @return {[type]} [description]
+   */
+  function snapPhoto() {
+    console.group('START snapPhoto');
+    if (video.src !== '') {
+      /* make snap sound */
+      snapSound.currentTime = 0;
+      snapSound.play();
+
+      /* take photo data from canvas */
+      const data = canvas.toDataURL('image/jpeg');
+      const link = document.createElement('a');
+      link.href = data;
+      link.setAttribute('download','picture.jpg');
+      link.innerHTML = `<img src="${data}" alt="download picture" />`;
+      link.style.width = stripItemW+'px';
+      // console.log('link',link);
+
+      /* set a max limit on number of photo snaps */
+      stripLen++;
+      if (snapLimit.checked && stripLen > stripMax) {
+        console.log('YES LIMIT');
+        stripLen = stripMax;
+        strip.removeChild(strip.lastChild);
+      }
+      // console.log('stripLen: ', stripLen);
+
+      if (stripLen > 0) {
+        strip.style.display = 'flex';
+        document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
+        toggleButton(btnClearStrip,'on');
+        // btnClearStrip.disabled = false;
+        // btnClearStrip.classList.remove('disabled');
+      } else {
+        strip.style.display = 'none';
+      }
+   
+      /* put photo snaps into strip */
+      strip.insertBefore(link,strip.firstChild);
+      strip.style.width = stripItemW+20+'px';
+
+    }
+    console.groupEnd();
+  }
+
+  /**
+   * reset canvas to no image.
+   * @return {[type]} [description]
+   */
+  function clearCanvas() {
+    console.group('START clearCanvas');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    toggleButton(btnClearCam,'off');
+    // btnClearCam.disabled = true;
+    // btnClearCam.classList.add('disabled');
+    console.groupEnd();
+  }
+
+  /**
+   * reset photo strip to empty HTML element.
+   * @return {[type]} [description]
+   */
+  function clearStrip() {
+    console.group('START clearStrip');
+    strip.innerHTML = ``;
+    stripLen = 0;
+    strip.style.display = 'none';
+    toggleButton(btnClearStrip,'off');
+    // btnClearStrip.disabled = true;
+    // btnClearStrip.classList.add('disabled');
+    document.querySelector('.ctrl_strip legend').innerHTML = 'snapshots';
+    console.groupEnd();
+  }
+
+  /**
+   * switch between front- and back-facing cameras (mobile devices only).
+   * @return {[type]} [description]
+   */
+  function flipCamera() {
+    console.group('START flipCamera');
+    front = !front;
+    console.groupEnd();
+  }
+
+  /**
+   * start/restart the video and audio media input recording.
+   * @param  {[type]} effect [description]
+   * @return {[type]}        [description]
+   */
+  function startStream() {
+    console.group('START startStream');
+    clearInterval(videoInterval);
+    accessMedia('start');
+    console.groupEnd();
+  }
+
+  /**
+   * stop the video and audio media input recording.
+   * TODO: revoke access to video and audio media inputs.
+   * @return {[type]} [description]
+   */
+  function stopStream() {
+    console.group('CAMERA OFF');
+    clearInterval(videoInterval);
+    accessMedia('stop');
+    console.groupEnd();
+  }
+
+  /**
+   * EVENT LISTENERS
+   */
+
+  btnOn.addEventListener('click',startStream);
+  btnOff.addEventListener('click',stopStream);
+  btnSnap.addEventListener('click',snapPhoto);
+  btnClearCam.addEventListener('click',clearCanvas);
+  btnClearStrip.addEventListener('click',clearStrip);
+
+  /* when web cam starts, send pixels to canvas */
+  video.addEventListener('canplay',(e)=>{
+    console.log('playing media');
+    pixelsToCanvas();
   });
-  console.groupEnd();
-}
 
-/**
- * copy video pixels and put them in the canvas.
- * @return {[type]} [description]
- */
-function pixelsToCanvas() {
-  console.group('START pixelsToCanvas');
-  // console.log(video);
+  /* listen to change on master F/X select/option */
+  selectFx.addEventListener('change',(e)=>{
+    console.log('selectFx: ',e.target.value);
+    toggleControls();
+  });
 
-  const vWidth = video.videoWidth;
-  const vHeight = video.videoHeight;
-  // console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
+  /* listen to change on video channel split F/X select/option */
+  selectSplit.addEventListener('change',(e)=>{
+    console.log('selectSplit: ',e.target.value);
+    startStream();
+  });
 
-  const ratio = vWidth/vHeight;
-  // console.log('ratio: ', ratio);
+  /* listen to change on video channel colorize F/X select/option */
+  selectColorize.addEventListener('change',(e)=>{
+    console.log('selectColorize: ',e.target.value);
+    startStream();
+  });
 
-  const wWidth = window.innerWidth;
-  const wHeight = window.innerHeight;
-  // console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
-
-  /* set canvas to W&H of window */
-  // canvas.width = wWidth;
-  // canvas.height = wHeight;
-
-  /* center the canvas */
-  // positionX = (wWidth - vWidth)/2;
-  // positionY = (wHeight - vHeight)/2;
-
-  // if (vWidth < wWidth && vHeight > wHeight) {
-  //   console.log('video taller than window');
-  //   // stretch video vertically...
-  //   canvas.width = vWidth;
-  //   canvas.height = wHeight;
-  // } else if (vWidth > wWidth && vHeight < wHeight) {
-  //   console.log('video wider than window');
-  //   // stretch video horizontally...
-  //   canvas.width = wWidth;
-  //   canvas.height = vHeight;
-  // } else {
-  //   console.log('video ??? than window');
-    canvas.width = vWidth;
-    canvas.height = vHeight;
-  // }
-
-  let randoms = []; // random numbers
-  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-  randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
-  // console.log('randoms: ', randoms);
-  for (var i = 0; i < randoms.length; i++) {
-    randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-  }
-  console.log('randoms: ', randoms);
-
-  let intsSplit = [];
-  if (selectSplit.value === 'stereo') {
-    // expression
-    intsSplit = [-144, -238, -235]; // stereo split
-    // [247, -116, -26]
-    // [-144, -238, -235]
-    // [202, -202, -215]
-    // [-141, 148, -96]
-  } else if (selectSplit.value === 'rgb') {
-    intsSplit = [-100, 198, -92]; // rgb split
-    // [-115, -258, 25]
-  } else {
-    intsSplit = randoms;
-  }
-  // console.log('intsSplit: ', intsSplit);
-  let intsColorize = [];
-  if (selectColorize.value === 'red') {
-    intsColorize = [150, -50, -50];
-  } else if (selectColorize.value === 'green') {
-    intsColorize = [-50, 150, -50];
-  } else if (selectColorize.value === 'blue') {
-    intsColorize = [-50, -50, 150];
-  } else {
-    intsColorize = randoms;
-  }
-  // console.log('intsColorize: ', intsColorize);
-
-  // console.log('selectFx.value: ',selectFx.value);
-  const effect = selectFx.value | '';
-  console.log('effect: ', effect);
-  /* enable F/X controls */
-  if (effect === 'chroma') {
-    console.log('toggle chroma controls');
-    // get initial value for effect
-  } else if (effect === 'split') {
-    console.log('toggle split controls');
-    // get initial value for effect
-    console.log('selectSplit: ', selectSplit.value);
-  } else if (effect === 'colorize') {
-    console.log('toggle colorize controls');
-    // get initial value for effect
-    console.log('selectColorize: ', selectColorize.value);
-  } else {
-    console.log('no effect chosen yet');
-  }
-  // console.log(canvas.width,canvas.height);
-
-/**
- * manipulate pixels with video effect.
- * @param  {[type]} fx [description]
- * @return {[type]}    [description]
- */
-  function videoFX (fx) {
-    // console.log('fx: ', fx);
-    ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
-    let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
-
-    /* manipulate pixels */
-    switch(fx) {
-      case 'chroma':
-        pixels = fFxChromaKey(pixels);
-        break;
-      case 'split':
-        pixels = fFxSplit(pixels,intsSplit);
-        break;
-      case 'colorize':
-        pixels = fFxColorize(pixels,intsColorize);
-        break;
-    }
-
-    /* control ghosting effect */
-    // ctx.globalAlpha = 0.5;
-    ctx.globalAlpha = 1;
-
-    /* put pixels back */
-    ctx.putImageData(pixels,positionX,positionY);
-
-    // console.log('pixels: ', pixels);
-    // debugger;
-
-  }
-
-  videoInterval = setInterval(()=>{
-    videoFX(selectFx.value);
-  }, 100);
-  console.groupEnd();
-
-  return videoInterval;
-}
-
-/**
- * copy canvas data (photo with video manipulations) to a 
- * photo strip.
- * @return {[type]} [description]
- */
-function snapPhoto() {
-  console.group('START snapPhoto');
-  if (video.src !== '') {
-    /* make snap sound */
-    snapSound.currentTime = 0;
-    snapSound.play();
-
-    /* take photo data from canvas */
-    const data = canvas.toDataURL('image/jpeg');
-    const link = document.createElement('a');
-    link.href = data;
-    link.setAttribute('download','picture.jpg');
-    link.innerHTML = `<img src="${data}" alt="download picture" />`;
-    link.style.width = stripItemW+'px';
-    // console.log('link',link);
-
-    /* set a max limit on number of photo snaps */
-    stripLen++;
-    if (snapLimit.checked && stripLen > stripMax) {
-      console.log('YES LIMIT');
-      stripLen = stripMax;
-      strip.removeChild(strip.lastChild);
-    }
-    // console.log('stripLen: ', stripLen);
-
-    if (stripLen > 0) {
-      strip.style.display = 'flex';
-      document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
-      toggleButton(btnClearStrip,'on');
-      // btnClearStrip.disabled = false;
-      // btnClearStrip.classList.remove('disabled');
-    } else {
-      strip.style.display = 'none';
-    }
- 
-    /* put photo snaps into strip */
-    strip.insertBefore(link,strip.firstChild);
-    strip.style.width = stripItemW+20+'px';
-
-  }
-  console.groupEnd();
-}
-
-/**
- * reset canvas to no image.
- * @return {[type]} [description]
- */
-function clearCanvas() {
-  console.group('START clearCanvas');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  toggleButton(btnClearCam,'off');
-  // btnClearCam.disabled = true;
-  // btnClearCam.classList.add('disabled');
-  console.groupEnd();
-}
-
-/**
- * reset photo strip to empty HTML element.
- * @return {[type]} [description]
- */
-function clearStrip() {
-  console.group('START clearStrip');
-  strip.innerHTML = ``;
-  stripLen = 0;
-  strip.style.display = 'none';
-  toggleButton(btnClearStrip,'off');
-  // btnClearStrip.disabled = true;
-  // btnClearStrip.classList.add('disabled');
-  document.querySelector('.ctrl_strip legend').innerHTML = 'snapshots';
-  console.groupEnd();
-}
-
-/**
- * switch between front- and back-facing cameras (mobile devices only).
- * @return {[type]} [description]
- */
-function flipCamera() {
-  console.group('START flipCamera');
-  front = !front;
-  console.groupEnd();
-}
-
-/**
- * start/restart the video and audio media input recording.
- * @param  {[type]} effect [description]
- * @return {[type]}        [description]
- */
-function startStream() {
-  console.group('START startStream');
-  clearInterval(videoInterval);
-  accessMedia('start');
-  console.groupEnd();
-}
-
-/**
- * stop the video and audio media input recording.
- * TODO: revoke access to video and audio media inputs.
- * @return {[type]} [description]
- */
-function stopStream() {
-  console.group('CAMERA OFF');
-  clearInterval(videoInterval);
-  accessMedia('stop');
-  console.groupEnd();
-}
-
-/**
- * EVENT LISTENERS
- */
-
-btnOn.addEventListener('click',startStream);
-btnOff.addEventListener('click',stopStream);
-btnSnap.addEventListener('click',snapPhoto);
-btnClearCam.addEventListener('click',clearCanvas);
-btnClearStrip.addEventListener('click',clearStrip);
-
-/* when web cam starts, send pixels to canvas */
-video.addEventListener('canplay',(e)=>{
-  console.log('playing media');
-  pixelsToCanvas();
-});
-
-/* listen to change on master F/X select/option */
-selectFx.addEventListener('change',(e)=>{
-  console.log('selectFx: ',e.target.value);
-  toggleControls(e.target.value);
-});
-
-/* listen to change on video channel split F/X select/option */
-selectSplit.addEventListener('change',(e)=>{
-  console.log('selectSplit: ',e.target.value);
-  startStream();
-});
-
-btnApplySplit.addEventListener('click',(e)=>{
-  console.log(e.target);
-  startStream();
-});
-
-/* listen to change on video channel colorize F/X select/option */
-selectColorize.addEventListener('change',(e)=>{
-  console.log('selectColorize: ',e.target.value);
-  startStream();
-});
-
-btnApplyColorize.addEventListener('click',(e)=>{
-  console.log(e.target);
-  startStream();
-});
+  btnsApply.forEach(btn => {
+    btn.addEventListener('click',(e)=>{
+      console.log(e.target);
+      startStream();
+    })
+  });
 
 } else {
   console.error('web API navigator.mediaDevices NOT supported!');

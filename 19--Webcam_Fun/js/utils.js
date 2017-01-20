@@ -2,42 +2,28 @@
 console.log('utils.js READY!');
 
 // toggle button enable/disable
-function toggleButton(btn,state) {
+function toggleButton(el,state) {
   if (state) {
     switch(state) {
       case 'off':
-        btn.disabled = true;
-        btn.classList.add('disabled');
+        el.classList.add('disabled');
+        el.disabled = true;
         break;
       case 'on':
-        btn.disabled = false;
-        btn.classList.remove('disabled');
+        el.classList.remove('disabled');
+        el.disabled = false;
         break;
     }
   } else {
-    btn.disabled = !btn.disabled;
-    btn.classList.toggle('disabled');
+    el.disabled = !el.disabled;
+    el.classList.toggle('disabled');
   }
 }
 
-// toggle display
-function toggleDisplay(el,state) {
-  // console.log('el: ', el);
-  // console.log('el: ', el.length);
-  if (el.length > 1) {
-    for (var i = 0; i < el.length; i++) {
-      el[i].classList.toggle('hide');
-    }
-  } else {
-    el.classList.toggle('hide');
-  }
-}
-
-// toggle display
+// hide element by adding "hide" class
 function hide(el) {
-  console.log('before el: ', el);
   // el = Array.from(el);
-  console.log('after el: ', el);
+  // console.log('el: ', el);
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.add('hide');
@@ -47,11 +33,10 @@ function hide(el) {
   }
 }
 
-// toggle display
+// show element by removing "hide" class
 function show(el) {
-  console.log('before el: ', el);
   // el = Array.from(el);
-  console.log('after el: ', el);
+  // console.log('el: ', el);
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.remove('hide');

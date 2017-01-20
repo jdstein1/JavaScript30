@@ -17,10 +17,12 @@
     * [X] Style the alerts
     * [X] Style the inputs
     * [X] Style the labels
-    * [] Make a cool skin/theme
-        * [awwwards.com](http://www.awwwards.com/30-recent-inspirational-ui-examples-in-mobile-device-screens.html)
-        * [webdesign-inspiration.com](http://www.webdesign-inspiration.com/)
+    * [] Make a cool skin/theme:
+        * [bootstrap](https://getbootstrap.com/)
         * [material design](https://material.io/guidelines/)
+        * [awwwards](http://www.awwwards.com/)
+            * [30 Recent Inspirational UI Examples in Mobile Device Screens](http://www.awwwards.com/30-recent-inspirational-ui-examples-in-mobile-device-screens.html)
+        * [webdesign inspiration](http://www.webdesign-inspiration.com/)
 * Effects
     * Chroma Key
         * [] Redo inputs w a single HTML5 color input
