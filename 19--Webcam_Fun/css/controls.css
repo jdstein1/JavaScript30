@@ -45,9 +45,21 @@
   box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5);
 }
 
-.ctrl_fx table label {width:100%;text-align:right;}
-.ctrl_fx table label span {max-width:6rem; width:40%; min-width:3rem; display:inline-block;}
-.ctrl_fx table input, .ctrl_fx table select {width:60%;min-width:4rem;text-align:left;display:inline-block;}
+.ctrl_fx table label {
+  width:100%;text-align:right;
+}
+.ctrl_fx table label span {
+  max-width:6rem;
+  width:40%;
+  min-width:3rem;
+  display:inline-block;
+}
+.ctrl_fx table input, .ctrl_fx table select {
+  width:60%;
+  min-width:4rem;
+  text-align:left;
+  display:inline-block;
+}
 #table-chroma input {
   /* background-color:red; */
   color:white !important;

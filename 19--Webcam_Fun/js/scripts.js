@@ -11,8 +11,6 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
-const allSelects = document.querySelectorAll('select');
-
 const alertMsgs = document.querySelectorAll('.alert');
 const alertMsgCam = document.querySelector('#msg_cam');
 const alertMsgFx = document.querySelector('#msg_fx');
@@ -20,23 +18,30 @@ const alertMsgErr = document.querySelector('#msg_err');
 // const alertFx = ctrlFx.querySelector('.alert');
 
 /* F/X controls */
-/* main select/option for F/X */
+/* select/option for main F/X control */
 const selectFx = document.querySelector('#fx');
+/* select/option for deeper F/X controls */
+const selectsFx = document.querySelectorAll('.select_fx');
+
 /* array of tables of control interfaces */
 const ctrlFx = document.querySelector('.ctrl_fx');
 const ctrlTables = ctrlFx.querySelectorAll('table');
+
 /* video channel colorize controls */
 const ctrlColorize = document.querySelector('#table-colorize');
 const selectColorize = document.querySelector('#colorize');
-const btnsApply = document.querySelectorAll('.btn_apply');
+
 /* video channel split controls */
 const ctrlSplit = document.querySelector('#table-split');
 const selectSplit = document.querySelector('#split');
+
 /* video croma key controls */
 const ctrlChroma = document.querySelector('#table-chroma');
 const inputsChroma = document.querySelectorAll('#table-chroma input')
 
 /* buttons */
+const btnsApply = document.querySelectorAll('.btn_apply');
+// const btnsClear = document.querySelectorAll('.btn_clear');
 const btnOn = document.querySelector('.ctrl_camera .btn_on');
 const btnOff = document.querySelector('.ctrl_camera .btn_off');
 const btnClearCam = document.querySelector('.ctrl_camera .btn_clear');
@@ -82,29 +87,10 @@ function toggleControls () {
   hide(ctrlTables);
   hide(alertMsgs);
   show(alertMsgCam);
-  // console.log('...hide all alerts...');
-  // hide(alertMsgs);
-  // for (var i = 0; i < alertMsgs.length; i++) {
-  //   alertMsgs[i].style.display = 'none';
-  // }
   if (selectFx.selectedIndex>0) {
     console.log('...then show __'+selectFx.selectedIndex+'__ controls!');
     hide(alertMsgs);
-    /* manipulate pixels */
     show(ctrlTables[selectFx.selectedIndex-1]);
-    // switch(selectFx.selectedIndex) {
-    //   case 'chroma':
-    //     show(ctrlChroma);
-    //     break;
-    //   case 'split':
-    //     show(ctrlSplit);
-    //     break;
-    //   case 'colorize':
-    //     show(ctrlColorize);
-    //     break;
-    //   default:
-    //     break;
-    // }
   } else {
     console.log('...then done!');
   }
@@ -167,10 +153,6 @@ if (navigator.mediaDevices) {
         if (selectFx.selectedIndex === 0) {
           show(alertMsgCam);
         }
-
-        // for (var i = 0; i < allSelects.length; i++) {
-        //   allSelects[i].selectedIndex = 0;
-        // }
 
         // selectFx.selectedIndex = 0;
         // hide(selectFx);
@@ -464,27 +446,24 @@ if (navigator.mediaDevices) {
     pixelsToCanvas();
   });
 
-  /* listen to change on master F/X select/option */
+  /* listen for change on master F/X select/option */
   selectFx.addEventListener('change',(e)=>{
     console.log('selectFx: ',e.target.value);
     toggleControls();
   });
 
-  /* listen to change on video channel split F/X select/option */
-  selectSplit.addEventListener('change',(e)=>{
-    console.log('selectSplit: ',e.target.value);
-    startStream();
+  /* listen for change on deeper F/X select/option */
+  selectsFx.forEach(btn => {
+    btn.addEventListener('change',(e)=>{
+      console.log('selectsFx: ',e.target);
+      startStream();
+    })
   });
 
-  /* listen to change on video channel colorize F/X select/option */
-  selectColorize.addEventListener('change',(e)=>{
-    console.log('selectColorize: ',e.target.value);
-    startStream();
-  });
-
+  /* listen for click on all "apply" buttons */
   btnsApply.forEach(btn => {
     btn.addEventListener('click',(e)=>{
-      console.log(e.target);
+      console.log('btnsApply: ',e.target);
       startStream();
     })
   });

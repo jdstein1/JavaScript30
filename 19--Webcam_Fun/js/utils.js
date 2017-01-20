@@ -1,7 +1,7 @@
 /* utils.js */
 console.log('utils.js READY!');
 
-// toggle button enable/disable
+/* toggle button enable/disable */
 function toggleButton(el,state) {
   if (state) {
     switch(state) {
@@ -20,10 +20,8 @@ function toggleButton(el,state) {
   }
 }
 
-// hide element by adding "hide" class
+/* hide element by adding "hide" class */
 function hide(el) {
-  // el = Array.from(el);
-  // console.log('el: ', el);
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.add('hide');
@@ -33,10 +31,8 @@ function hide(el) {
   }
 }
 
-// show element by removing "hide" class
+/* show element by removing "hide" class */
 function show(el) {
-  // el = Array.from(el);
-  // console.log('el: ', el);
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.remove('hide');
@@ -45,4 +41,3 @@ function show(el) {
     el.classList.remove('hide');
   }
 }
-

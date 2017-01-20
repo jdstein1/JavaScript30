@@ -9,14 +9,7 @@
 ## TODO:
 
 * User Interactions
-    * [X] Enable/disable "clear" buttons
-    * [X] Enable/disable "snap" button
-    * [X] Hide alert message
 * Styling
-    * [X] Style the buttons (status)
-    * [X] Style the alerts
-    * [X] Style the inputs
-    * [X] Style the labels
     * [] Make a cool skin/theme:
         * [bootstrap](https://getbootstrap.com/)
         * [material design](https://material.io/guidelines/)
@@ -28,19 +21,14 @@
         * [] Redo inputs w a single HTML5 color input
         * [] Display the colors that the inputs represent
     * Colorize
-        * [X] Make RGB colorize effect work again
-        * ~~[] Build separate function for random~~
-        * [X] Pass array of numbers in from videoFX function to use single colorize function
+single colorize function
     * Split
-        * [X] Make color channel split function work
     * Pixelate
         * [] Make pixelate effect function work
 * Structure
-    * [X] Move CSS and JS to folders
 * Misc
-    * [X] Fix snapshot limit
-    * [X] Add background image (animated?  fractal?  tv static?) to show thru chroma key
-    * [X] Toggle buttons w utils.js function
+    * [X] Toggle buttons (enabled/disabled) w utils.js function
+    * [X] Toggle elements (show/hide) w utils.js function
     * [] Move other common stuff to utils.js
     * [] Set W&H dimensions of video picture in canvas so it is not distorted
         * [] Get native resolution
