@@ -27,7 +27,10 @@ h3,
 h4,
 h5,
 h6 {}
-/* code {background-color:#fff; color:#003; padding:0.25rem 0.5rem; margin:0 0.25rem; font-weight:900;} */
+/* code {background-color:white; color:#003; padding:0.25rem 0.5rem; margin:0 0.25rem; font-weight:900;} */
+
+code {font-size: 1.5em;}
+
 table {
   width:100%;
   /* border-collapse:separate; */
@@ -41,7 +44,8 @@ input,
 button,
 select,
 td {
-  font-size:0.9em;
+  font-size:0.9rem;
+  overflow: hidden;
   /* color:black; */
   /* width:auto; */
 }
@@ -90,6 +94,9 @@ select {
   /* width:auto; */
   /* display:inline-block; */
 }
+input,
+button,
+select {font-size: 1.2em;}
 button+button,
 button+input,
 input+button,
@@ -98,7 +105,8 @@ label+label,
 label+input,
 input+label,
 label+button,
-button+label {margin-top:0.25rem;}
+button+label,
+td > button {margin-top:0.25rem;}
 label {
   /* width:40%; */
   /* color:white; */
@@ -110,12 +118,35 @@ button {
   /* padding:0.5rem; */
   /* margin:0 0 0.25rem 0; */
 }
+
+input[type=text], 
+input[type=number], 
+input[type=date], 
+input[type=time], 
+input[type=datetime], 
+input[type=email], 
+input[type=password], 
+input[type=tel], 
+input[type=url], 
+input[type=color], 
+input[type=search] {margin:0 0.25rem 0 0.5rem;
+  border-color:
+  rgba(51,51,51,0.75) 
+  rgba(102,102,102,0.75) 
+  rgba(204,204,204,0.75)
+  rgba(153,153,153,0.75) 
+  ;
+  background-color: #eee;
+}
+
 input[type=checkbox],
 input[type=radio] {margin:0 0.25rem 0 0.5rem;}
 
 label input[type=range] {}
 label span+input[type=range] {float:none;display: block;}
 input[type=range] {min-width:255px;}
+
+label span, label span {padding: 0.5rem;}
 
 /* Z-INDICES FOR LAYERING */
 header {z-index:1;display:none;}

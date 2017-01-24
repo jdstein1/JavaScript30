@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/strip.css">
   <link rel="stylesheet" href="css/booth.css">
   <!-- <link rel="stylesheet" href="css/test.css"> -->
+  <link rel="stylesheet" href="css/mq.css">
 </head>
 <body>
 
@@ -89,18 +90,21 @@
             <td class="red min">
               <label for="rmin">
                 <span>min: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="rmin">
                 <input type="range" value=0 min=0 max=255 name="rmin">
               </label>
             </td>
             <td class="green min">
               <label for="gmin">
                 <span>min: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="gmin">
                 <input type="range" value=0 min=0 max=255 name="gmin">
               </label>
             </td>
             <td class="blue min">
               <label for="bmin">
                 <span>min: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="bmin">
                 <input type="range" value=0 min=0 max=255 name="bmin">
               </label>
             </td>
@@ -115,18 +119,21 @@
             <td class="red max">
               <label for="rmax">
                 <span>max: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="rmax">
                 <input type="range" value=0 min=0 max=255 name="rmax">
               </label>
             </td>
             <td class="green max">
               <label for="gmax">
                 <span>max: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="gmax">
                 <input type="range" value=0 min=0 max=255 name="gmax">
               </label>
             </td>
             <td class="blue max">
               <label for="bmax">
                 <span>max: <code>0</code></span>
+                <input type="number" value=0 min=0 max=255 name="bmax">
                 <input type="range" value=0 min=0 max=255 name="bmax">
               </label>
             </td>
@@ -137,11 +144,11 @@
               </label>
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td colspan="4">
               <button class="btn_clear disabled" disabled>Clear</button>
             </td>
-          </tr>
+          </tr> -->
           </tbody>
         </table>
       </fieldset>

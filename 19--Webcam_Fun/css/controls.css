@@ -63,7 +63,7 @@
 }
 #table-chroma input {
   /* background-color:red; */
-  color:white !important;
+  /* color:white !important; */
 }
 #table-chroma label:before {
   font-weight:900;
@@ -72,18 +72,20 @@
 #table-chroma .red input {
   /* background-color:#f00; */
 }
-#table-chroma .red label:before {
-  content:'R';/* color:#f00; */
+#table-chroma .red label span:before {
+  content:'R ';/* color:#f00; */
 }
 #table-chroma .green input {
   /* background-color:#0f0; */
 }
-#table-chroma .green label:before {
-  content:'G';/* color:#0f0; */
+#table-chroma .green label span:before {
+  content:'G ';/* color:#0f0; */
 }
 #table-chroma .blue input {
   /* background-color:#00f; */
 }
-#table-chroma .blue label:before {
-  content:'B';/* color:#00f; */
+#table-chroma .blue label span:before {
+  content:'B ';/* color:#00f; */
 }
+
+.max label span code, .min label span code {padding: 0.25em 0.5rem; color: white; line-height: 1; vertical-align: middle; border-radius: 1rem;}

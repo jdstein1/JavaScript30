@@ -11,7 +11,7 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
-const alertMsgs = document.querySelectorAll('.alert');
+const alertAllMsg = document.querySelectorAll('.alert');
 const alertMsgCam = document.querySelector('#msg_cam');
 const alertMsgFx = document.querySelector('#msg_fx');
 const alertMsgErr = document.querySelector('#msg_err');
@@ -21,11 +21,11 @@ const alertMsgErr = document.querySelector('#msg_err');
 /* select/option for main F/X control */
 const selectFx = document.querySelector('#fx');
 /* select/option for deeper F/X controls */
-const selectsFx = document.querySelectorAll('.select_fx');
+const selectAllFx = document.querySelectorAll('.select_fx');
 
 /* array of tables of control interfaces */
 const ctrlFx = document.querySelector('.ctrl_fx');
-const ctrlTables = ctrlFx.querySelectorAll('table');
+const ctrlAllTable = ctrlFx.querySelectorAll('table');
 
 /* video channel colorize controls */
 const ctrlColorize = document.querySelector('#table-colorize');
@@ -37,15 +37,15 @@ const selectSplit = document.querySelector('#split');
 
 /* video croma key controls */
 const ctrlChroma = document.querySelector('#table-chroma');
-const inputsChroma = document.querySelectorAll('#table-chroma input[type=range]')
+const inputAllChroma = document.querySelectorAll('#table-chroma input[type=range]')
 const rgbMin = document.querySelector('.rgb.min label');
 // console.log(rgbMin);
 const rgbMax = document.querySelector('.rgb.max label');
 // console.log(rgbMax);
 
 /* buttons */
-const btnsApply = document.querySelectorAll('.btn_apply');
-const btnsClear = document.querySelectorAll('.btn_clear');
+const btnAllApply = document.querySelectorAll('.btn_apply');
+const btnAllClear = document.querySelectorAll('.btn_clear');
 const btnOn = document.querySelector('.ctrl_camera .btn_on');
 const btnOff = document.querySelector('.ctrl_camera .btn_off');
 const btnClearCam = document.querySelector('.ctrl_camera .btn_clear');
@@ -73,11 +73,23 @@ const constraints = {audio: false, video: true};
  */
 
 hide(video);
+// hide(selectFx);
+// selectFx.disabled = true;
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
+
+/**
+ * FUNCTIONS
+ */
+
+/**
+ * set background color of chroma range input labels.  also put value number 
+ * in the UI.
+ * @return {[type]} [description]
+ */
 function fChromaInputs () {
   console.log('START fChromaInputs');
   const levels = {};
-  inputsChroma.forEach((input) => {
+  inputAllChroma.forEach((input) => {
     levels[input.name] = input.value;
     const label = input.parentElement;
     label.querySelector("span").querySelector("code").innerHTML = input.value;
@@ -91,12 +103,9 @@ function fChromaInputs () {
     } else {
       bg = `rgb(0,0,${input.value})`;
     }
-    label.style.backgroundColor = bg;
-    if (input.value < 204) {
-      label.style.color = "white";
-    } else {
-      label.style.color = "white";
-    }
+    // label.querySelector("span").style.backgroundColor = bg;
+    label.querySelector("code").style.backgroundColor = bg;
+    // label.style.backgroundColor = bg;
     // e.target.parentElement.style.backgroundColor = `rgb(0,${e.target.value},0)`;
     // e.target.parentElement.innerHTML = `${e.target.value}`;
   });
@@ -107,32 +116,31 @@ function fChromaInputs () {
 fChromaInputs();
 
 /**
- * FUNCTIONS
- */
-
-// hide(selectFx);
-// selectFx.disabled = true;
-/**
  * [toggleControls description]
- * @param  {[type]} x [description]
  * @return {[type]}   [description]
  */
 function toggleControls () {
   console.group('START toggleControls');
   console.log('hide all controls...');
-  hide(ctrlTables);
-  hide(alertMsgs);
+  hide(ctrlAllTable);
+  hide(alertAllMsg);
   show(alertMsgCam);
   if (selectFx.selectedIndex>0) {
     console.log('...then show __'+selectFx.selectedIndex+'__ controls!');
-    hide(alertMsgs);
-    show(ctrlTables[selectFx.selectedIndex-1]);
+    hide(alertAllMsg);
+    show(ctrlAllTable[selectFx.selectedIndex-1]);
   } else {
     console.log('...then done!');
   }
   console.groupEnd();
 }
 toggleControls();
+
+/**
+ * WRAP THE REST OF THE APP IN A CONDITIONAL THAT CHECKS FOR NECESSARY WEB API.
+ * ONLY BROWSERS THAT CAN USE THE "navigator.mediaDevices" API CAN DO THE 
+ * WEB CAM.
+ */
 
 // not every browser can access navigator.mediaDevices API...
 if (navigator.mediaDevices) {
@@ -156,7 +164,7 @@ if (navigator.mediaDevices) {
   function accessMedia(mode) {
     console.group('START accessMedia');
     console.log('mode: ', mode);
-    hide(alertMsgs);
+    hide(alertAllMsg);
     navigator.mediaDevices.getUserMedia(constraints)
     .then((mediaStream) => {
       // console.log('mediaStream: ', mediaStream);
@@ -206,7 +214,7 @@ if (navigator.mediaDevices) {
     })
     .catch((err) => {
       console.error('err: ', err.name);
-      alertMsgs[2].style.display = 'block';
+      alertAllMsg[2].style.display = 'block';
       // console.log(err.name + ": " + err.message); // always check for errors at the end.
     });
     console.groupEnd();
@@ -489,28 +497,33 @@ if (navigator.mediaDevices) {
   });
 
   /* listen for change on deeper F/X select/option */
-  selectsFx.forEach(btn => {
+  selectAllFx.forEach(btn => {
     btn.addEventListener('change',(e)=>{
-      console.log('selectsFx: ',e.target);
+      console.log('selectAllFx: ',e.target);
       startStream();
     })
   });
 
-  inputsChroma.forEach(input => {
+  inputAllChroma.forEach(input => {
     input.addEventListener('change',(e)=>{
       fChromaInputs();
     })
   });
 
   /* listen for click on all "apply" buttons */
-  btnsApply.forEach(btn => {
+  btnAllApply.forEach(btn => {
     btn.addEventListener('click',(e)=>{
-      console.log('btnsApply: ',e.target);
+      console.log('btnAllApply: ',e.target);
       startStream();
     })
   });
 
 } else {
   console.error('web API navigator.mediaDevices NOT supported!');
-  alertMsgs[2].style.display = 'block';
+  alertAllMsg[2].style.display = 'block';
 }
+
+/* fake UI clicks to open controls */
+startStream();
+selectFx.selectedIndex = 3;
+toggleControls();
