@@ -37,7 +37,11 @@ const selectSplit = document.querySelector('#split');
 
 /* video croma key controls */
 const ctrlChroma = document.querySelector('#table-chroma');
-const inputsChroma = document.querySelectorAll('#table-chroma input')
+const inputsChroma = document.querySelectorAll('#table-chroma input[type=range]')
+const rgbMin = document.querySelector('.rgb.min label');
+// console.log(rgbMin);
+const rgbMax = document.querySelector('.rgb.max label');
+// console.log(rgbMax);
 
 /* buttons */
 const btnsApply = document.querySelectorAll('.btn_apply');
@@ -72,27 +76,33 @@ hide(video);
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 function fChromaInputs () {
   console.log('START fChromaInputs');
-  inputsChroma.forEach(range => {
-    const label = range.parentElement;
+  const levels = {};
+  inputsChroma.forEach((input) => {
+    levels[input.name] = input.value;
+    const label = input.parentElement;
+    label.querySelector("span").querySelector("code").innerHTML = input.value;
     const cell = label.parentElement;
     let bg;
-    console.log(cell.classList[0]+' '+cell.classList[1]+': '+range.value);
+    // console.log(cell.classList[0]+' '+cell.classList[1]+': '+input.value);
     if (cell.classList.contains("red")) {
-      bg = `rgb(${range.value},0,0)`;
+      bg = `rgb(${input.value},0,0)`;
     } else if (cell.classList.contains("green")) {
-      bg = `rgb(0,${range.value},0)`;
+      bg = `rgb(0,${input.value},0)`;
     } else {
-      bg = `rgb(0,0,${range.value})`;
+      bg = `rgb(0,0,${input.value})`;
     }
     label.style.backgroundColor = bg;
-    if (range.value < 200) {
+    if (input.value < 204) {
       label.style.color = "white";
     } else {
-      label.style.color = "black";
+      label.style.color = "white";
     }
     // e.target.parentElement.style.backgroundColor = `rgb(0,${e.target.value},0)`;
     // e.target.parentElement.innerHTML = `${e.target.value}`;
   });
+  // console.log('levels: ', levels);
+  rgbMin.style.backgroundColor = `rgb(${levels["rmin"]},${levels["gmin"]},${levels["bmin"]})`;
+  rgbMax.style.backgroundColor = `rgb(${levels["rmax"]},${levels["gmax"]},${levels["bmax"]})`;
 }
 fChromaInputs();
 
@@ -486,8 +496,8 @@ if (navigator.mediaDevices) {
     })
   });
 
-  inputsChroma.forEach(range => {
-    range.addEventListener('change',(e)=>{
+  inputsChroma.forEach(input => {
+    input.addEventListener('change',(e)=>{
       fChromaInputs();
     })
   });

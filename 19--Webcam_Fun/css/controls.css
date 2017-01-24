@@ -72,18 +72,18 @@
 #table-chroma .red input {
   /* background-color:#f00; */
 }
-#table-chroma .red:before {
-  /* content:'R'; *//* color:#f00; */
+#table-chroma .red label:before {
+  content:'R';/* color:#f00; */
 }
 #table-chroma .green input {
   /* background-color:#0f0; */
 }
-#table-chroma .green:before {
-  /* content:'G'; *//* color:#0f0; */
+#table-chroma .green label:before {
+  content:'G';/* color:#0f0; */
 }
 #table-chroma .blue input {
   /* background-color:#00f; */
 }
-#table-chroma .blue:before {
-  /* content:'B'; *//* color:#00f; */
+#table-chroma .blue label:before {
+  content:'B';/* color:#00f; */
 }
