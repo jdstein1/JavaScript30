@@ -41,11 +41,12 @@ const inputsChroma = document.querySelectorAll('#table-chroma input')
 
 /* buttons */
 const btnsApply = document.querySelectorAll('.btn_apply');
-// const btnsClear = document.querySelectorAll('.btn_clear');
+const btnsClear = document.querySelectorAll('.btn_clear');
 const btnOn = document.querySelector('.ctrl_camera .btn_on');
 const btnOff = document.querySelector('.ctrl_camera .btn_off');
 const btnClearCam = document.querySelector('.ctrl_camera .btn_clear');
 const btnClearStrip = document.querySelector('.ctrl_strip .btn_clear');
+const btnClearChroma = document.querySelector('#table-chroma .btn_clear');
 const btnSnap = document.querySelector('.ctrl_strip .btn_snap');
 
 /**
@@ -69,6 +70,31 @@ const constraints = {audio: false, video: true};
 
 hide(video);
 document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
+function fChromaInputs () {
+  console.log('START fChromaInputs');
+  inputsChroma.forEach(range => {
+    const label = range.parentElement;
+    const cell = label.parentElement;
+    let bg;
+    console.log(cell.classList[0]+' '+cell.classList[1]+': '+range.value);
+    if (cell.classList.contains("red")) {
+      bg = `rgb(${range.value},0,0)`;
+    } else if (cell.classList.contains("green")) {
+      bg = `rgb(0,${range.value},0)`;
+    } else {
+      bg = `rgb(0,0,${range.value})`;
+    }
+    label.style.backgroundColor = bg;
+    if (range.value < 200) {
+      label.style.color = "white";
+    } else {
+      label.style.color = "black";
+    }
+    // e.target.parentElement.style.backgroundColor = `rgb(0,${e.target.value},0)`;
+    // e.target.parentElement.innerHTML = `${e.target.value}`;
+  });
+}
+fChromaInputs();
 
 /**
  * FUNCTIONS
@@ -460,6 +486,12 @@ if (navigator.mediaDevices) {
     })
   });
 
+  inputsChroma.forEach(range => {
+    range.addEventListener('change',(e)=>{
+      fChromaInputs();
+    })
+  });
+
   /* listen for click on all "apply" buttons */
   btnsApply.forEach(btn => {
     btn.addEventListener('click',(e)=>{
@@ -472,4 +504,3 @@ if (navigator.mediaDevices) {
   console.error('web API navigator.mediaDevices NOT supported!');
   alertMsgs[2].style.display = 'block';
 }
-

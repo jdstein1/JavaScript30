@@ -86,43 +86,54 @@
         <table id="table-chroma">
           <tbody>
           <tr>
-            <td class="ctrl_r">
+            <td class="red min">
               <label for="rmin">
                 <span>dark:</span>
                 <input type="range" value=0 min=0 max=255 name="rmin">
               </label>
             </td>
-            <td class="ctrl_g">
+            <td class="green min">
               <label for="gmin">
                 <span>dark:</span>
                 <input type="range" value=0 min=0 max=255 name="gmin">
               </label>
             </td>
-            <td class="ctrl_b">
+            <td class="blue min">
               <label for="bmin">
                 <span>dark:</span>
                 <input type="range" value=0 min=0 max=255 name="bmin">
               </label>
             </td>
+            <td class="rgb min">
+              <div id="">this is the min color</div>
+            </td>
           </tr>
           <tr>
-            <td class="ctrl_r">
+            <td class="red max">
               <label for="rmax">
                 <span>light:</span>
                 <input type="range" value=0 min=0 max=255 name="rmax">
               </label>
             </td>
-            <td class="ctrl_g">
+            <td class="green max">
               <label for="gmax">
                 <span>light:</span>
                 <input type="range" value=0 min=0 max=255 name="gmax">
               </label>
             </td>
-            <td class="ctrl_b">
+            <td class="blue max">
               <label for="bmax">
                 <span>light:</span>
                 <input type="range" value=0 min=0 max=255 name="bmax">
               </label>
+            </td>
+            <td class="rgb max">
+              <div id="">this is the max color</div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <button class="btn_clear disabled" disabled>Clear</button>
             </td>
           </tr>
           </tbody>

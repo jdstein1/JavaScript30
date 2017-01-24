@@ -8,7 +8,9 @@ console.log('fx.js READY!');
  */
 function fFxChromaKey(data) {
   // console.log('START fFxChromaKey');
+  // create empty array of min & max values
   const levels = {};
+  // push values to array of min & max values
   document.querySelectorAll('#table-chroma input').forEach((input) => {
     levels[input.name] = input.value;
   });

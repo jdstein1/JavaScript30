@@ -113,6 +113,10 @@ button {
 input[type=checkbox],
 input[type=radio] {margin:0 0.25rem 0 0.5rem;}
 
+label input[type=range] {}
+label span+input[type=range] {float:none;display: block;}
+input[type=range] {min-width:255px;}
+
 /* Z-INDICES FOR LAYERING */
 header {z-index:1;display:none;}
 main {z-index:2;}

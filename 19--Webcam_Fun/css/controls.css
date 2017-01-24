@@ -46,17 +46,18 @@
 }
 
 .ctrl_fx table label {
-  width:100%;text-align:right;
+  width:100%;
+  /* text-align:right; */
 }
 .ctrl_fx table label span {
-  max-width:6rem;
-  width:40%;
-  min-width:3rem;
-  display:inline-block;
+  /* max-width:6rem; */
+  /* width:40%; */
+  /* min-width:3rem; */
+  /* display:inline-block; */
 }
 .ctrl_fx table input, .ctrl_fx table select {
-  width:60%;
-  min-width:4rem;
+  /* width:60%; */
+  /* min-width:4rem; */
   text-align:left;
   display:inline-block;
 }
@@ -68,21 +69,21 @@
   font-weight:900;
   margin:0 0 0 0.5rem;
 }
-#table-chroma .ctrl_r input {
-  background-color:#f00;
+#table-chroma .red input {
+  /* background-color:#f00; */
 }
-#table-chroma .ctrl_r:before {
+#table-chroma .red:before {
   /* content:'R'; *//* color:#f00; */
 }
-#table-chroma .ctrl_g input {
-  background-color:#0f0;
+#table-chroma .green input {
+  /* background-color:#0f0; */
 }
-#table-chroma .ctrl_g:before {
+#table-chroma .green:before {
   /* content:'G'; *//* color:#0f0; */
 }
-#table-chroma .ctrl_b input {
-  background-color:#00f;
+#table-chroma .blue input {
+  /* background-color:#00f; */
 }
-#table-chroma .ctrl_b:before {
+#table-chroma .blue:before {
   /* content:'B'; *//* color:#00f; */
 }
