@@ -36,17 +36,18 @@
 .controls fieldset {
   color:black;
   border-color:transparent;
-  background:rgba(255,255,255,0.75);
+  background-color:rgba(0,0,0,0.5);
   box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
 }
 .controls legend {
-  /* color:rgb(51,51,51); */
-  background:rgb(255,255,255);
+  background-color:rgb(51,51,51);
+  color:rgb(255,255,255);
   box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5);
 }
 
 .ctrl_fx table label {
   width:100%;
+  background-color:rgb(204,204,204);
   /* text-align:right; */
 }
 .ctrl_fx table label span {
@@ -61,6 +62,7 @@
   text-align:left;
   display:inline-block;
 }
+#table-chroma input[type="number"] {display: none;}
 #table-chroma input {
   /* background-color:red; */
   /* color:white !important; */
