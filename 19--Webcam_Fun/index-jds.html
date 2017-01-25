@@ -86,61 +86,55 @@
         </table>
         <table id="table-chroma">
           <tbody>
-          <tr>
-            <td class="red min">
+          <tr class="min">
+            <td class="red">
               <label for="rmin">
                 <span>min: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="rmin">
                 <input type="range" value=0 min=0 max=255 name="rmin">
               </label>
             </td>
-            <td class="green min">
+            <td class="green">
               <label for="gmin">
                 <span>min: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="gmin">
                 <input type="range" value=0 min=0 max=255 name="gmin">
               </label>
             </td>
-            <td class="blue min">
+            <td class="blue">
               <label for="bmin">
                 <span>min: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="bmin">
                 <input type="range" value=0 min=0 max=255 name="bmin">
               </label>
             </td>
-            <td class="rgb min">
-              <label id="">
-                <span>min color</span>
-                <!-- <input type="color"> -->
+            <td class="rgb">
+              <label id="" for="rgbmin">
+                <span>min color:</span>
+                <input type="text" name="rgbmin">
               </label>
             </td>
           </tr>
-          <tr>
-            <td class="red max">
+          <tr class="max">
+            <td class="red">
               <label for="rmax">
                 <span>max: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="rmax">
                 <input type="range" value=0 min=0 max=255 name="rmax">
               </label>
             </td>
-            <td class="green max">
+            <td class="green">
               <label for="gmax">
                 <span>max: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="gmax">
                 <input type="range" value=0 min=0 max=255 name="gmax">
               </label>
             </td>
-            <td class="blue max">
+            <td class="blue">
               <label for="bmax">
                 <span>max: <code>0</code></span>
-                <input type="number" value=0 min=0 max=255 name="bmax">
                 <input type="range" value=0 min=0 max=255 name="bmax">
               </label>
             </td>
-            <td class="rgb max">
-              <label id="">
-                <span>max color</span>
-                <!-- <input type="color"> -->
+            <td class="rgb">
+              <label id="" for="rgbmax">
+                <span>max color:</span>
+                <input type="text" name="rgbmax">
               </label>
             </td>
           </tr>
@@ -156,7 +150,7 @@
         <legend>snapshots</legend>
         <label class="" for="limit">
           <input type="checkbox" id="limit" class="" checked>
-          <span>Limit?</span>
+          <span class="label">Limit?</span>
         </label>
         <button class="btn_snap status info disabled" disabled>Snap</button>
         <button class="btn_clear disabled" disabled>Clear</button>

@@ -37,10 +37,11 @@ const selectSplit = document.querySelector('#split');
 
 /* video croma key controls */
 const ctrlChroma = document.querySelector('#table-chroma');
-const inputAllChroma = document.querySelectorAll('#table-chroma input[type=range]')
-const rgbMin = document.querySelector('.rgb.min label');
+const inputAllChroma = document.querySelectorAll('#table-chroma input');
+console.log('inputAllChroma: ', inputAllChroma);
+const rgbMin = document.querySelector('.min .rgb');
 // console.log(rgbMin);
-const rgbMax = document.querySelector('.rgb.max label');
+const rgbMax = document.querySelector('.max .rgb');
 // console.log(rgbMax);
 
 /* buttons */
@@ -63,7 +64,6 @@ let positionX = 0;
 let positionY = 0;
 let stripLen = 0;
 let videoInterval;
-
 const stripMax = 5;
 const stripItemW = 140;
 const constraints = {audio: false, video: true};
@@ -90,28 +90,33 @@ function fChromaInputs () {
   console.log('START fChromaInputs');
   const levels = {};
   inputAllChroma.forEach((input) => {
-    levels[input.name] = input.value;
-    const label = input.parentElement;
-    label.querySelector("span").querySelector("code").innerHTML = input.value;
-    const cell = label.parentElement;
-    let bg;
-    // console.log(cell.classList[0]+' '+cell.classList[1]+': '+input.value);
-    if (cell.classList.contains("red")) {
-      bg = `rgb(${input.value},0,0)`;
-    } else if (cell.classList.contains("green")) {
-      bg = `rgb(0,${input.value},0)`;
-    } else {
-      bg = `rgb(0,0,${input.value})`;
+    if (input.type === 'range'||input.type === 'number') {
+      levels[input.name] = input.value;
+      const label = input.parentElement;
+      label.querySelector("span").querySelector("code").innerHTML = input.value;
+      const cell = label.parentElement;
+      let bg;
+      // console.log(cell.classList[0]+' '+cell.classList[1]+': '+input.value);
+      if (cell.classList.contains("red")) {
+        bg = `rgb(${input.value},0,0)`;
+      } else if (cell.classList.contains("green")) {
+        bg = `rgb(0,${input.value},0)`;
+      } else {
+        bg = `rgb(0,0,${input.value})`;
+      }
+      // label.querySelector("span").style.backgroundColor = bg;
+      label.querySelector("code").style.backgroundColor = bg;
+      label.querySelector("input").style.backgroundColor = bg;
+      // console.log('test: ',label.querySelector("input[type='number']"));
+      // label.querySelector("input[type='number']").style.backgroundColor = bg;
+      // label.style.backgroundColor = bg;
+      // e.target.parentElement.style.backgroundColor = `rgb(0,${e.target.value},0)`;
+      // e.target.parentElement.innerHTML = `${e.target.value}`;
     }
-    // label.querySelector("span").style.backgroundColor = bg;
-    label.querySelector("code").style.backgroundColor = bg;
-    // label.style.backgroundColor = bg;
-    // e.target.parentElement.style.backgroundColor = `rgb(0,${e.target.value},0)`;
-    // e.target.parentElement.innerHTML = `${e.target.value}`;
   });
-  // console.log('levels: ', levels);
-  rgbMin.style.backgroundColor = `rgb(${levels["rmin"]},${levels["gmin"]},${levels["bmin"]})`;
-  rgbMax.style.backgroundColor = `rgb(${levels["rmax"]},${levels["gmax"]},${levels["bmax"]})`;
+  console.log('levels: ', levels);
+  rgbMin.querySelector("input").style.backgroundColor = `rgb(${levels["rmin"]},${levels["gmin"]},${levels["bmin"]})`;
+  rgbMax.querySelector("input").style.backgroundColor = `rgb(${levels["rmax"]},${levels["gmax"]},${levels["bmax"]})`;
 }
 fChromaInputs();
 
@@ -135,6 +140,33 @@ function toggleControls () {
   console.groupEnd();
 }
 toggleControls();
+
+/**
+ * JavaScript-based media queries.  Some are cosmetic CSS, some are more 
+ * functional differences.
+ * @return {[type]}          [description]
+ */
+function fMediaQueries () {
+  console.log('window resize: ',window.innerWidth);
+  // hide labels of mixed min/max color.
+  document.querySelectorAll(".rgb label span").forEach((label)=>{
+    label.style.display = window.innerWidth<800 ? 'none' : 'inline';
+  });
+  inputAllChroma.forEach((input)=>{
+    if (input.type === 'range'||input.type === 'number') {
+      // console.log('input.parentElement: ',input.parentElement);
+      // switch input type between 'number'/'range' based on window size.
+      input.type = window.innerWidth<800 ? 'number' : 'range';
+      // show/hide color swatch based on window size (to match input type).
+      input.parentElement.querySelector("span code").style.display = window.innerWidth<800 ? 'none' : 'inline';
+    }
+      // show/hide min rgb color label text based on window size.
+      // rgbMin.querySelector("span").style.display = window.innerWidth<800 ? 'none' : 'inline';
+      // show/hide max rgb color label text based on window size.
+      // rgbMax.querySelector("span").style.display = window.innerWidth<800 ? 'none' : 'inline';
+  });
+}
+fMediaQueries();
 
 /**
  * WRAP THE REST OF THE APP IN A CONDITIONAL THAT CHECKS FOR NECESSARY WEB API.
@@ -510,6 +542,12 @@ if (navigator.mediaDevices) {
     })
   });
 
+  inputAllChroma.forEach(input => {
+    input.addEventListener('mousemove',(e)=>{
+      fChromaInputs();
+    })
+  });
+
   /* listen for click on all "apply" buttons */
   btnAllApply.forEach(btn => {
     btn.addEventListener('click',(e)=>{
@@ -527,3 +565,5 @@ if (navigator.mediaDevices) {
 startStream();
 selectFx.selectedIndex = 3;
 toggleControls();
+
+window.addEventListener('resize', fMediaQueries);

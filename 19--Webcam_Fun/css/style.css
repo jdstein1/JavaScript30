@@ -14,8 +14,6 @@ body {
   font-size:1rem;
   color:black;
   background:white;
-  padding:0;
-  margin:0;
   overflow:hidden;
 }
 h1,
@@ -29,7 +27,7 @@ table {
   width:100%;
   border-collapse:separate;
   border-collapse:collapse;
-  border-width:3px;
+  border:none;
 }
 legend,
 label,
@@ -49,11 +47,11 @@ select,
 .alert, .alert.default {
   display:inline-block;
   line-height:1.25;
-  padding:0.25rem 0.5rem;
+  padding:0.25em 0.25rem;
   white-space:nowrap;
   border-radius:0.25rem;
 }
-td {margin:0 0.25rem 0.25rem 0;}
+td {/* margin:0 0.25rem 0.25rem 0; */}
 fieldset,
 label,
 input,
@@ -63,7 +61,7 @@ select,
   border:2px solid #ccc;
 }
 fieldset {
-  padding:0.5rem;
+  /* padding:0.5rem; */
   margin:0.125em;
 }
 legend {
@@ -75,8 +73,14 @@ label,
 input,
 button,
 select {
-  border-color:rgba(255,255,255,0.75) rgba(102,102,102,0.75) rgba(51,51,51,0.75) rgba(204,204,204,0.75);
+  border-color:
+    rgba(204,204,204,0.75) 
+    rgba(102,102,102,0.75) 
+    rgba(51,51,51,0.75) 
+    rgba(153,153,153,0.75)
+  ;
 }
+.label,
 input,
 button,
 select {font-size: 1.2em;}
@@ -94,7 +98,7 @@ label {
   /* width:40%; */
   /* color:white; */
   /* text-align:right; */
-  padding-left:0;
+  /* padding-left:0; */
 }
 button {
   width:100%;
@@ -113,10 +117,10 @@ input[type=url],
 input[type=color], 
 input[type=search] {margin:0 0.25rem 0 0.5rem;
   border-color:
-  rgba(51,51,51,0.75) 
-  rgba(102,102,102,0.75) 
-  rgba(204,204,204,0.75)
-  rgba(153,153,153,0.75) 
+    rgba(51,51,51,0.75) 
+    rgba(102,102,102,0.75) 
+    rgba(204,204,204,0.75)
+    rgba(153,153,153,0.75) 
   ;
   background-color: #eee;
 }
@@ -124,11 +128,11 @@ input[type=checkbox],
 input[type=radio] {margin:0 0.25rem 0 0.5rem;}
 label input[type=range] {}
 label span+input[type=range] {
-  float:none;
-  display:block;
+  /* float:none; */
+  /* display:block; */
 }
-input[type=range] {min-width:255px;}
 label span, label span {padding: 0.5rem;}
+td>label{height: 100%; width: 100%;}
 /* Z-INDICES FOR LAYERING */
 header {z-index:1;display:none;}
 main {z-index:2;}
@@ -136,7 +140,7 @@ main {z-index:2;}
 .strip {z-index:20;}
 .controls {z-index:30;}
 /* misc classes */
-.status, .status.default {background-color:#eee;}
+label, .status, .status.default {background-color:#eee;}
 .status.success {background-color:mediumseagreen;color:white;font-weight:900;}
 .status.error {background-color:crimson;color:white;font-weight:900;}
 .status.warn {background-color:coral;}
@@ -147,8 +151,7 @@ main {z-index:2;}
   background-color:#eee;
   text-align:center;
   vertical-align:middle;
-  width:100%; 
-  padding:0.25rem 0.5rem;
+  padding:0.25em 0.25rem;
   line-height:1.25;
   display:block;
 }
