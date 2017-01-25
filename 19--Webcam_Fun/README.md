@@ -1,5 +1,9 @@
 # 19. Web Cam Fun!
 
+## Information
+
+* repo: [https://github.com/jdstein1/JavaScript30.git](https://github.com/jdstein1/JavaScript30.git)
+
 ## About
 
 1. Access client video and audio media inputs and output to web page.
@@ -26,6 +30,8 @@
     <!-- * Split -->
     * Pixelate
         * [] Make pixelate effect function work
+    * Invert Picture
+        * [] Flip the picture along horizontal axis to act like a mirror.
 <!-- * Structure -->
 * Misc
     * [X] Toggle buttons (enabled/disabled) w utils.js function

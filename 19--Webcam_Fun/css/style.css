@@ -115,7 +115,8 @@ input[type=password],
 input[type=tel], 
 input[type=url], 
 input[type=color], 
-input[type=search] {margin:0 0.25rem 0 0.5rem;
+input[type=search] {
+  /* margin:0 0.25rem 0 0.5rem; */
   border-color:
     rgba(51,51,51,0.75) 
     rgba(102,102,102,0.75) 
@@ -126,13 +127,13 @@ input[type=search] {margin:0 0.25rem 0 0.5rem;
 }
 input[type=checkbox],
 input[type=radio] {margin:0 0.25rem 0 0.5rem;}
-label input[type=range] {}
+label input[type=range] {padding:0;}
 label span+input[type=range] {
   /* float:none; */
   /* display:block; */
 }
 label span, label span {padding: 0.5rem;}
-td>label{height: 100%; width: 100%;}
+td>label{min-height: 100%; width: 100%;}
 /* Z-INDICES FOR LAYERING */
 header {z-index:1;display:none;}
 main {z-index:2;}
