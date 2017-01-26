@@ -585,6 +585,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 4;
+selectFx.selectedIndex = 5;
 toggleFxControls();
 

@@ -31,7 +31,7 @@
     * Pixelate
         * [] Make pixelate effect function modify the resolution of the video.
     * Saturate
-        * [] Make saturate effect function modify saturation of the video.
+        * [X] Make saturate effect function modify saturation of the video.
     * Invert Picture
         * [] Flip the picture along horizontal axis to act like a mirror.
 <!-- * Structure -->
