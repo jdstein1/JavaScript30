@@ -1,5 +1,5 @@
 /* container for video controls */
-.controls {
+.ctrls {
   /* color:white; */
   position:absolute;
   top:auto;
@@ -18,11 +18,11 @@
   justify-content:space-between;
   align-items:start;
 }
-.controls > * {
+.ctrls > * {
   /* float:left; */
   /* display:inline-block; */
   /* text-align:center; */
-  flex:1;
+  flex:auto;
   /* flex-wrap:nowrap; */
   /* padding:0.5rem; */
   /* margin:0.5rem; */
@@ -32,14 +32,14 @@
   justify-content:center;
   align-items:center;
 }
-.controls .ctrl_fx {flex:4;}
-.controls fieldset {
+.ctrls .ctrl_fx {flex:4;}
+.ctrls fieldset {
   color:black;
   border-color:transparent;
   background-color:rgba(0,0,0,0.5);
   box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
 }
-.controls legend {
+.ctrls legend {
   background-color:rgb(51,51,51);
   color:rgb(255,255,255);
   box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5);
@@ -62,28 +62,28 @@
   text-align:left;
   display:inline-block;
 }
-#table-chroma input {margin-left:0;}
-/* #table-chroma input[type=number] {display: none;} */
-#table-chroma input[type=range] {display: block;}
-#table-chroma input[type=range] {
+#ctrl_fx_chroma input {margin-left:0;}
+/* #ctrl_fx_chroma input[type=number] {display: none;} */
+#ctrl_fx_chroma input[type=range] {display: block;}
+#ctrl_fx_chroma input[type=range] {
   min-width:255px;
   width:100%;
   /* margin-top:-0.5em; */
 }
-#table-chroma input[type=number] {max-width:4rem; color: white;}
-#table-chroma .rgb input[type=text] {max-width:3rem;}
-#table-chroma input {
+#ctrl_fx_chroma input[type=number] {max-width:4rem; color: white;}
+#ctrl_fx_chroma .rgb input[type=text] {max-width:3rem;}
+#ctrl_fx_chroma input {
   /* background-color:red; */
   /* color:white !important; */
 }
-#table-chroma label span:before {
+#ctrl_fx_chroma label span:before {
   font-weight:900;
   /* margin:0 0 0 0.5rem; */
 }
-#table-chroma .red label span:before {content:'R ';}
-#table-chroma .green label span:before {content:'G ';}
-#table-chroma .blue label span:before {content:'B ';}
-.max label span code, .min label span code {
+#ctrl_fx_chroma .red label span:before {content:'R ';}
+#ctrl_fx_chroma .green label span:before {content:'G ';}
+#ctrl_fx_chroma .blue label span:before {content:'B ';}
+.max label span .value, .min label span .value {
   padding:0.25em 0.5rem;
   color:white;
   line-height:1.4;

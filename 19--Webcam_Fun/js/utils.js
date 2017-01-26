@@ -3,6 +3,10 @@ console.log('utils.js READY!');
 
 /* toggle button enable/disable */
 function toggleButton(el,state) {
+  // console.dir(el);
+  if (el.nodeName === 'SELECT') {
+    el.selectedIndex = 0
+  }
   if (state) {
     switch(state) {
       case 'off':
@@ -21,7 +25,7 @@ function toggleButton(el,state) {
 }
 
 /* hide element by adding "hide" class */
-function hide(el) {
+function hide(el,exception) {
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.add('hide');
@@ -29,15 +33,21 @@ function hide(el) {
   } else {
     el.classList.add('hide');
   }
+  if (exception) {
+    exception.classList.remove('hide');
+  }
 }
 
 /* show element by removing "hide" class */
-function show(el) {
+function show(el,exception) {
   if (el.length > 1) {
     for (var i = 0; i < el.length; i++) {
       el[i].classList.remove('hide');
     }
   } else {
     el.classList.remove('hide');
+  }
+  if (exception) {
+    exception.classList.add('hide');
   }
 }

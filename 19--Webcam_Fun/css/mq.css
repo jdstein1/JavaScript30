@@ -1,29 +1,29 @@
 
 /* small mobile */
 @media screen and (max-width: 599px) {
-  #table-chroma input[type="number"] {display: block;}
-  #table-chroma input[type="range"] {display: none;}
-  #table-chroma tr {display: inline-block;}
-  #table-chroma td {display: block;}
+  #ctrl_fx_chroma input[type="number"] {display: block;}
+  #ctrl_fx_chroma input[type="range"] {display: none;}
+  #ctrl_fx_chroma tr {display: inline-block;}
+  #ctrl_fx_chroma td {display: block;}
 }
 
 @media screen and (min-width: 600px) and (max-width: 899px) {
-  #table-chroma input[type="number"] {display: inline-block;}
-  #table-chroma input[type="range"] {display: none;}
-  #table-chroma td code {display:none;}
-  #table-chroma .rgb span {display: none;}
+  #ctrl_fx_chroma input[type="number"] {display: inline-block;}
+  #ctrl_fx_chroma input[type="range"] {display: none;}
+  #ctrl_fx_chroma td .value {display:none;}
+  #ctrl_fx_chroma .rgb span {display: none;}
 }
 
 /* tablet & notebook */
 @media screen and (min-width: 900px) and (max-width: 1199px) {
-  #table-chroma input[type="number"] {display: none;}
-  #table-chroma input[type="range"] {display: block;}
-  #table-chroma tr {display: inline-block; width: 50%;}
-  #table-chroma td {display: block; width: 100%;}
+  #ctrl_fx_chroma input[type="number"] {display: none;}
+  #ctrl_fx_chroma input[type="range"] {display: block;}
+  #ctrl_fx_chroma tr {display: inline-block; width: 50%;}
+  #ctrl_fx_chroma td {display: block; width: 100%;}
 }
 
 /* laptop & desktop */
 @media screen and (min-width: 1200px) {
-  #table-chroma input[type="number"] {display: none;}
-  #table-chroma input[type="range"] {display: block;}
+  #ctrl_fx_chroma input[type="number"] {display: none;}
+  #ctrl_fx_chroma input[type="range"] {display: block;}
 }

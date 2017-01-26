@@ -22,7 +22,7 @@ h3,
 h4,
 h5,
 h6 {}
-code {font-size: 1.5em;}
+/* code {font-size: 1.5em;} */
 table {
   width:100%;
   border-collapse:separate;
@@ -47,7 +47,7 @@ select,
 .alert, .alert.default {
   display:inline-block;
   line-height:1.25;
-  padding:0.25em 0.25rem;
+  padding:0.45em 0.25rem;
   white-space:nowrap;
   border-radius:0.25rem;
 }
@@ -83,7 +83,7 @@ select {
 .label,
 input,
 button,
-select {font-size: 1.2em;}
+select {font-size:1.1rem;min-height:1.1rem;}
 button+button,
 button+input,
 input+button,
@@ -139,7 +139,7 @@ header {z-index:1;display:none;}
 main {z-index:2;}
 .photobooth {z-index:10;}
 .strip {z-index:20;}
-.controls {z-index:30;}
+.ctrls {z-index:30;}
 /* misc classes */
 label, .status, .status.default {background-color:#eee;}
 .status.success {background-color:mediumseagreen;color:white;font-weight:900;}
