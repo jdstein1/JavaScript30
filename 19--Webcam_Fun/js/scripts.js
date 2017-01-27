@@ -88,10 +88,10 @@ document.querySelector('#ctrl_strip label span').innerHTML = `Limit? (${stripMax
  * in the UI.
  * @return {[type]} [description]
  */
-function fChromaKeyInputs () {
+function fChromaKeyInputs (group) {
   console.group('START fChromaKeyInputs');
   const levels = {};
-  inputAllChromaKey.forEach((input) => {
+  group.forEach((input) => {
     if (input.type === 'range'||input.type === 'number') {
       levels[input.name] = input.value;
       const label = input.parentElement;
@@ -121,7 +121,7 @@ function fChromaKeyInputs () {
   rgbMax.querySelector("input").style.backgroundColor = `rgb(${levels["rmax"]},${levels["gmax"]},${levels["bmax"]})`;
   console.groupEnd();
 }
-fChromaKeyInputs();
+fChromaKeyInputs(inputAllChromaKey);
 
 /**
  * [toggleFxControls description]
@@ -372,6 +372,14 @@ if (navigator.mediaDevices) {
       // console.log('fx: ', fx);
       ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
       let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
+      // console.log(pixels);
+      let pixNums = pixels.data;
+      // console.log(pixNums);
+      pixNums = pixNums.reverse();
+      // console.log(pixNums);
+      pixels.data = pixNums;
+      // console.log(pixels);
+      // debugger;
 
       /* manipulate pixels */
       switch(fx) {
@@ -554,13 +562,13 @@ if (navigator.mediaDevices) {
 
   inputAllChromaKey.forEach(input => {
     input.addEventListener('change',(e)=>{
-      fChromaKeyInputs();
+      fChromaKeyInputs(inputAllChromaKey);
     })
   });
 
   inputAllChromaKey.forEach(input => {
     input.addEventListener('mousemove',(e)=>{
-      fChromaKeyInputs();
+      fChromaKeyInputs(inputAllChromaKey);
     })
   });
 
@@ -596,6 +604,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 4;
-toggleFxControls();
+// selectFx.selectedIndex = 4;
+// toggleFxControls();
 

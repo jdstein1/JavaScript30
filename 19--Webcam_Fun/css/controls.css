@@ -36,12 +36,12 @@
   box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5);
 }
 
-.ctrl_fx table label {
+.ctrl_fx .ctrl_group label {
   width:100%;
   background-color:rgb(204,204,204);
 }
-.ctrl_fx table label span {}
-.ctrl_fx table input, .ctrl_fx table select {
+.ctrl_fx .ctrl_group label span {}
+.ctrl_fx .ctrl_group input, .ctrl_fx .ctrl_group select {
   text-align:left;
   display:inline-block;
 }
@@ -59,6 +59,8 @@
 #ctrl_fx .ctrl_group .green label span:before {content:'G ';}
 #ctrl_fx .ctrl_group .blue label span:before {content:'B ';}
 
+#ctrl_fx .ctrl_group .rgb label span {display: none;}
+
 .max label span .value, .min label span .value {
   padding:0.25em 0.5rem;
   color:white;
@@ -66,3 +68,12 @@
   vertical-align:middle;
   border-radius:1rem;
 }
+
+/* .green:before, .blue:before, .rgb:before {
+  content:"+";
+  color:white;
+  margin:0.25em 0.125rem;
+  float:left;
+  font-size: 2rem;
+} */
+/* .rgb:before {content:"=";} */

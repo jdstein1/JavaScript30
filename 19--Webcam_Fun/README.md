@@ -22,17 +22,13 @@
         * [webdesign inspiration](http://www.webdesign-inspiration.com/)
 * Effects
     * Chroma Key
-        * [X] Redo inputs to switch between number and range type.
         * [] Redo inputs w a single HTML5 color input
-        * [X] Display the colors that the inputs represent
-    * Colorize
-        * [X] single colorize function
+    <!-- * Colorize -->
     <!-- * Split -->
     * Pixelate
         * [] Make pixelate effect function modify the resolution of the video.
-    * Saturate
-        * [X] Make saturate effect function modify saturation of the video.
-    * Invert Picture
+    <!-- * Saturate -->
+    * Mirror Picture
         * [] Flip the picture along horizontal axis to act like a mirror.
 <!-- * Structure -->
 * Misc
