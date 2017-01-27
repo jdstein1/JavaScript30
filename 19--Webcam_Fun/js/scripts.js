@@ -21,27 +21,26 @@ const alertMsgErr = document.querySelector('#msg_err');
 /* select/option for main F/X control */
 const selectFx = document.querySelector('#fx');
 /* select/option for deeper F/X controls */
-const selectAllFx = document.querySelectorAll('.select_fx');
 
 /* array of tables of control interfaces */
-const ctrlFx = document.querySelector('.ctrl_fx');
+const ctrlFx = document.querySelector('#ctrl_fx');
 const ctrlAll = ctrlFx.querySelectorAll('table');
+const inputAllSelect = document.querySelectorAll('#ctrl_fx .input-select');
+const inputAllRange = document.querySelectorAll('#ctrl_fx .input-range');
 
 /* video channel colorize controls */
-const ctrlColorize = document.querySelector('#ctrl_fx_colorize');
+// const ctrlColorize = document.querySelector('#ctrl_fx_colorize');
 const selectColorize = document.querySelector('#colorize');
 
 /* video channel split controls */
-const ctrlSplit = document.querySelector('#ctrl_fx_split');
+// const ctrlSplit = document.querySelector('#ctrl_fx_split');
 const selectSplit = document.querySelector('#split');
 
 /* video croma key controls */
-const ctrlChroma = document.querySelector('#ctrl_fx_chroma');
-const inputAllChroma = document.querySelectorAll('#ctrl_fx_chroma input');
+// const ctrlChromaKey = document.querySelector('#ctrl_fx_chroma');
+const inputAllChromaKey = document.querySelectorAll('#ctrl_fx_chroma input');
 const rgbMin = document.querySelector('.min .rgb');
-// console.log(rgbMin);
 const rgbMax = document.querySelector('.max .rgb');
-// console.log(rgbMax);
 
 /* video saturation controls */
 const ctrlSaturate = document.querySelector('#ctrl_fx_saturate');
@@ -50,12 +49,12 @@ const inputSaturate = document.querySelector('#saturate');
 /* buttons */
 const btnAllApply = document.querySelectorAll('.btn_apply');
 const btnAllClear = document.querySelectorAll('.btn_clear');
-const btnOn = document.querySelector('.ctrl_camera .btn_on');
-const btnOff = document.querySelector('.ctrl_camera .btn_off');
-const btnClearCam = document.querySelector('.ctrl_camera .btn_clear');
-const btnClearStrip = document.querySelector('.ctrl_strip .btn_clear');
+const btnOn = document.querySelector('#ctrl_camera .btn_on');
+const btnOff = document.querySelector('#ctrl_camera .btn_off');
+const btnClearCam = document.querySelector('#ctrl_camera .btn_clear');
+const btnClearStrip = document.querySelector('#ctrl_strip .btn_clear');
 const btnClearChroma = document.querySelector('#ctrl_fx_chroma .btn_clear');
-const btnSnap = document.querySelector('.ctrl_strip .btn_snap');
+const btnSnap = document.querySelector('#ctrl_strip .btn_snap');
 
 /**
  * VARIABLES
@@ -78,7 +77,7 @@ const constraints = {audio: false, video: true};
 hide(video);
 // hide(selectFx);
 // selectFx.disabled = true;
-document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
+document.querySelector('#ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
 
 /**
  * FUNCTIONS
@@ -92,7 +91,7 @@ document.querySelector('.ctrl_strip label span').innerHTML = `Limit? (${stripMax
 function fChromaKeyInputs () {
   console.group('START fChromaKeyInputs');
   const levels = {};
-  inputAllChroma.forEach((input) => {
+  inputAllChromaKey.forEach((input) => {
     if (input.type === 'range'||input.type === 'number') {
       levels[input.name] = input.value;
       const label = input.parentElement;
@@ -157,7 +156,7 @@ function fMediaQueries () {
   document.querySelectorAll(".rgb label span").forEach((label)=>{
     label.style.display = window.innerWidth<800 ? 'none' : 'inline';
   });
-  inputAllChroma.forEach((input)=>{
+  inputAllChromaKey.forEach((input)=>{
     if (input.type === 'range'||input.type === 'number') {
       /* switch input type between 'number'/'range' based on window size. */
       input.type = window.innerWidth<800 ? 'number' : 'range';
@@ -445,7 +444,7 @@ if (navigator.mediaDevices) {
 
       if (stripLen > 0) {
         strip.style.display = 'flex';
-        document.querySelector('.ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
+        document.querySelector('#ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
         toggleButton(btnClearStrip,'on');
         // btnClearStrip.disabled = false;
         // btnClearStrip.classList.remove('disabled');
@@ -486,7 +485,7 @@ if (navigator.mediaDevices) {
     toggleButton(btnClearStrip,'off');
     // btnClearStrip.disabled = true;
     // btnClearStrip.classList.add('disabled');
-    document.querySelector('.ctrl_strip legend').innerHTML = 'snapshots';
+    document.querySelector('#ctrl_strip legend').innerHTML = 'snapshots';
     console.groupEnd();
   }
 
@@ -546,26 +545,38 @@ if (navigator.mediaDevices) {
   });
 
   /* listen for change on deeper F/X select/option */
-  selectAllFx.forEach(btn => {
+  inputAllSelect.forEach(btn => {
     btn.addEventListener('change',(e)=>{
-      console.log('selectAllFx: ',e.target);
+      console.log('inputAllSelect: ',e.target);
       startStream();
     })
   });
 
-  inputAllChroma.forEach(input => {
+  inputAllChromaKey.forEach(input => {
     input.addEventListener('change',(e)=>{
       fChromaKeyInputs();
     })
   });
 
-  inputAllChroma.forEach(input => {
+  inputAllChromaKey.forEach(input => {
     input.addEventListener('mousemove',(e)=>{
       fChromaKeyInputs();
     })
   });
 
+  let flagSaturate = false;
   inputSaturate.addEventListener('change',startStream);
+  inputSaturate.addEventListener('mousedown',(e)=>{
+    flagSaturate = true;
+  });
+  inputSaturate.addEventListener('mousemove',(e)=>{
+    if (flagSaturate) {
+      startStream();
+    }
+  });
+  inputSaturate.addEventListener('mouseup',(e)=>{
+    flagSaturate = false;
+  });
 
   /* listen for click on all "apply" buttons */
   btnAllApply.forEach(btn => {
@@ -585,6 +596,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 5;
+selectFx.selectedIndex = 4;
 toggleFxControls();
 

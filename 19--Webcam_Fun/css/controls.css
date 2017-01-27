@@ -1,6 +1,5 @@
 /* container for video controls */
 .ctrls {
-  /* color:white; */
   position:absolute;
   top:auto;
   left:0;
@@ -10,8 +9,6 @@
   margin:0;
   background-color:rgba(0, 0, 0, 0.5);
   background:transparent;
-  /* color:white; */
-  /* padding:0; */
   display:flex;
   flex-wrap:nowrap;
   flex-direction:row;
@@ -19,13 +16,7 @@
   align-items:start;
 }
 .ctrls > * {
-  /* float:left; */
-  /* display:inline-block; */
-  /* text-align:center; */
   flex:auto;
-  /* flex-wrap:nowrap; */
-  /* padding:0.5rem; */
-  /* margin:0.5rem; */
   display:flex;
   flex-wrap:nowrap;
   flex-direction:row;
@@ -48,41 +39,26 @@
 .ctrl_fx table label {
   width:100%;
   background-color:rgb(204,204,204);
-  /* text-align:right; */
 }
-.ctrl_fx table label span {
-  /* max-width:6rem; */
-  /* width:40%; */
-  /* min-width:3rem; */
-  /* display:inline-block; */
-}
+.ctrl_fx table label span {}
 .ctrl_fx table input, .ctrl_fx table select {
-  /* width:60%; */
-  /* min-width:4rem; */
   text-align:left;
   display:inline-block;
 }
-#ctrl_fx_chroma input {margin-left:0;}
-/* #ctrl_fx_chroma input[type=number] {display: none;} */
-#ctrl_fx_chroma input[type=range] {display: block;}
-#ctrl_fx_chroma input[type=range] {
+#ctrl_fx .ctrl_group input {}
+#ctrl_fx .ctrl_group input[type=range] {
+  display: block;
   min-width:255px;
   width:100%;
-  /* margin-top:-0.5em; */
 }
-#ctrl_fx_chroma input[type=number] {max-width:4rem; color: white;}
-#ctrl_fx_chroma .rgb input[type=text] {max-width:3rem;}
-#ctrl_fx_chroma input {
-  /* background-color:red; */
-  /* color:white !important; */
-}
-#ctrl_fx_chroma label span:before {
-  font-weight:900;
-  /* margin:0 0 0 0.5rem; */
-}
-#ctrl_fx_chroma .red label span:before {content:'R ';}
-#ctrl_fx_chroma .green label span:before {content:'G ';}
-#ctrl_fx_chroma .blue label span:before {content:'B ';}
+#ctrl_fx .ctrl_group input[type=number] {max-width:4rem; color: white;}
+#ctrl_fx .ctrl_group .rgb input[type=text] {max-width:3rem;}
+#ctrl_fx .ctrl_group input {}
+#ctrl_fx .ctrl_group label span:before {font-weight:900;}
+#ctrl_fx .ctrl_group .red label span:before {content:'R ';}
+#ctrl_fx .ctrl_group .green label span:before {content:'G ';}
+#ctrl_fx .ctrl_group .blue label span:before {content:'B ';}
+
 .max label span .value, .min label span .value {
   padding:0.25em 0.5rem;
   color:white;

@@ -10,26 +10,13 @@
 <script>
 
 const keysLogged = [];
-// const codesLogged = [];
 const konamiKeys = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+// const codesLogged = [];
 // const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
 let flagCode = false;
 
 document.addEventListener('keyup',(e) => {
-  // console.log(e.keyCode);
-  // console.log(e.key);
-  // console.log('flagCode = ', flagCode);
-  // console.log('listen for keys');
-  // if (e.key === 'Escape') {
-  //   console.log('stop cornify');
-  //   const unis = document.querySelectorAll([position="fixed"]);
-  //   console.log(unis);
-  //   cornify_count = 0;
-  //   keysLogged.length = 0;
-  //   codesLogged.length = 0;
-  //   flagCode = false;
-  // } else {
-    // console.log('keep listening');
     if (!flagCode) {
       console.warn('push key to array');
       keysLogged.push(e.key);
@@ -43,15 +30,10 @@ document.addEventListener('keyup',(e) => {
       if (keysLogged.join('') === konamiKeys.join('')) {
         flagCode = true;
         console.info('START CORNIFY!!!!!');
-        // cornify_add();
       }
     } else {
       console.info('KEEP CORNIFYING!!!!!');
     }
-  // }
-  // console.log('keysLogged: ', keysLogged);
-  // console.log('codesLogged: ', codesLogged);
-  // console.log('konamiKeys: ', konamiKeys);
 });
 
 </script>
