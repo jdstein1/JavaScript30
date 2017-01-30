@@ -150,6 +150,8 @@ function fUpdateInput (input) {
     } else if (input.id==='pixelate') {
       bg = `#808080`;
       br = `${1/input.value}rem`;
+    } else {
+      console.error(' NOT saturate OR pixelate!');
     }
     label.querySelector("code").style.backgroundColor = bg;
     label.querySelector("code").style.borderRadius = br;
@@ -655,7 +657,7 @@ if (navigator.mediaDevices) {
   //   })
   // });
 
-  let flagSaturate = false;
+  // let flagSaturate = false;
   inputSaturate.addEventListener('change',startStream);
   // inputSaturate.addEventListener('mousedown',(e)=>{
   //   flagSaturate = true;
