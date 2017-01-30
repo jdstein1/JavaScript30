@@ -23,6 +23,19 @@
         <legend>cam</legend>
         <button class="btn_on status success">On</button>
         <button class="btn_off status error disabled" disabled>Off</button>
+
+        <!-- convert on/off buttons into checkbox toggle -->
+        <!-- <label class="" for="cam">
+          <input type="checkbox" id="cam" class="">
+          <span class="label">On?</span>
+        </label> -->
+
+        <!-- add checkbox toggle for mirror effect -->
+        <label class="" for="mirror">
+          <input type="checkbox" id="mirror" class="">
+          <span class="label">Mirror?</span>
+        </label>
+
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
       <fieldset id="ctrl_fx">
@@ -152,7 +165,7 @@
           <tr>
             <td>
               <label>
-                <span>saturate:</span>
+                <span>saturate: <code class="value">0</code></span>
                 <input id="saturate" type="range" class="input-range" value=100 min=0 max=200>
               </label>
             </td>
@@ -167,8 +180,8 @@
           <tr>
             <td>
               <label>
-                <span>pixelate:</span>
-                <input id="pixelate" type="range" class="input-range" value=0 min=-100 max=100>
+                <span>pixelate: <code class="value">0</code></span>
+                <input id="pixelate" type="range" class="input-range" value=0 min=1 max=10>
               </label>
             </td>
           </tr>
@@ -203,6 +216,7 @@
   <script src="js/utils.js"></script>
   <script src="js/scripts.js"></script>
   <script src="js/fx.js"></script>
+  <script src="js/mirror.js"></script>
   <!-- <script src="scripts-FINISHED.js"></script> -->
 
 </body>

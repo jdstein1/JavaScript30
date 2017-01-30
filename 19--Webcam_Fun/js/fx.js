@@ -6,7 +6,7 @@ console.log('fx.js READY!');
  * @param  {big array} data - The pixels.
  * @return {big array}      The modified pixels.
  */
-function fFxChromaKey(data) {
+function fFxChromaKey(uint8) {
   // console.log('START fFxChromaKey');
   // create empty array of min & max values
   const levels = {};
@@ -16,12 +16,12 @@ function fFxChromaKey(data) {
   });
   // console.log(levels);
   // debugger;
-  for (let i = 0; i < data.data.length; i+=4) {
+  for (let i = 0; i < uint8.data.length; i+=4) {
     // put values into vars
-    red = data.data[i+0]; // r
-    green = data.data[i+1]; // g
-    blue = data.data[i+2]; // b
-    alpha = data.data[i+3]; // a
+    red = uint8.data[i+0]; // r
+    green = uint8.data[i+1]; // g
+    blue = uint8.data[i+2]; // b
+    alpha = uint8.data[i+3]; // a
 
     // check if values are within ranges
     if (red >= levels.rmin
@@ -31,10 +31,10 @@ function fFxChromaKey(data) {
       && blue >= levels.bmin
       && blue <= levels.bmax) {
       // take it out!
-      data.data[i + 3] = 0;
+      uint8.data[i + 3] = 0;
     }
   }
-  return data;
+  return uint8;
 }
 
 /**
@@ -45,14 +45,14 @@ function fFxChromaKey(data) {
  * @param  {array} nums - Integers used to shift each R, G, and B value.
  * @return {big array}      The modified pixels.
  */
-function fFxChannelSplit(data,nums) {
+function fFxChannelSplit(uint8,nums) {
   // console.log('START fFxChannelSplit');
-  for (let i = 0; i < data.data.length; i+=4) {
-    data.data[i+nums[0]] = data.data[i+0]; // r
-    data.data[i+nums[1]] = data.data[i+1]; // g
-    data.data[i+nums[2]] = data.data[i+2]; // b
+  for (let i = 0; i < uint8.data.length; i+=4) {
+    uint8.data[i+nums[0]] = uint8.data[i+0]; // r
+    uint8.data[i+nums[1]] = uint8.data[i+1]; // g
+    uint8.data[i+nums[2]] = uint8.data[i+2]; // b
   }
-  return data;
+  return uint8;
 }
 
 /**
@@ -62,27 +62,27 @@ function fFxChannelSplit(data,nums) {
  * @param  {array} nums - Integers used to shift each R, G, and B value.
  * @return {big array}      The modified pixels.
  */
-function fFxColorize(data,nums) {
+function fFxColorize(uint8,nums) {
   // console.log('START fFxRGB',nums);
-  for (let i = 0; i < data.data.length; i+=4) {
-    data.data[i+0] += nums[0]; // r
-    data.data[i+1] += nums[1]; // g
-    data.data[i+2] += nums[2]; // b
+  for (let i = 0; i < uint8.data.length; i+=4) {
+    uint8.data[i+0] += nums[0]; // r
+    uint8.data[i+1] += nums[1]; // g
+    uint8.data[i+2] += nums[2]; // b
   }
-  return data;
+  return uint8;
 }
 
 /**
  * [fFxPixelate description]
  * @param  {big array} data - The pixels.
- * @param  {number} resolution - Resolution of the pixels: 1 = 1:1, 2 = 1:2, 3 = 1:3, etc.
+ * @param  {number} res - Resolution of the pixels: 1 = 1:1, 2 = 1:2, 3 = 1:3, etc.
  * @return {big array}      The modified pixels.
  */
-function fFxPixelate(data,resolution) {
-  // console.log('START fFxPixelate',resolution);
-  for (let i = 0; i < data.data.length; i+=4) {
+function fFxPixelate(uint8,res) {
+  // console.log('START fFxPixelate',res);
+  for (let i = 0; i < uint8.data.length; i+=4) {
   }
-  return data;
+  return uint8;
 }
 
 /**
@@ -91,27 +91,15 @@ function fFxPixelate(data,resolution) {
  * @param  {number} saturation - How saturated the video should be: 0 = monochrome, 100 = normal color, 200 = super color.
  * @return {big array}      The modified pixels.
  */
-function fFxSaturate(data,nums) {
+function fFxSaturate(uint8,nums) {
   // console.log('START fFxSaturate',nums);
-  for (let i = 0; i < data.data.length; i+=4) {
+  for (let i = 0; i < uint8.data.length; i+=4) {
     /* add color values together to get average */
-    const avg = (data.data[i+0] + data.data[i+1] + data.data[i+2])/3;
+    const avg = (uint8.data[i+0] + uint8.data[i+1] + uint8.data[i+2])/3;
     /* apply average to R,G, and B values of each pixel */
-    data.data[i+0] = (avg*nums[0])+(data.data[i+0]*nums[1]); // r
-    data.data[i+1] = (avg*nums[0])+(data.data[i+1]*nums[1]); // g
-    data.data[i+2] = (avg*nums[0])+(data.data[i+2]*nums[1]); // b
+    uint8.data[i+0] = (avg*nums[0])+(uint8.data[i+0]*nums[1]); // r
+    uint8.data[i+1] = (avg*nums[0])+(uint8.data[i+1]*nums[1]); // g
+    uint8.data[i+2] = (avg*nums[0])+(uint8.data[i+2]*nums[1]); // b
   }
-  return data;
-}
-
-/**
- * [fFxMirror description]
- * @param  {big array} data - The pixels.
- * @return {big array}      The modified pixels.
- */
-function fFxMirror(data) {
-  // console.log('START fFxMirror');
-  for (let i = 0; i < data.data.length; i+=4) {
-  }
-  return data;
+  return uint8;
 }

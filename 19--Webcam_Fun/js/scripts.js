@@ -11,6 +11,7 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snapSound = document.querySelector('.sound-snap');
 const snapLimit = document.querySelector('#limit');
+const mirror = document.querySelector('#mirror');
 const alertAllMsg = document.querySelectorAll('.alert');
 const alertMsgCam = document.querySelector('#msg_cam');
 const alertMsgFx = document.querySelector('#msg_fx');
@@ -45,6 +46,10 @@ const rgbMax = document.querySelector('.max .rgb');
 /* video saturation controls */
 const ctrlSaturate = document.querySelector('#ctrl_fx_saturate');
 const inputSaturate = document.querySelector('#saturate');
+
+/* video resolution controls */
+const ctrlPixelate = document.querySelector('#ctrl_fx_pixelate');
+const inputPixelate = document.querySelector('#pixelate');
 
 /* buttons */
 const btnAllApply = document.querySelectorAll('.btn_apply');
@@ -263,14 +268,18 @@ if (navigator.mediaDevices) {
 
     const vWidth = video.videoWidth;
     const vHeight = video.videoHeight;
-    // console.log('vWidth:'+vWidth,'vHeight:'+vHeight);
+    console.log('vWidth:'+vWidth+' / vHeight:'+vHeight);
 
-    const ratio = vWidth/vHeight;
-    // console.log('ratio: ', ratio);
+    const vRatio = vWidth/vHeight;
+    console.log('vRatio: ', vRatio);
 
     const wWidth = window.innerWidth;
-    const wHeight = window.innerHeight;
-    // console.log('wWidth:'+wWidth,'wHeight:'+wHeight);
+    const wHeight = wWidth*vRatio;
+    // const wHeight = window.innerHeight;
+    console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+
+    const wRatio = wWidth/wHeight;
+    console.log('wRatio: ', wRatio);
 
     /* set canvas to W&H of window */
     // canvas.width = wWidth;
@@ -304,8 +313,12 @@ if (navigator.mediaDevices) {
     for (var i = 0; i < randoms.length; i++) {
       randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
     }
+    console.group('randoms: ', randoms);
     // console.log('randoms: ', randoms);
+    console.groupEnd();
 
+    /* values for F/X function */
+    console.group('selectSplit.value: ', selectSplit.value);
     let intsSplit = [];
     if (selectSplit.value === 'stereo') {
       // expression
@@ -321,6 +334,10 @@ if (navigator.mediaDevices) {
       intsSplit = randoms;
     }
     // console.log('intsSplit: ', intsSplit);
+    console.groupEnd();
+
+    /* values for F/X function */
+    console.group('selectColorize.value: ', selectColorize.value);
     let intsColorize = [];
     if (selectColorize.value === 'red') {
       intsColorize = [150, -50, -50];
@@ -332,15 +349,23 @@ if (navigator.mediaDevices) {
       intsColorize = randoms;
     }
     // console.log('intsColorize: ', intsColorize);
+    console.groupEnd();
 
+    /* values for F/X function */
     const inputSaturateVal = parseInt(inputSaturate.value);
-    console.log('inputSaturateVal: ', inputSaturateVal);
+    console.group('inputSaturateVal: ', inputSaturateVal);
     let intsSaturate = [0.5,0.5];
-    console.log('intsSaturate: ', intsSaturate);
+    // console.log('intsSaturate: ', intsSaturate);
     intsSaturate = [(100-inputSaturateVal)/100,inputSaturateVal/100];
     console.log('intsSaturate: ', intsSaturate);
+    console.groupEnd();
 
-    let intPixelate = 0;
+    /* values for F/X function */
+    const inputPixelateVal = parseInt(inputPixelate.value);
+    console.group('inputPixelateVal: ', inputPixelateVal);
+    let intPixelate = 2;
+    console.log('intPixelate: ', intPixelate);
+    console.groupEnd();
 
     // console.log('selectFx.value: ',selectFx.value);
     // const effect = selectFx.value | '';
@@ -373,13 +398,6 @@ if (navigator.mediaDevices) {
       ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
       let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
       // console.log(pixels);
-      let pixNums = pixels.data;
-      // console.log(pixNums);
-      pixNums = pixNums.reverse();
-      // console.log(pixNums);
-      pixels.data = pixNums;
-      // console.log(pixels);
-      // debugger;
 
       /* manipulate pixels */
       switch(fx) {
@@ -552,6 +570,15 @@ if (navigator.mediaDevices) {
     toggleFxControls();
   });
 
+  let flagMirror = mirror.checked;
+  console.log('flagMirror: ', flagMirror);
+  /* listen for change on master F/X select/option */
+  mirror.addEventListener('change',(e)=>{
+    flagMirror = !flagMirror;
+    console.log('mirror: ',flagMirror);
+    fMirror(flagMirror);
+  });
+
   /* listen for change on deeper F/X select/option */
   inputAllSelect.forEach(btn => {
     btn.addEventListener('change',(e)=>{
@@ -574,17 +601,17 @@ if (navigator.mediaDevices) {
 
   let flagSaturate = false;
   inputSaturate.addEventListener('change',startStream);
-  inputSaturate.addEventListener('mousedown',(e)=>{
-    flagSaturate = true;
-  });
-  inputSaturate.addEventListener('mousemove',(e)=>{
-    if (flagSaturate) {
-      startStream();
-    }
-  });
-  inputSaturate.addEventListener('mouseup',(e)=>{
-    flagSaturate = false;
-  });
+  // inputSaturate.addEventListener('mousedown',(e)=>{
+  //   flagSaturate = true;
+  // });
+  // inputSaturate.addEventListener('mousemove',(e)=>{
+  //   if (flagSaturate) {
+  //     startStream();
+  //   }
+  // });
+  // inputSaturate.addEventListener('mouseup',(e)=>{
+  //   flagSaturate = false;
+  // });
 
   /* listen for click on all "apply" buttons */
   btnAllApply.forEach(btn => {
@@ -604,6 +631,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-// selectFx.selectedIndex = 4;
-// toggleFxControls();
+selectFx.selectedIndex = 4;
+toggleFxControls();
 
