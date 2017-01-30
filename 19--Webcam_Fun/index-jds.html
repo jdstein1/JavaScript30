@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <title>Webcam Fun -- Get User Media Code Along!</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/controls.css">
-  <link rel="stylesheet" href="css/strip.css">
-  <link rel="stylesheet" href="css/booth.css">
   <!-- <link rel="stylesheet" href="css/test.css"> -->
   <!-- <link rel="stylesheet" href="css/mq.css"> -->
 </head>
@@ -30,16 +29,10 @@
           <span class="label">On?</span>
         </label> -->
 
-        <!-- add checkbox toggle for mirror effect -->
-        <label class="" for="mirror">
-          <input type="checkbox" id="mirror" class="">
-          <span class="label">Mirror?</span>
-        </label>
-
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
       <fieldset id="ctrl_fx">
-        <legend>f/x:
+        <legend>
           <select class="input-select status info" id="fx">
             <option>Choose effect...</option>
             <option value="Colorize">Colorize</option>
@@ -48,6 +41,11 @@
             <option value="Saturate">Saturate</option>
             <option value="Pixelate">Pixelate</option>
           </select>
+          <!-- add checkbox toggle for mirror effect -->
+          <label class="" for="mirror" style="float:right; width:auto; color:black;">
+            <input type="checkbox" id="mirror" class="">
+            <span class="label">Mirror?</span>
+          </label>
         </legend>
         <div class="alert info" id="msg_cam">
           <p>turn web cam "ON" to see video effects</p>

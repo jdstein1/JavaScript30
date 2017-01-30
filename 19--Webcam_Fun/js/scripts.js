@@ -398,6 +398,13 @@ if (navigator.mediaDevices) {
       ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
       let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
       // console.log(pixels);
+      // console.log(pixels.data.length); // 1,228,800 (bits)
+      // console.log(pixels.data.length/4); // 307,200 (pixels)
+
+      // if (mirror.checked) {
+      //   // console.log('mirror.checked: ', mirror.checked);
+      //   fMirror(pixels);
+      // }
 
       /* manipulate pixels */
       switch(fx) {
@@ -570,13 +577,22 @@ if (navigator.mediaDevices) {
     toggleFxControls();
   });
 
-  let flagMirror = mirror.checked;
-  console.log('flagMirror: ', flagMirror);
-  /* listen for change on master F/X select/option */
+  /* listen for change on mirror checkbox */
+  // mirror.addEventListener('change',(e)=>{
+  //   console.log('mirror: ',mirror.checked);
+  //   startStream();
+  // });
+
+  /* listen for change on mirror checkbox */
   mirror.addEventListener('change',(e)=>{
-    flagMirror = !flagMirror;
-    console.log('mirror: ',flagMirror);
-    fMirror(flagMirror);
+    // console.log('mirror: ',mirror.checked);
+    if (mirror.checked) {
+      console.log('FLIP IT');
+      canvas.style.transform = 'scale(-1,1)';
+    } else {
+      console.log('DON\'T FLIP IT');
+      canvas.style.transform = 'scale(1,1)';
+    }
   });
 
   /* listen for change on deeper F/X select/option */
