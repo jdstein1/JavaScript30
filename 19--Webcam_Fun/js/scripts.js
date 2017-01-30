@@ -39,7 +39,7 @@ const selectSplit = document.querySelector('#split');
 
 /* video croma key controls */
 // const ctrlChromaKey = document.querySelector('#ctrl_fx_chroma');
-const inputAllChromaKey = document.querySelectorAll('#ctrl_fx_chroma input');
+const inputAllChromaKey = document.querySelectorAll('#ctrl_fx_chroma .input-range');
 const rgbMin = document.querySelector('.min .rgb');
 const rgbMax = document.querySelector('.max .rgb');
 
@@ -127,6 +127,39 @@ function fChromaKeyInputs (group) {
   console.groupEnd();
 }
 fChromaKeyInputs(inputAllChromaKey);
+
+/**
+ * set background color of chroma range input labels.  also put value number 
+ * in the UI.
+ * @return {[type]} [description]
+ */
+function fUpdateInput (input) {
+  console.group('START fUpdateInput: ', input);
+  console.log('input.value: ', input.value);
+  console.log('input.min: ', input.min);
+  console.log('input.max: ', input.max);
+  console.log('input.diff: ', Math.abs(input.min-input.max));
+  const valRange = Math.abs(input.min-input.max);
+  if (input.type === 'range'||input.type === 'number') {
+    const label = input.parentElement;
+    label.querySelector("span").querySelector("code").innerHTML = input.value;
+    // const cell = label.parentElement;
+    let bg, br;
+    if (input.id==='saturate') {
+      bg = `hsla(0,${input.value/2}%,50%,1)`;
+    } else if (input.id==='pixelate') {
+      bg = `#808080`;
+      br = `${1/input.value}rem`;
+    }
+    label.querySelector("code").style.backgroundColor = bg;
+    label.querySelector("code").style.borderRadius = br;
+    // label.querySelector("input").style.backgroundColor = bg;
+  }
+  console.groupEnd();
+}
+inputAllRange.forEach((input)=>{
+  fUpdateInput(input);
+});
 
 /**
  * [toggleFxControls description]
@@ -313,9 +346,7 @@ if (navigator.mediaDevices) {
     for (var i = 0; i < randoms.length; i++) {
       randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
     }
-    console.group('randoms: ', randoms);
-    // console.log('randoms: ', randoms);
-    console.groupEnd();
+    console.log('randoms: ', randoms);
 
     /* values for F/X function */
     console.group('selectSplit.value: ', selectSplit.value);
@@ -598,9 +629,17 @@ if (navigator.mediaDevices) {
   /* listen for change on deeper F/X select/option */
   inputAllSelect.forEach(btn => {
     btn.addEventListener('change',(e)=>{
-      console.log('inputAllSelect: ',e.target);
+      // console.log('inputAllSelect: ',e.target);
       startStream();
     })
+  });
+
+  inputSaturate.addEventListener('change',(e)=>{
+      fUpdateInput(inputSaturate);
+  });
+
+  inputPixelate.addEventListener('change',(e)=>{
+      fUpdateInput(inputPixelate);
   });
 
   inputAllChromaKey.forEach(input => {
@@ -609,11 +648,12 @@ if (navigator.mediaDevices) {
     })
   });
 
-  inputAllChromaKey.forEach(input => {
-    input.addEventListener('mousemove',(e)=>{
-      fChromaKeyInputs(inputAllChromaKey);
-    })
-  });
+  /* update UI on mousemove */
+  // inputAllChromaKey.forEach(input => {
+  //   input.addEventListener('mousemove',(e)=>{
+  //     fChromaKeyInputs(inputAllChromaKey);
+  //   })
+  // });
 
   let flagSaturate = false;
   inputSaturate.addEventListener('change',startStream);
@@ -647,6 +687,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 4;
+selectFx.selectedIndex = 5;
 toggleFxControls();
 

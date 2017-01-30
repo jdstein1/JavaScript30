@@ -35,7 +35,7 @@
 
 #ctrl_fx .ctrl_group .rgb label span {display: none;}
 
-.max label span .value, .min label span .value {
+label span .value {
   padding:0.25em 0.5rem;
   color:white;
   line-height:1.4;

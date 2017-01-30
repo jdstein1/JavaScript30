@@ -31,6 +31,10 @@ function fMirror(pixels) {
   // }
 
 
+/**
+ * https://jsbin.com/gufizu/edit?html,js,console
+ */
+
 /* THE FOLLOWING RESULTS IN AN ERROR.  SEE BELOW. */
 var arr = pixels.data;
 // console.log(arr);
