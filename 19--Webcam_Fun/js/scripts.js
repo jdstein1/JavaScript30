@@ -324,36 +324,41 @@ if (navigator.mediaDevices) {
     const vRatio = vWidth/vHeight;
     console.log('vRatio: ', vRatio);
 
-    let wWidth = window.innerWidth;
-    let wHeight = window.innerHeight;
+    const wWidth = window.innerWidth;
+    const wHeight = window.innerHeight;
     console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+
+    const wRatio = wWidth/wHeight;
+    console.log('wRatio: ', wRatio);
+
+    let canvasScale = 1;
 
     // const wRatio = wWidth/wHeight;
     // console.log('wRatio: ', wRatio);
 
     /* set canvas to W&H of window */
-    if (vWidth > wWidth) {
-      console.info('vWidth > wWidth');
-      if (vHeight > wHeight) {
-        console.info('vHeight > wHeight');
-        // shrink horizontally...
-        // wWidth = wHeight * vRatio;
-      } else {
-        console.info('vHeight <= wHeight');
-        // enlarge vertically to fill canvas with video...
-        // wHeight = wWidth * vRatio;
+    if (vWidth/wWidth > 1) {
+      console.info('video wider than window');
+      if (vHeight/wHeight > 1) {
+        console.info('video taller than window');
+      } else if (vHeight/wHeight < 1) {
+        console.info('window taller than video');
+        canvasScale = (wHeight/vHeight);
       }
-    } else {
-      console.info('vWidth <= wWidth');
-      if (vHeight > wHeight) {
-        console.info('vHeight > wHeight');
-      } else {
-        console.info('vHeight <= wHeight');
-      }
+    } else if (vWidth/wWidth < 1) {
+      console.info('window wider than video');
+      canvasScale = (wWidth/vWidth);
     }
-    console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+    console.warn('canvasScale: ',canvasScale);
+
     canvas.width = wWidth;
     canvas.height = wHeight;
+    if (mirror.checked) {
+      canvas.style.transform = `scale(-${canvasScale},${canvasScale})`;
+    } else {
+      canvas.style.transform = `scale(${canvasScale},${canvasScale})`;
+    }
+    console.log('canvas.style.transform: ',canvas.style.transform);
 
     /* center the canvas */
     positionX = (wWidth - vWidth)/2;
@@ -699,6 +704,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 3;
+selectFx.selectedIndex = 1;
 toggleFxControls();
 

@@ -100,7 +100,7 @@ label+input,
 input+label,
 label+button,
 button+label,
-td > button {margin-top:0.25rem;}
+td > button {/* margin-top:0.25rem; */}
 label {
   /* width:40%; */
   /* color:white; */
