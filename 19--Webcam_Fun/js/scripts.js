@@ -80,9 +80,11 @@ const constraints = {audio: false, video: true};
  */
 
 hide(video);
+show(btnOn);
+hide(btnOff);
 // hide(selectFx);
 // selectFx.disabled = true;
-document.querySelector('#ctrl_strip label span').innerHTML = `Limit? (${stripMax})`;
+document.querySelector('#ctrl_strip label span .value').innerHTML = `${stripMax}`;
 
 /**
  * FUNCTIONS
@@ -100,7 +102,7 @@ function fChromaKeyInputs (group) {
     if (input.type === 'range'||input.type === 'number') {
       levels[input.name] = input.value;
       const label = input.parentElement;
-      label.querySelector("span").querySelector("code").innerHTML = input.value;
+      label.querySelector("span .value").innerHTML = input.value;
       const cell = label.parentElement;
       let bg;
       // console.log(cell.classList[0]+' '+cell.classList[1]+': '+input.value);
@@ -151,7 +153,7 @@ function fUpdateInput (input) {
       bg = `#808080`;
       br = `${1/input.value}rem`;
     } else {
-      console.error(' NOT saturate OR pixelate!');
+      console.warn(' NOT saturate OR pixelate!');
     }
     label.querySelector("code").style.backgroundColor = bg;
     label.querySelector("code").style.borderRadius = br;
@@ -162,6 +164,18 @@ function fUpdateInput (input) {
 inputAllRange.forEach((input)=>{
   fUpdateInput(input);
 });
+
+
+function fMirror () {
+  if (mirror.checked) {
+    console.log('FLIP IT');
+    canvas.style.transform = 'scale(-1,1)';
+  } else {
+    console.log('DON\'T FLIP IT');
+    canvas.style.transform = 'scale(1,1)';
+  }
+}
+fMirror();
 
 /**
  * [toggleFxControls description]
@@ -201,7 +215,7 @@ function fMediaQueries () {
       /* switch input type between 'number'/'range' based on window size. */
       input.type = window.innerWidth<800 ? 'number' : 'range';
       /* show/hide color swatch based on window size (to match input type). */
-      input.parentElement.querySelector("span code").style.display = window.innerWidth<800 ? 'none' : 'inline';
+      input.parentElement.querySelector("span .value").style.display = window.innerWidth<800 ? 'none' : 'inline';
     }
       /* show/hide min rgb color label text based on window size. */
       // rgbMin.querySelector("span").style.display = window.innerWidth<800 ? 'none' : 'inline';
@@ -259,7 +273,8 @@ if (navigator.mediaDevices) {
         /* reset & enable the F/X select/option */
         // toggleButton(selectFx,'on');
 
-        toggleButton(btnOff,'on');
+        hide(btnOn);
+        show(btnOff);
         toggleButton(btnSnap,'on');
 
       } else {
@@ -275,7 +290,8 @@ if (navigator.mediaDevices) {
         /* reset & disable the F/X select/option */
         // toggleButton(selectFx,'off');
 
-        toggleButton(btnOff,'off');
+        show(btnOn);
+        hide(btnOff);
         toggleButton(btnSnap,'off');
 
         toggleFxControls();
@@ -308,37 +324,40 @@ if (navigator.mediaDevices) {
     const vRatio = vWidth/vHeight;
     console.log('vRatio: ', vRatio);
 
-    const wWidth = window.innerWidth;
-    const wHeight = wWidth*vRatio;
-    // const wHeight = window.innerHeight;
+    let wWidth = window.innerWidth;
+    let wHeight = window.innerHeight;
     console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
 
-    const wRatio = wWidth/wHeight;
-    console.log('wRatio: ', wRatio);
+    // const wRatio = wWidth/wHeight;
+    // console.log('wRatio: ', wRatio);
 
     /* set canvas to W&H of window */
-    // canvas.width = wWidth;
-    // canvas.height = wHeight;
+    if (vWidth > wWidth) {
+      console.info('vWidth > wWidth');
+      if (vHeight > wHeight) {
+        console.info('vHeight > wHeight');
+        // shrink horizontally...
+        // wWidth = wHeight * vRatio;
+      } else {
+        console.info('vHeight <= wHeight');
+        // enlarge vertically to fill canvas with video...
+        // wHeight = wWidth * vRatio;
+      }
+    } else {
+      console.info('vWidth <= wWidth');
+      if (vHeight > wHeight) {
+        console.info('vHeight > wHeight');
+      } else {
+        console.info('vHeight <= wHeight');
+      }
+    }
+    console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+    canvas.width = wWidth;
+    canvas.height = wHeight;
 
     /* center the canvas */
-    // positionX = (wWidth - vWidth)/2;
-    // positionY = (wHeight - vHeight)/2;
-
-    // if (vWidth < wWidth && vHeight > wHeight) {
-    //   console.log('video taller than window');
-    //   // stretch video vertically...
-    //   canvas.width = vWidth;
-    //   canvas.height = wHeight;
-    // } else if (vWidth > wWidth && vHeight < wHeight) {
-    //   console.log('video wider than window');
-    //   // stretch video horizontally...
-    //   canvas.width = wWidth;
-    //   canvas.height = vHeight;
-    // } else {
-    //   console.log('video ??? than window');
-      canvas.width = vWidth;
-      canvas.height = vHeight;
-    // }
+    positionX = (wWidth - vWidth)/2;
+    positionY = (wHeight - vHeight)/2;
 
     let randoms = []; // random numbers
     randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
@@ -510,7 +529,7 @@ if (navigator.mediaDevices) {
 
       if (stripLen > 0) {
         strip.style.display = 'flex';
-        document.querySelector('#ctrl_strip legend').innerHTML = `snapshots (${stripLen})`;
+        document.querySelector('#ctrl_strip legend .value').innerHTML = `${stripLen}`;
         toggleButton(btnClearStrip,'on');
         // btnClearStrip.disabled = false;
         // btnClearStrip.classList.remove('disabled');
@@ -551,7 +570,7 @@ if (navigator.mediaDevices) {
     toggleButton(btnClearStrip,'off');
     // btnClearStrip.disabled = true;
     // btnClearStrip.classList.add('disabled');
-    document.querySelector('#ctrl_strip legend').innerHTML = 'snapshots';
+    document.querySelector('#ctrl_strip legend .value').innerHTML = '0';
     console.groupEnd();
   }
 
@@ -617,16 +636,7 @@ if (navigator.mediaDevices) {
   // });
 
   /* listen for change on mirror checkbox */
-  mirror.addEventListener('change',(e)=>{
-    // console.log('mirror: ',mirror.checked);
-    if (mirror.checked) {
-      console.log('FLIP IT');
-      canvas.style.transform = 'scale(-1,1)';
-    } else {
-      console.log('DON\'T FLIP IT');
-      canvas.style.transform = 'scale(1,1)';
-    }
-  });
+  mirror.addEventListener('change',fMirror);
 
   /* listen for change on deeper F/X select/option */
   inputAllSelect.forEach(btn => {
@@ -689,6 +699,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 5;
+selectFx.selectedIndex = 3;
 toggleFxControls();
 

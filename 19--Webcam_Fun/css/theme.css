@@ -1,0 +1,27 @@
+/* theme styles */
+.ctrls fieldset {
+  color:black;
+  border-color:transparent;
+  background-color:rgba(127,127,127,0.5);
+  box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
+}
+.ctrls legend {
+  position: relative;
+  top:1.75em;
+  padding: 0.25em 0;
+  margin-bottom: 1.5em;
+  font-weight:900;
+  height:3em;
+  color: rgb(255,255,255);
+  background-color: rgba(0,0,0,0);
+}
+.ctrls legend .value,
+.ctrls label .value {
+  border-radius:1rem;
+  color:rgb(255,255,255);
+  background-color:rgba(0,0,0,1);
+  box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5);
+}
+.input-range {}
+.input-select {}
+.input-toggle {}

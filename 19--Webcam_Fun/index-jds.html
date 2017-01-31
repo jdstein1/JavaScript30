@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/controls.css">
   <!-- <link rel="stylesheet" href="css/test.css"> -->
   <!-- <link rel="stylesheet" href="css/mq.css"> -->
+  <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
 
@@ -21,11 +22,11 @@
       <fieldset id="ctrl_camera">
         <legend>cam</legend>
         <button class="btn_on status success">On</button>
-        <button class="btn_off status error disabled" disabled>Off</button>
+        <button class="btn_off status error">Off</button>
 
         <!-- convert on/off buttons into checkbox toggle -->
         <!-- <label class="" for="cam">
-          <input type="checkbox" id="cam" class="">
+          <input type="checkbox" id="cam" class="input-toggle">
           <span class="label">On?</span>
         </label> -->
 
@@ -42,9 +43,9 @@
             <option value="Pixelate">Pixelate</option>
           </select>
           <!-- add checkbox toggle for mirror effect -->
-          <label class="" for="mirror" style="float:right; width:auto; color:black;">
-            <input type="checkbox" id="mirror" class="">
-            <span class="label">Mirror?</span>
+          <label class="setting" for="mirror" style="">
+            <input type="checkbox" id="mirror" class="input-toggle" checked>
+            <span class="label">Mirror</span>
           </label>
         </legend>
         <div class="alert info" id="msg_cam">
@@ -190,11 +191,12 @@
         </table>
       </fieldset>
       <fieldset id="ctrl_strip">
-        <legend>snaps</legend>
-        <label class="" for="limit">
-          <input type="checkbox" id="limit" class="" checked>
-          <span class="label">Limit?</span>
+        <legend>snaps <code class="value">0</code>
+        <label class="setting" for="limit" style="">
+          <input type="checkbox" id="limit"  class="input-toggle" checked>
+          <span class="label">Limit <code class="value">0</code></span>
         </label>
+        </legend>
         <button class="btn_snap status info disabled" disabled>Snap</button>
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>

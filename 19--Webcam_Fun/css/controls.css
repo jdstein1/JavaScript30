@@ -1,15 +1,3 @@
-.ctrls fieldset {
-  color:black;
-  border-color:transparent;
-  background-color:rgba(0,0,0,0.75);
-  box-shadow:0 0.25rem 1rem 0 rgba(0, 0, 0, 0.25);
-}
-.ctrls legend {
-  color:rgb(255,255,255);
-  background-color:rgba(0,0,0,0);
-  /* box-shadow:0 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.5); */
-}
-
 .ctrl_fx .ctrl_group label {
   width:100%;
   background-color:rgb(204,204,204);
@@ -35,7 +23,8 @@
 
 #ctrl_fx .ctrl_group .rgb label span {display: none;}
 
-label span .value {
+.ctrls legend .value,
+.ctrls label .value {
   padding:0.25em 0.5rem;
   color:white;
   line-height:1.4;
@@ -51,3 +40,6 @@ label span .value {
   font-size: 2rem;
 } */
 /* .rgb:before {content:"=";} */
+
+.setting {float:right; width:auto; color:black;}
+.setting span {font-size: 0.8rem;}

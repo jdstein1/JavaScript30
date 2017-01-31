@@ -22,7 +22,7 @@ h3,
 h4,
 h5,
 h6 {}
-/* code {font-size: 1.5em;} */
+code {font-size: 1.5em;}
 table {
   width:100%;
   border-collapse:separate;
@@ -71,7 +71,8 @@ fieldset {
 }
 legend {
   font-weight:900;
-  margin-bottom:0.25rem;
+  margin:0;
+  padding:0;
   line-height:1;
   width: 100%;
 }
