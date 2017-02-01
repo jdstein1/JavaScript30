@@ -319,33 +319,25 @@ if (navigator.mediaDevices) {
 
     const vWidth = video.videoWidth;
     const vHeight = video.videoHeight;
-    console.log('vWidth:'+vWidth+' / vHeight:'+vHeight);
+    // console.log('vWidth:'+vWidth+' / vHeight:'+vHeight);
 
     const vArea = vWidth*vHeight;
-    console.log('vArea: ', vArea);
+    // console.log('vArea: ', vArea);
 
     const vRatio = vWidth/vHeight;
-    console.log('vRatio: ', vRatio);
+    // console.log('vRatio: ', vRatio);
 
     const wWidth = window.innerWidth;
     const wHeight = window.innerHeight;
-    console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+    // console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
 
     const wArea = wWidth*wHeight;
-    console.log('wArea: ', wArea);
+    // console.log('wArea: ', wArea);
 
     const wRatio = wWidth/wHeight;
-    console.log('wRatio: ', wRatio);
-
-    let canvasScale = 1;
-
-    // const wRatio = wWidth/wHeight;
     // console.log('wRatio: ', wRatio);
 
-    // console.log('vWidth/wWidth: ', vWidth/wWidth);
-    // console.log('wWidth/vWidth: ', wWidth/vWidth);
-    // console.log('vHeight/wHeight: ', vHeight/wHeight);
-    // console.log('wHeight/vHeight: ', wHeight/vHeight);
+    let canvasScale = 1;
 
     function fCheckArea (a,b) {
       console.group('START fCheckArea');
@@ -353,13 +345,13 @@ if (navigator.mediaDevices) {
       const aA = a[0]*a[1];
       const bA = b[0]*b[1];
       if (aA > bA) {
-        console.info('video is __bigger__ than window');
+        // console.info('video is __bigger__ than window');
         area = 'bigger';
       } else if (aA < bA) {
-        console.info('video is __smaller__ than window');
+        // console.info('video is __smaller__ than window');
         area = 'smaller';
       } else {
-        console.info('video and window are __same__ size');
+        // console.info('video and window are __same__ size');
         area = 'same';
       }
       console.groupEnd();
@@ -371,15 +363,14 @@ if (navigator.mediaDevices) {
       let ratio;
       const aR = a[0]/a[1];
       const bR = b[0]/b[1];
-      // console.warn(aR+":"+bR);
       if (aR > bR) {
-        console.info('window has __portrait__ aspect ratio, scale based on HEIGHT');
+        // console.info('window has __portrait__ aspect ratio, scale based on HEIGHT');
         ratio = 'portrait';
       } else if (aR < bR) {
-        console.info('window has __landscape__ aspect ratio, scale based on WIDTH');
+        // console.info('window has __landscape__ aspect ratio, scale based on WIDTH');
         ratio = 'landscape';
       } else {
-        console.info('window has __standard__ aspect ratio, scale based on AREA');
+        // console.info('window has __standard__ aspect ratio, scale based on AREA');
         ratio = 'standard';
       }
       console.groupEnd();
@@ -390,23 +381,13 @@ if (navigator.mediaDevices) {
       console.group('START fCanvasScale: ', a,b);
 
       const aspect_ratio = fCheckRatio(a,b);
-      // console.info('aspect_ratio: ',aspect_ratio);
-
       const video_area = fCheckArea(a,b);
-      // console.info('video_area: ',video_area);
 
-      if (video_area === 'bigger') {
-        // console.warn('video bigger');
-        if (aspect_ratio === 'landscape') {
-          // console.warn('landscape');
-          // canvasScale = (b[0]/a[0]); // enlarge based on WIDTH ratio
-        } else if (aspect_ratio === 'portrait') {
-          // console.warn('portrait');
-          // canvasScale = (b[1]/a[1]); // enlarge based on HEIGHT ratio
-        } else {
-          // console.warn('same');
-        }
-      } else if (video_area === 'smaller') {
+      /**
+       * only scale if video is smaller than window...otherwise use inherited 
+       * "1" as scale value...
+       */
+      if (video_area === 'smaller') {
         // console.warn('video smaller');
         if (aspect_ratio === 'landscape') {
           // console.warn('landscape');
@@ -419,24 +400,9 @@ if (navigator.mediaDevices) {
           canvasScale = (b[1]/a[1]); // enlarge based on HEIGHT ratio
         }
       }
+      console.log('canvasScale: ',canvasScale);
     }
     fCanvasScale([vWidth,vHeight],[wWidth,wHeight]);
-
-    /* set canvas to W&H of window */
-    // if (vWidth/wWidth > 1) {
-    //   console.info('video bigger than window in WIDTH');
-    //   if (vWidth/wWidth > vHeight/wHeight) {
-    //     console.info('window bigger than video in HEIGHT');
-    //     canvasScale = (wHeight/vHeight); // enlarge based on HEIGHT ratio
-    //   } else {
-    //     console.info('video bigger than window in HEIGHT');
-    //     // use 1:1 ratio
-    //   }
-    // } else if (vWidth/wWidth < 1) {
-    //   console.info('video smaller than window in WIDTH');
-    //   canvasScale = (wWidth/vWidth); // enlarge based on WIDTH ratio
-    // }
-    console.log('canvasScale: ',canvasScale);
 
     canvas.width = wWidth;
     canvas.height = wHeight;
