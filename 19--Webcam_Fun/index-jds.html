@@ -41,12 +41,17 @@
             <option value="ChromaKey">ChromaKey</option>
             <option value="Saturate">Saturate</option>
             <option value="Pixelate">Pixelate</option>
+            <option value="Invert">Invert</option>
           </select>
           <!-- add checkbox toggle for mirror effect -->
-          <label class="setting" for="mirror" style="">
+          <label class="setting" for="mirror">
             <input type="checkbox" id="mirror" class="input-toggle" checked>
-            <span class="label">Mirror</span>
+            <span class="label">mirror</span>
           </label>
+          <!-- <label class="setting" for="invert">
+            <input id="invert" type="checkbox" class="input-toggle">
+            <span class="label">invert</span>
+          </label> -->
         </legend>
         <div class="alert info" id="msg_cam">
           <p>turn web cam "ON" to see video effects</p>
@@ -180,7 +185,7 @@
             <td>
               <label>
                 <span>pixelate: <code class="value">0</code></span>
-                <input id="pixelate" type="range" class="input-range" value=0 min=1 max=10>
+                <input id="pixelate" type="range" class="input-range" value=3 min=1 max=10>
               </label>
             </td>
           </tr>
@@ -189,12 +194,27 @@
           </tr>
           </tbody>
         </table>
+        <table class="ctrl_group" id="ctrl_fx_invert">
+          <tbody>
+          <tr>
+            <td>
+              <label>
+                <input id="invert" type="checkbox" class="input-toggle">
+                <span>invert</span>
+              </label>
+            </td>
+          </tr>
+          <!-- <tr>
+            <td><button class="btn_apply status success">Apply</button></td>
+          </tr> -->
+          </tbody>
+        </table>
       </fieldset>
       <fieldset id="ctrl_strip">
         <legend>snaps <code class="value">0</code>
-        <label class="setting" for="limit" style="">
+        <label class="setting" for="limit">
           <input type="checkbox" id="limit"  class="input-toggle" checked>
-          <span class="label">Limit <code class="value">0</code></span>
+          <span class="label">limit <code class="value">0</code></span>
         </label>
         </legend>
         <button class="btn_snap status info disabled" disabled>Snap</button>
@@ -216,7 +236,7 @@
   <script src="js/utils.js"></script>
   <script src="js/scripts.js"></script>
   <script src="js/fx.js"></script>
-  <script src="js/mirror.js"></script>
+  <!-- <script src="js/mirror.js"></script> -->
   <!-- <script src="scripts-FINISHED.js"></script> -->
 
 </body>

@@ -4,7 +4,7 @@ console.log('fx.js READY!');
  * check if each pixel's color value falls within ranges set 
  * by inputs.  if it does, drop alpha value to 0 to hide pixel.
  * @param  {big array} data - The pixels.
- * @return {big array}      The modified pixels.
+ * @return {big array} - The modified pixels.
  */
 function fFxChromaKey(uint8) {
   // console.log('START fFxChromaKey');
@@ -43,7 +43,7 @@ function fFxChromaKey(uint8) {
  * distinctly separate layers.
  * @param  {big array} data - The pixels.
  * @param  {array} nums - Integers used to shift each R, G, and B value.
- * @return {big array}      The modified pixels.
+ * @return {big array} - The modified pixels.
  */
 function fFxChannelSplit(uint8,nums) {
   // console.log('START fFxChannelSplit');
@@ -60,7 +60,7 @@ function fFxChannelSplit(uint8,nums) {
  * create a monochromatic picture.
  * @param  {big array} data - The pixels.
  * @param  {array} nums - Integers used to shift each R, G, and B value.
- * @return {big array}      The modified pixels.
+ * @return {big array} - The modified pixels.
  */
 function fFxColorize(uint8,nums) {
   // console.log('START fFxRGB',nums);
@@ -73,23 +73,10 @@ function fFxColorize(uint8,nums) {
 }
 
 /**
- * [fFxPixelate description]
- * @param  {big array} data - The pixels.
- * @param  {number} res - Resolution of the pixels: 1 = 1:1, 2 = 1:2, 3 = 1:3, etc.
- * @return {big array}      The modified pixels.
- */
-function fFxPixelate(uint8,res) {
-  // console.log('START fFxPixelate',res);
-  for (let i = 0; i < uint8.data.length; i+=4) {
-  }
-  return uint8;
-}
-
-/**
  * [fFxSaturate description]
  * @param  {big array} data - The pixels.
  * @param  {number} saturation - How saturated the video should be: 0 = monochrome, 100 = normal color, 200 = super color.
- * @return {big array}      The modified pixels.
+ * @return {big array} - The modified pixels.
  */
 function fFxSaturate(uint8,nums) {
   // console.log('START fFxSaturate',nums);
@@ -102,4 +89,54 @@ function fFxSaturate(uint8,nums) {
     uint8.data[i+2] = (avg*nums[0])+(uint8.data[i+2]*nums[1]); // b
   }
   return uint8;
+}
+
+/**
+ * [invert description]
+ * @return {[type]} [description]
+ */
+function fFxInvert (uint8) {
+  for (var i = 0; i < uint8.data.length; i += 4) {
+    uint8.data[i+0] = 255 - uint8.data[i+0]; // red
+    uint8.data[i+1] = 255 - uint8.data[i+1]; // green
+    uint8.data[i+2] = 255 - uint8.data[i+2]; // blue
+  }
+  return uint8;
+};
+
+
+/**
+ * [fFxPixelate description]
+ * @param  {big array} data - The pixels.
+ * @param  {number} res - Resolution of the pixels: 1 = 1:1, 2 = 1:2, 3 = 1:3, etc.
+ * @return {big array} - The modified pixels.
+ */
+function fFxPixelate(uint8,res) {
+  // console.log('START fFxPixelate',res);
+  /* Uint8ClampedArray */
+  console.dir(uint8);
+  console.dir(uint8.data);
+  // console.log('uint8.data.length: ',uint8.data.length);
+  // console.log('uint8.width: ',uint8.width);
+  let compressed = [];
+  for (let i = 0; i < uint8.data.length; i+=4) {
+    if ( ((i/4) % res) === 0 ) {
+      // console.log('slicing');
+      compressed.push(uint8.data[i+0]);
+      compressed.push(uint8.data[i+1]);
+      compressed.push(uint8.data[i+2]);
+      compressed.push(uint8.data[i+3]);
+    } else {
+      // console.log('NOT slicing');
+    }
+  }
+  console.log('compressed.length: ',compressed.length);
+  console.log('compressed.length/4: ',compressed.length/4);
+  debugger;
+  // console.dir(Uint8ClampedArray.from(compressed));
+  // uint8.data = new Uint8ClampedArray(compressed);
+  compressed = Uint8ClampedArray.from(compressed);
+  // console.dir(compressed);
+  let newImageData = new ImageData(compressed, (uint8.width/res), (uint8.height/res));
+  return newImageData;
 }

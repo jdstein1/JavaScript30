@@ -1,6 +1,12 @@
 /* utils.js */
 console.log('utils.js READY!');
 
+if (!Uint8Array.prototype.slice) {
+  Object.defineProperty(Uint8Array.prototype, 'slice', {
+    value: Array.prototype.slice
+  });
+}
+
 /* toggle button enable/disable */
 function toggleButton(el,state) {
   // console.dir(el);

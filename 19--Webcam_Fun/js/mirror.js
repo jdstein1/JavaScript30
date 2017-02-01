@@ -1,10 +1,10 @@
 /**
- * [fMirror description]
+ * [fMirrorOld description]
  * @param  {big array} data - The pixels.
  * @return {big array}      The modified pixels.
  */
-function fMirror(pixels) {
-  console.group('START fMirror');
+function fMirrorOld (pixels) {
+  console.group('START fMirrorOld');
 
   // console.log('pixels:', pixels);
 
@@ -54,7 +54,7 @@ pixels.data = arr;
 /**
  * The above results in an error:
  * Uncaught RangeError: Maximum call stack size exceeded
-    at fMirror (mirror.js:24)
+    at fMirrorOld (mirror.js:24)
     at videoFX (scripts.js:406)
     at setInterval (scripts.js:441)
  * Need different approach!

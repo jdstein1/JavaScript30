@@ -71,6 +71,7 @@ let positionX = 0;
 let positionY = 0;
 let stripLen = 0;
 let videoInterval;
+let canvasScale = 1;
 const stripMax = 5;
 const stripItemW = 140;
 const constraints = {audio: false, video: true};
@@ -123,7 +124,7 @@ function fChromaKeyInputs (group) {
       // e.target.parentElement.innerHTML = `${e.target.value}`;
     }
   });
-  console.log('levels: ', levels);
+  // console.log('levels: ', levels);
   rgbMin.querySelector("input").style.backgroundColor = `rgb(${levels["rmin"]},${levels["gmin"]},${levels["bmin"]})`;
   rgbMax.querySelector("input").style.backgroundColor = `rgb(${levels["rmax"]},${levels["gmax"]},${levels["bmax"]})`;
   console.groupEnd();
@@ -153,7 +154,7 @@ function fUpdateInput (input) {
       bg = `#808080`;
       br = `${1/input.value}rem`;
     } else {
-      console.warn(' NOT saturate OR pixelate!');
+      // console.warn(' NOT saturate OR pixelate!');
     }
     label.querySelector("code").style.backgroundColor = bg;
     label.querySelector("code").style.borderRadius = br;
@@ -169,10 +170,12 @@ inputAllRange.forEach((input)=>{
 function fMirror () {
   if (mirror.checked) {
     // console.log('FLIP IT');
-    canvas.style.transform = 'scale(-1,1)';
+    canvas.style.transform = `scale(-${canvasScale},${canvasScale})`;
+    // canvas.style.transform = 'scale(-1,1)';
   } else {
     // console.log('DON\'T FLIP IT');
-    canvas.style.transform = 'scale(1,1)';
+    canvas.style.transform = `scale(${canvasScale},${canvasScale})`;
+    // canvas.style.transform = 'scale(1,1)';
   }
 }
 fMirror();
@@ -337,8 +340,6 @@ if (navigator.mediaDevices) {
     const wRatio = wWidth/wHeight;
     // console.log('wRatio: ', wRatio);
 
-    let canvasScale = 1;
-
     function fCheckArea (a,b) {
       console.group('START fCheckArea');
       let area;
@@ -406,12 +407,14 @@ if (navigator.mediaDevices) {
 
     canvas.width = wWidth;
     canvas.height = wHeight;
-    if (mirror.checked) {
-      canvas.style.transform = `scale(-${canvasScale},${canvasScale})`;
-    } else {
-      canvas.style.transform = `scale(${canvasScale},${canvasScale})`;
-    }
-    console.log('canvas.style.transform: ',canvas.style.transform);
+
+    fMirror();
+    // if (mirror.checked) {
+    //   canvas.style.transform = `scale(-${canvasScale},${canvasScale})`;
+    // } else {
+    //   canvas.style.transform = `scale(${canvasScale},${canvasScale})`;
+    // }
+    // console.log('canvas.style.transform: ',canvas.style.transform);
 
     /* center the canvas */
     positionX = (wWidth - vWidth)/2;
@@ -471,50 +474,25 @@ if (navigator.mediaDevices) {
     console.groupEnd();
 
     /* values for F/X function */
+    console.group('inputPixelate.value: ', inputPixelate.value);
     const inputPixelateVal = parseInt(inputPixelate.value);
     console.group('inputPixelateVal: ', inputPixelateVal);
-    let intPixelate = 2;
+    let intPixelate = parseInt(inputPixelate.value);
     // console.log('intPixelate: ', intPixelate);
     console.groupEnd();
 
-    // console.log('selectFx.value: ',selectFx.value);
-    // const effect = selectFx.value | '';
-    // console.log('effect: ', effect);
-    // /* enable F/X controls */
-    // if (effect === 'chroma') {
-    //   console.log('toggle chroma controls');
-    //   // get initial value for effect
-    // } else if (effect === 'split') {
-    //   console.log('toggle split controls');
-    //   // get initial value for effect
-    //   // console.log('selectSplit: ', selectSplit.value);
-    // } else if (effect === 'colorize') {
-    //   console.log('toggle colorize controls');
-    //   // get initial value for effect
-    //   // console.log('selectColorize: ', selectColorize.value);
-    // } else {
-    //   console.log('no effect chosen yet');
-    // }
-
-    // console.log(canvas.width,canvas.height);
-
-  /**
-   * manipulate pixels with video effect.
-   * @param  {[type]} fx [description]
-   * @return {[type]}    [description]
-   */
+    /**
+     * manipulate pixels with video effect.
+     * @param  {[type]} fx [description]
+     * @return {[type]}    [description]
+     */
     function videoFX (fx) {
       // console.log('fx: ', fx);
       ctx.drawImage(video,positionX,positionY,vWidth,vHeight);
       let pixels = ctx.getImageData(positionX,positionY,vWidth,vHeight);
-      // console.log(pixels);
+
       // console.log(pixels.data.length); // 1,228,800 (bits)
       // console.log(pixels.data.length/4); // 307,200 (pixels)
-
-      // if (mirror.checked) {
-      //   // console.log('mirror.checked: ', mirror.checked);
-      //   fMirror(pixels);
-      // }
 
       /* manipulate pixels */
       switch(fx) {
@@ -532,6 +510,9 @@ if (navigator.mediaDevices) {
           break;
         case 'Pixelate':
           pixels = fFxPixelate(pixels,intPixelate);
+          break;
+        case 'Invert':
+          // pixels = fFxInvert(pixels);
           break;
       }
 
@@ -757,6 +738,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 1;
+selectFx.selectedIndex = 5;
 toggleFxControls();
 
