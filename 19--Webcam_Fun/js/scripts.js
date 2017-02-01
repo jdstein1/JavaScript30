@@ -136,11 +136,11 @@ fChromaKeyInputs(inputAllChromaKey);
  * @return {[type]} [description]
  */
 function fUpdateInput (input) {
-  console.group('START fUpdateInput: ', input);
-  console.log('input.value: ', input.value);
-  console.log('input.min: ', input.min);
-  console.log('input.max: ', input.max);
-  console.log('input.diff: ', Math.abs(input.min-input.max));
+  console.group('START fUpdateInput');
+  // console.log('input.value: ', input.value);
+  // console.log('input.min: ', input.min);
+  // console.log('input.max: ', input.max);
+  // console.log('input.diff: ', Math.abs(input.min-input.max));
   const valRange = Math.abs(input.min-input.max);
   if (input.type === 'range'||input.type === 'number') {
     const label = input.parentElement;
@@ -168,10 +168,10 @@ inputAllRange.forEach((input)=>{
 
 function fMirror () {
   if (mirror.checked) {
-    console.log('FLIP IT');
+    // console.log('FLIP IT');
     canvas.style.transform = 'scale(-1,1)';
   } else {
-    console.log('DON\'T FLIP IT');
+    // console.log('DON\'T FLIP IT');
     canvas.style.transform = 'scale(1,1)';
   }
 }
@@ -183,17 +183,17 @@ fMirror();
  */
 function toggleFxControls () {
   console.group('START toggleFxControls');
-  console.log('hide all controls...');
+  // console.log('hide all controls...');
   hide(ctrlAll);
-  console.log('...then hide all alerts except "cam" alert...');
+  // console.log('...then hide all alerts except "cam" alert...');
   hide(alertAllMsg,alertMsgCam);
   // show(alertMsgCam);
   if (selectFx.selectedIndex>0) {
-    console.log('...then show __'+selectFx.selectedIndex+'__ controls!');
+    // console.log('...then show __'+selectFx.selectedIndex+'__ controls!');
     hide(alertAllMsg);
     show(ctrlAll[selectFx.selectedIndex-1]);
   } else {
-    console.log('...then done!');
+    // console.log('...then done!');
   }
   console.groupEnd();
 }
@@ -252,7 +252,7 @@ if (navigator.mediaDevices) {
    */
   function accessMedia(mode) {
     console.group('START accessMedia');
-    console.log('mode: ', mode);
+    // console.log('mode: ', mode);
     hide(alertAllMsg);
     navigator.mediaDevices.getUserMedia(constraints)
     .then((mediaStream) => {
@@ -321,12 +321,18 @@ if (navigator.mediaDevices) {
     const vHeight = video.videoHeight;
     console.log('vWidth:'+vWidth+' / vHeight:'+vHeight);
 
+    const vArea = vWidth*vHeight;
+    console.log('vArea: ', vArea);
+
     const vRatio = vWidth/vHeight;
     console.log('vRatio: ', vRatio);
 
     const wWidth = window.innerWidth;
     const wHeight = window.innerHeight;
     console.log('wWidth:'+wWidth+' / wHeight:'+wHeight);
+
+    const wArea = wWidth*wHeight;
+    console.log('wArea: ', wArea);
 
     const wRatio = wWidth/wHeight;
     console.log('wRatio: ', wRatio);
@@ -336,20 +342,101 @@ if (navigator.mediaDevices) {
     // const wRatio = wWidth/wHeight;
     // console.log('wRatio: ', wRatio);
 
-    /* set canvas to W&H of window */
-    if (vWidth/wWidth > 1) {
-      console.info('video wider than window');
-      if (vHeight/wHeight > 1) {
-        console.info('video taller than window');
-      } else if (vHeight/wHeight < 1) {
-        console.info('window taller than video');
-        canvasScale = (wHeight/vHeight);
+    // console.log('vWidth/wWidth: ', vWidth/wWidth);
+    // console.log('wWidth/vWidth: ', wWidth/vWidth);
+    // console.log('vHeight/wHeight: ', vHeight/wHeight);
+    // console.log('wHeight/vHeight: ', wHeight/vHeight);
+
+    function fCheckArea (a,b) {
+      console.group('START fCheckArea');
+      let area;
+      const aA = a[0]*a[1];
+      const bA = b[0]*b[1];
+      if (aA > bA) {
+        console.info('video is __bigger__ than window');
+        area = 'bigger';
+      } else if (aA < bA) {
+        console.info('video is __smaller__ than window');
+        area = 'smaller';
+      } else {
+        console.info('video and window are __same__ size');
+        area = 'same';
       }
-    } else if (vWidth/wWidth < 1) {
-      console.info('window wider than video');
-      canvasScale = (wWidth/vWidth);
+      console.groupEnd();
+      return area;
     }
-    console.warn('canvasScale: ',canvasScale);
+
+    function fCheckRatio (a,b) {
+      console.group('START fCheckRatio');
+      let ratio;
+      const aR = a[0]/a[1];
+      const bR = b[0]/b[1];
+      // console.warn(aR+":"+bR);
+      if (aR > bR) {
+        console.info('window has __portrait__ aspect ratio, scale based on HEIGHT');
+        ratio = 'portrait';
+      } else if (aR < bR) {
+        console.info('window has __landscape__ aspect ratio, scale based on WIDTH');
+        ratio = 'landscape';
+      } else {
+        console.info('window has __standard__ aspect ratio, scale based on AREA');
+        ratio = 'standard';
+      }
+      console.groupEnd();
+      return ratio;
+    }
+
+    function fCanvasScale (a,b) {
+      console.group('START fCanvasScale: ', a,b);
+
+      const aspect_ratio = fCheckRatio(a,b);
+      // console.info('aspect_ratio: ',aspect_ratio);
+
+      const video_area = fCheckArea(a,b);
+      // console.info('video_area: ',video_area);
+
+      if (video_area === 'bigger') {
+        // console.warn('video bigger');
+        if (aspect_ratio === 'landscape') {
+          // console.warn('landscape');
+          // canvasScale = (b[0]/a[0]); // enlarge based on WIDTH ratio
+        } else if (aspect_ratio === 'portrait') {
+          // console.warn('portrait');
+          // canvasScale = (b[1]/a[1]); // enlarge based on HEIGHT ratio
+        } else {
+          // console.warn('same');
+        }
+      } else if (video_area === 'smaller') {
+        // console.warn('video smaller');
+        if (aspect_ratio === 'landscape') {
+          // console.warn('landscape');
+          canvasScale = (b[0]/a[0]); // enlarge based on WIDTH ratio
+        } else if (aspect_ratio === 'portrait') {
+          // console.warn('portrait');
+          canvasScale = (b[1]/a[1]); // enlarge based on HEIGHT ratio
+        } else {
+          // console.warn('same');
+          canvasScale = (b[1]/a[1]); // enlarge based on HEIGHT ratio
+        }
+      }
+    }
+    fCanvasScale([vWidth,vHeight],[wWidth,wHeight]);
+
+    /* set canvas to W&H of window */
+    // if (vWidth/wWidth > 1) {
+    //   console.info('video bigger than window in WIDTH');
+    //   if (vWidth/wWidth > vHeight/wHeight) {
+    //     console.info('window bigger than video in HEIGHT');
+    //     canvasScale = (wHeight/vHeight); // enlarge based on HEIGHT ratio
+    //   } else {
+    //     console.info('video bigger than window in HEIGHT');
+    //     // use 1:1 ratio
+    //   }
+    // } else if (vWidth/wWidth < 1) {
+    //   console.info('video smaller than window in WIDTH');
+    //   canvasScale = (wWidth/vWidth); // enlarge based on WIDTH ratio
+    // }
+    console.log('canvasScale: ',canvasScale);
 
     canvas.width = wWidth;
     canvas.height = wHeight;
@@ -372,7 +459,7 @@ if (navigator.mediaDevices) {
     for (var i = 0; i < randoms.length; i++) {
       randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
     }
-    console.log('randoms: ', randoms);
+    // console.log('randoms: ', randoms);
 
     /* values for F/X function */
     console.group('selectSplit.value: ', selectSplit.value);
@@ -414,14 +501,14 @@ if (navigator.mediaDevices) {
     let intsSaturate = [0.5,0.5];
     // console.log('intsSaturate: ', intsSaturate);
     intsSaturate = [(100-inputSaturateVal)/100,inputSaturateVal/100];
-    console.log('intsSaturate: ', intsSaturate);
+    // console.log('intsSaturate: ', intsSaturate);
     console.groupEnd();
 
     /* values for F/X function */
     const inputPixelateVal = parseInt(inputPixelate.value);
     console.group('inputPixelateVal: ', inputPixelateVal);
     let intPixelate = 2;
-    console.log('intPixelate: ', intPixelate);
+    // console.log('intPixelate: ', intPixelate);
     console.groupEnd();
 
     // console.log('selectFx.value: ',selectFx.value);
@@ -624,13 +711,13 @@ if (navigator.mediaDevices) {
 
   /* when web cam starts, send pixels to canvas */
   video.addEventListener('canplay',(e)=>{
-    console.log('playing media');
+    // console.log('playing media');
     pixelsToCanvas();
   });
 
   /* listen for change on master F/X select/option */
   selectFx.addEventListener('change',(e)=>{
-    console.log('selectFx: ',e.target.value);
+    // console.log('selectFx: ',e.target.value);
     toggleFxControls();
   });
 
