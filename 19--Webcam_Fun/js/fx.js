@@ -1,12 +1,17 @@
 /* fx.js */
 console.log('fx.js READY!');
+
+/**
+ * Uint8ClampedArray
+ */
+
 /**
  * check if each pixel's color value falls within ranges set 
  * by inputs.  if it does, drop alpha value to 0 to hide pixel.
  * @param  {big array} data - The pixels.
  * @return {big array} - The modified pixels.
  */
-function fFxChromaKey(uint8) {
+function fFxChromaKey(array255) {
   // console.log('START fFxChromaKey');
   // create empty array of min & max values
   const levels = {};
@@ -16,12 +21,12 @@ function fFxChromaKey(uint8) {
   });
   // console.log(levels);
   // debugger;
-  for (let i = 0; i < uint8.data.length; i+=4) {
+  for (let i = 0; i < array255.data.length; i+=4) {
     // put values into vars
-    red = uint8.data[i+0]; // r
-    green = uint8.data[i+1]; // g
-    blue = uint8.data[i+2]; // b
-    alpha = uint8.data[i+3]; // a
+    red = array255.data[i+0]; // r
+    green = array255.data[i+1]; // g
+    blue = array255.data[i+2]; // b
+    alpha = array255.data[i+3]; // a
 
     // check if values are within ranges
     if (red >= levels.rmin
@@ -31,10 +36,10 @@ function fFxChromaKey(uint8) {
       && blue >= levels.bmin
       && blue <= levels.bmax) {
       // take it out!
-      uint8.data[i + 3] = 0;
+      array255.data[i + 3] = 0;
     }
   }
-  return uint8;
+  return array255;
 }
 
 /**
@@ -45,14 +50,14 @@ function fFxChromaKey(uint8) {
  * @param  {array} nums - Integers used to shift each R, G, and B value.
  * @return {big array} - The modified pixels.
  */
-function fFxChannelSplit(uint8,nums) {
+function fFxChannelSplit(array255,nums) {
   // console.log('START fFxChannelSplit');
-  for (let i = 0; i < uint8.data.length; i+=4) {
-    uint8.data[i+nums[0]] = uint8.data[i+0]; // r
-    uint8.data[i+nums[1]] = uint8.data[i+1]; // g
-    uint8.data[i+nums[2]] = uint8.data[i+2]; // b
+  for (let i = 0; i < array255.data.length; i+=4) {
+    array255.data[i+nums[0]] = array255.data[i+0]; // r
+    array255.data[i+nums[1]] = array255.data[i+1]; // g
+    array255.data[i+nums[2]] = array255.data[i+2]; // b
   }
-  return uint8;
+  return array255;
 }
 
 /**
@@ -62,14 +67,14 @@ function fFxChannelSplit(uint8,nums) {
  * @param  {array} nums - Integers used to shift each R, G, and B value.
  * @return {big array} - The modified pixels.
  */
-function fFxColorize(uint8,nums) {
+function fFxColorize(array255,nums) {
   // console.log('START fFxRGB',nums);
-  for (let i = 0; i < uint8.data.length; i+=4) {
-    uint8.data[i+0] += nums[0]; // r
-    uint8.data[i+1] += nums[1]; // g
-    uint8.data[i+2] += nums[2]; // b
+  for (let i = 0; i < array255.data.length; i+=4) {
+    array255.data[i+0] += nums[0]; // r
+    array255.data[i+1] += nums[1]; // g
+    array255.data[i+2] += nums[2]; // b
   }
-  return uint8;
+  return array255;
 }
 
 /**
@@ -78,32 +83,31 @@ function fFxColorize(uint8,nums) {
  * @param  {number} saturation - How saturated the video should be: 0 = monochrome, 100 = normal color, 200 = super color.
  * @return {big array} - The modified pixels.
  */
-function fFxSaturate(uint8,nums) {
+function fFxSaturate(array255,nums) {
   // console.log('START fFxSaturate',nums);
-  for (let i = 0; i < uint8.data.length; i+=4) {
+  for (let i = 0; i < array255.data.length; i+=4) {
     /* add color values together to get average */
-    const avg = (uint8.data[i+0] + uint8.data[i+1] + uint8.data[i+2])/3;
+    const avg = (array255.data[i+0] + array255.data[i+1] + array255.data[i+2])/3;
     /* apply average to R,G, and B values of each pixel */
-    uint8.data[i+0] = (avg*nums[0])+(uint8.data[i+0]*nums[1]); // r
-    uint8.data[i+1] = (avg*nums[0])+(uint8.data[i+1]*nums[1]); // g
-    uint8.data[i+2] = (avg*nums[0])+(uint8.data[i+2]*nums[1]); // b
+    array255.data[i+0] = (avg*nums[0])+(array255.data[i+0]*nums[1]); // r
+    array255.data[i+1] = (avg*nums[0])+(array255.data[i+1]*nums[1]); // g
+    array255.data[i+2] = (avg*nums[0])+(array255.data[i+2]*nums[1]); // b
   }
-  return uint8;
+  return array255;
 }
 
 /**
- * [invert description]
+ * [fFxInvert description]
  * @return {[type]} [description]
  */
-function fFxInvert (uint8) {
-  for (var i = 0; i < uint8.data.length; i += 4) {
-    uint8.data[i+0] = 255 - uint8.data[i+0]; // red
-    uint8.data[i+1] = 255 - uint8.data[i+1]; // green
-    uint8.data[i+2] = 255 - uint8.data[i+2]; // blue
+function fFxInvert (array255) {
+  for (var i = 0; i < array255.data.length; i += 4) {
+    array255.data[i+0] = 255 - array255.data[i+0]; // red
+    array255.data[i+1] = 255 - array255.data[i+1]; // green
+    array255.data[i+2] = 255 - array255.data[i+2]; // blue
   }
-  return uint8;
+  return array255;
 };
-
 
 /**
  * [fFxPixelate description]
@@ -111,32 +115,47 @@ function fFxInvert (uint8) {
  * @param  {number} res - Resolution of the pixels: 1 = 1:1, 2 = 1:2, 3 = 1:3, etc.
  * @return {big array} - The modified pixels.
  */
-function fFxPixelate(uint8,res) {
-  // console.log('START fFxPixelate',res);
-  /* Uint8ClampedArray */
-  console.dir(uint8);
-  console.dir(uint8.data);
-  // console.log('uint8.data.length: ',uint8.data.length);
-  // console.log('uint8.width: ',uint8.width);
-  let compressed = [];
-  for (let i = 0; i < uint8.data.length; i+=4) {
-    if ( ((i/4) % res) === 0 ) {
+function fFxPixelate(array255,res) {
+  // console.group('START fFxPixelate',res);
+  // console.log('array255: ',array255);
+  // console.dir(array255.data);
+
+  // console.log('array255.data.length: ',array255.data.length);
+  // console.log('array255.height: ',array255.height);
+  // console.log('array255.width: ',array255.width);
+
+
+  const newLength = array255.data.length/res*res;
+  // console.log('newLength: ', newLength);
+  const newHeight = Math.floor(array255.height/res);
+  // console.log('newHeight: ', newHeight);
+  const newWidth = Math.floor(array255.width/res);
+  // console.log('newWidth: ', newWidth);
+
+  let newData = [];
+  for (let i = 0; i < array255.data.length; i+=4) {
+    if ( (i % (4*res*res)) === 0 ) {
+      // console.log('i: ',i);
       // console.log('slicing');
-      compressed.push(uint8.data[i+0]);
-      compressed.push(uint8.data[i+1]);
-      compressed.push(uint8.data[i+2]);
-      compressed.push(uint8.data[i+3]);
+      newData.push(array255.data[i]);
+      newData.push(array255.data[i+1]);
+      newData.push(array255.data[i+2]);
+      newData.push(array255.data[i+3]);
     } else {
       // console.log('NOT slicing');
     }
   }
-  console.log('compressed.length: ',compressed.length);
-  console.log('compressed.length/4: ',compressed.length/4);
-  debugger;
-  // console.dir(Uint8ClampedArray.from(compressed));
-  // uint8.data = new Uint8ClampedArray(compressed);
-  compressed = Uint8ClampedArray.from(compressed);
-  // console.dir(compressed);
-  let newImageData = new ImageData(compressed, (uint8.width/res), (uint8.height/res));
+  // console.log('newData: ',newData);
+  // console.log('newData.length: ',newData.length);
+  /* need to disable canves scaling and centering in order to properly calculate the canvas dimaensions and length of the ImageData array */
+  // console.log('newData.length/(4): ',newData.length/(4));
+  // console.dir(Uint8ClampedArray.from(newData));
+  // array255.data = new Uint8ClampedArray(newData);
+  newData = Uint8ClampedArray.from(newData);
+  // console.dir(newData);
+  // console.groupEnd();
+  // debugger;
+  let newImageData = new ImageData(newData, newWidth, newHeight);
+  // let newImageData = new ImageData(newData,1);
   return newImageData;
 }

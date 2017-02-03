@@ -11,25 +11,20 @@
   <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
-
   <header>
     <h1>webcam fun</h1>
   </header>
-
   <main>
-
     <div class="ctrls">
       <fieldset id="ctrl_camera">
         <legend>cam</legend>
         <button class="btn_on status success">On</button>
         <button class="btn_off status error">Off</button>
-
         <!-- convert on/off buttons into checkbox toggle -->
         <!-- <label class="" for="cam">
           <input type="checkbox" id="cam" class="input-toggle">
           <span class="label">On?</span>
         </label> -->
-
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
       <fieldset id="ctrl_fx">
@@ -39,9 +34,9 @@
             <option value="Colorize">Colorize</option>
             <option value="ChannelSplit">ChannelSplit</option>
             <option value="ChromaKey">ChromaKey</option>
+            <option value="Invert">Invert</option>
             <option value="Saturate">Saturate</option>
             <option value="Pixelate">Pixelate</option>
-            <option value="Invert">Invert</option>
           </select>
           <!-- add checkbox toggle for mirror effect -->
           <label class="setting" for="mirror">
@@ -159,7 +154,7 @@
           </tr>
           <!-- <tr>
             <td colspan="4">
-              <button class="btn_clear disabled" disabled>Clear</button>
+              <button class="btn_reset disabled" disabled>Reset</button>
             </td>
           </tr> -->
           </tbody>
@@ -174,9 +169,6 @@
               </label>
             </td>
           </tr>
-          <tr>
-            <td><button class="btn_apply status success">Apply</button></td>
-          </tr>
           </tbody>
         </table>
         <table class="ctrl_group" id="ctrl_fx_pixelate">
@@ -185,12 +177,9 @@
             <td>
               <label>
                 <span>pixelate: <code class="value">0</code></span>
-                <input id="pixelate" type="range" class="input-range" value=3 min=1 max=10>
+                <input id="pixelate" type="range" class="input-range" value=2 min=1 max=10>
               </label>
             </td>
-          </tr>
-          <tr>
-            <td><button class="btn_apply status success">Apply</button></td>
           </tr>
           </tbody>
         </table>
@@ -199,14 +188,11 @@
           <tr>
             <td>
               <label>
-                <input id="invert" type="checkbox" class="input-toggle">
-                <span>invert</span>
+                <!-- <input id="invert" type="checkbox" class="input-toggle"> -->
+                <span>invert: <code class="value">ON</code></span>
               </label>
             </td>
           </tr>
-          <!-- <tr>
-            <td><button class="btn_apply status success">Apply</button></td>
-          </tr> -->
           </tbody>
         </table>
       </fieldset>
@@ -221,23 +207,17 @@
         <button class="btn_clear disabled" disabled>Clear</button>
       </fieldset>
     </div>
-
     <div class="photobooth">
       <video class="video"></video>
       <canvas class="canvas"></canvas>
     </div>
-
     <div class="strip"></div>
-
   </main>
-
   <audio class="sound-snap" src="snap.mp3" hidden></audio>
-
   <script src="js/utils.js"></script>
   <script src="js/scripts.js"></script>
   <script src="js/fx.js"></script>
   <!-- <script src="js/mirror.js"></script> -->
   <!-- <script src="scripts-FINISHED.js"></script> -->
-
 </body>
 </html>

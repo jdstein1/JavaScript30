@@ -403,7 +403,7 @@ if (navigator.mediaDevices) {
       }
       console.log('canvasScale: ',canvasScale);
     }
-    fCanvasScale([vWidth,vHeight],[wWidth,wHeight]);
+    // fCanvasScale([vWidth,vHeight],[wWidth,wHeight]);
 
     canvas.width = wWidth;
     canvas.height = wHeight;
@@ -417,8 +417,8 @@ if (navigator.mediaDevices) {
     // console.log('canvas.style.transform: ',canvas.style.transform);
 
     /* center the canvas */
-    positionX = (wWidth - vWidth)/2;
-    positionY = (wHeight - vHeight)/2;
+    // positionX = (wWidth - vWidth)/2;
+    // positionY = (wHeight - vHeight)/2;
 
     let randoms = []; // random numbers
     randoms.push(Math.floor(Math.random()*25)+Math.floor(Math.random()*250));
@@ -512,7 +512,7 @@ if (navigator.mediaDevices) {
           pixels = fFxPixelate(pixels,intPixelate);
           break;
         case 'Invert':
-          // pixels = fFxInvert(pixels);
+          pixels = fFxInvert(pixels);
           break;
       }
 
@@ -738,6 +738,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 5;
+selectFx.selectedIndex = 6;
 toggleFxControls();
 
