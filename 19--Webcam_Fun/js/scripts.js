@@ -1,67 +1,6 @@
 /* scripts.js */
 console.log('scripts.js READY!');
 /**
- * DOM NODES
- */
-
-/* misc */
-const video = document.querySelector('.video');
-const canvas = document.querySelector('.canvas');
-const ctx = canvas.getContext('2d');
-const strip = document.querySelector('.strip');
-const snapSound = document.querySelector('.sound-snap');
-const snapLimit = document.querySelector('#limit');
-const mirror = document.querySelector('#mirror');
-const alertAllMsg = document.querySelectorAll('.alert');
-const alertMsgCam = document.querySelector('#msg_cam');
-const alertMsgFx = document.querySelector('#msg_fx');
-const alertMsgErr = document.querySelector('#msg_err');
-// const alertFx = ctrlFx.querySelector('.alert');
-
-/* F/X controls */
-/* select/option for main F/X control */
-const selectFx = document.querySelector('#fx');
-/* select/option for deeper F/X controls */
-
-/* array of tables of control interfaces */
-const ctrlFx = document.querySelector('#ctrl_fx');
-const ctrlAll = ctrlFx.querySelectorAll('table');
-const inputAllSelect = document.querySelectorAll('#ctrl_fx .input-select');
-const inputAllRange = document.querySelectorAll('#ctrl_fx .input-range');
-
-/* video channel colorize controls */
-// const ctrlColorize = document.querySelector('#ctrl_fx_colorize');
-const selectColorize = document.querySelector('#colorize');
-
-/* video channel split controls */
-// const ctrlSplit = document.querySelector('#ctrl_fx_split');
-const selectSplit = document.querySelector('#split');
-
-/* video croma key controls */
-// const ctrlChromaKey = document.querySelector('#ctrl_fx_chroma');
-const inputAllChromaKey = document.querySelectorAll('#ctrl_fx_chroma .input-range');
-const rgbMin = document.querySelector('.min .rgb');
-const rgbMax = document.querySelector('.max .rgb');
-
-/* video saturation controls */
-const ctrlSaturate = document.querySelector('#ctrl_fx_saturate');
-const inputSaturate = document.querySelector('#saturate');
-
-/* video resolution controls */
-const ctrlPixelate = document.querySelector('#ctrl_fx_pixelate');
-const inputPixelate = document.querySelector('#pixelate');
-
-/* buttons */
-const btnAllApply = document.querySelectorAll('.btn_apply');
-const btnAllClear = document.querySelectorAll('.btn_clear');
-const btnOn = document.querySelector('#ctrl_camera .btn_on');
-const btnOff = document.querySelector('#ctrl_camera .btn_off');
-const btnClearCam = document.querySelector('#ctrl_camera .btn_clear');
-const btnClearStrip = document.querySelector('#ctrl_strip .btn_clear');
-const btnClearChroma = document.querySelector('#ctrl_fx_chroma .btn_clear');
-const btnSnap = document.querySelector('#ctrl_strip .btn_snap');
-
-/**
  * VARIABLES
  */
 
@@ -115,7 +54,7 @@ function fChromaKeyInputs (group) {
         bg = `rgb(0,0,${input.value})`;
       }
       // label.querySelector("span").style.backgroundColor = bg;
-      label.querySelector("code").style.backgroundColor = bg;
+      label.querySelector(".value").style.backgroundColor = bg;
       label.querySelector("input").style.backgroundColor = bg;
       // console.log('test: ',label.querySelector("input[type='number']"));
       // label.querySelector("input[type='number']").style.backgroundColor = bg;
@@ -145,7 +84,7 @@ function fUpdateInput (input) {
   const valRange = Math.abs(input.min-input.max);
   if (input.type === 'range'||input.type === 'number') {
     const label = input.parentElement;
-    label.querySelector("span").querySelector("code").innerHTML = input.value;
+    label.querySelector("span").querySelector(".value").innerHTML = input.value;
     // const cell = label.parentElement;
     let bg, br;
     if (input.id==='saturate') {
@@ -156,8 +95,8 @@ function fUpdateInput (input) {
     } else {
       // console.warn(' NOT saturate OR pixelate!');
     }
-    label.querySelector("code").style.backgroundColor = bg;
-    label.querySelector("code").style.borderRadius = br;
+    label.querySelector(".value").style.backgroundColor = bg;
+    label.querySelector(".value").style.borderRadius = br;
     // label.querySelector("input").style.backgroundColor = bg;
   }
   console.groupEnd();
@@ -409,12 +348,6 @@ if (navigator.mediaDevices) {
     canvas.height = wHeight;
 
     fMirror();
-    // if (mirror.checked) {
-    //   canvas.style.transform = `scale(-${canvasScale},${canvasScale})`;
-    // } else {
-    //   canvas.style.transform = `scale(${canvasScale},${canvasScale})`;
-    // }
-    // console.log('canvas.style.transform: ',canvas.style.transform);
 
     /* center the canvas */
     // positionX = (wWidth - vWidth)/2;
@@ -428,7 +361,7 @@ if (navigator.mediaDevices) {
     for (var i = 0; i < randoms.length; i++) {
       randoms[i] *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
     }
-    // console.log('randoms: ', randoms);
+    console.log('randoms: ', randoms);
 
     /* values for F/X function */
     console.group('selectSplit.value: ', selectSplit.value);
@@ -451,34 +384,38 @@ if (navigator.mediaDevices) {
 
     /* values for F/X function */
     console.group('selectColorize.value: ', selectColorize.value);
-    let intsColorize = [];
+    let intsColorize = [-127, -127, -127];
     if (selectColorize.value === 'red') {
-      intsColorize = [150, -50, -50];
+      intsColorize[0] = 127;
     } else if (selectColorize.value === 'green') {
-      intsColorize = [-50, 150, -50];
+      intsColorize[1] = 127;
     } else if (selectColorize.value === 'blue') {
-      intsColorize = [-50, -50, 150];
+      intsColorize[2] = 127;
     } else {
       intsColorize = randoms;
     }
     // console.log('intsColorize: ', intsColorize);
     console.groupEnd();
 
-    /* values for F/X function */
+    /* values for Saturate F/X function */
+    console.group('inputSaturate.value: ', inputSaturate.value);
     const inputSaturateVal = parseInt(inputSaturate.value);
-    console.group('inputSaturateVal: ', inputSaturateVal);
     let intsSaturate = [0.5,0.5];
     // console.log('intsSaturate: ', intsSaturate);
     intsSaturate = [(100-inputSaturateVal)/100,inputSaturateVal/100];
     // console.log('intsSaturate: ', intsSaturate);
     console.groupEnd();
 
-    /* values for F/X function */
+    /* values for Pixelate F/X function */
     console.group('inputPixelate.value: ', inputPixelate.value);
-    const inputPixelateVal = parseInt(inputPixelate.value);
-    console.group('inputPixelateVal: ', inputPixelateVal);
     let intPixelate = parseInt(inputPixelate.value);
     // console.log('intPixelate: ', intPixelate);
+    console.groupEnd();
+
+    /* values for Blend F/X function */
+    console.group('inputBlend.value: ', inputBlend.value);
+    let intBlend = parseInt(inputBlend.value);
+    // console.log('intBlend: ', intBlend);
     console.groupEnd();
 
     /**
@@ -513,6 +450,9 @@ if (navigator.mediaDevices) {
           break;
         case 'Invert':
           pixels = fFxInvert(pixels);
+          break;
+        case 'Blend':
+          pixels = fFxBlend(pixels,intBlend);
           break;
       }
 
@@ -687,10 +627,17 @@ if (navigator.mediaDevices) {
 
   inputSaturate.addEventListener('change',(e)=>{
       fUpdateInput(inputSaturate);
+      startStream();
   });
 
   inputPixelate.addEventListener('change',(e)=>{
       fUpdateInput(inputPixelate);
+      startStream();
+  });
+
+  inputBlend.addEventListener('change',(e)=>{
+      fUpdateInput(inputBlend);
+      startStream();
   });
 
   inputAllChromaKey.forEach(input => {
@@ -704,20 +651,6 @@ if (navigator.mediaDevices) {
   //   input.addEventListener('mousemove',(e)=>{
   //     fChromaKeyInputs(inputAllChromaKey);
   //   })
-  // });
-
-  // let flagSaturate = false;
-  inputSaturate.addEventListener('change',startStream);
-  // inputSaturate.addEventListener('mousedown',(e)=>{
-  //   flagSaturate = true;
-  // });
-  // inputSaturate.addEventListener('mousemove',(e)=>{
-  //   if (flagSaturate) {
-  //     startStream();
-  //   }
-  // });
-  // inputSaturate.addEventListener('mouseup',(e)=>{
-  //   flagSaturate = false;
   // });
 
   /* listen for click on all "apply" buttons */
@@ -738,6 +671,6 @@ window.addEventListener('resize', fMediaQueries);
 
 /* fake UI clicks to open controls */
 startStream();
-selectFx.selectedIndex = 6;
+selectFx.selectedIndex = 7;
 toggleFxControls();
 

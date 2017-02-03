@@ -34,9 +34,10 @@
             <option value="Colorize">Colorize</option>
             <option value="ChannelSplit">ChannelSplit</option>
             <option value="ChromaKey">ChromaKey</option>
-            <option value="Invert">Invert</option>
             <option value="Saturate">Saturate</option>
             <option value="Pixelate">Pixelate</option>
+            <option value="Invert">Invert</option>
+            <option value="Blend">Blend</option>
           </select>
           <!-- add checkbox toggle for mirror effect -->
           <label class="setting" for="mirror">
@@ -195,6 +196,18 @@
           </tr>
           </tbody>
         </table>
+        <table class="ctrl_group" id="ctrl_fx_blend">
+          <tbody>
+          <tr>
+            <td>
+              <label>
+                <span>blend (%): <code class="value">0</code></span>
+                <input id="blend" type="range" class="input-range" value=0 min=-127 max=127>
+              </label>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </fieldset>
       <fieldset id="ctrl_strip">
         <legend>snaps <code class="value">0</code>
@@ -214,10 +227,17 @@
     <div class="strip"></div>
   </main>
   <audio class="sound-snap" src="snap.mp3" hidden></audio>
+  <script src="js/dom.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/scripts.js"></script>
-  <script src="js/fx.js"></script>
-  <!-- <script src="js/mirror.js"></script> -->
+  <script src="js/fx-blend.js"></script>
+  <script src="js/fx-channelsplit.js"></script>
+  <script src="js/fx-chromakey.js"></script>
+  <script src="js/fx-colorize.js"></script>
+  <script src="js/fx-invert.js"></script>
+  <script src="js/fx-pixelate.js"></script>
+  <script src="js/fx-saturate.js"></script>
+  <!-- <script src="js/fx-mirror.js"></script> -->
   <!-- <script src="scripts-FINISHED.js"></script> -->
 </body>
 </html>
